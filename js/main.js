@@ -345,51 +345,117 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* -------------------------------------------------------
-     4. DỮ LIỆU CÔNG KHAI (CHỈ HIỂN THỊ THÔNG TIN BỀ MẶT)
+     4. THẾ GIỚI SWEZAN: TIMELINE, DIỄN BIẾN, NGUYÊN TẮC (CÔNG KHAI)
      ------------------------------------------------------- */
-  const WORLD_EVENTS = [
+  const WORLD_TIMELINE = [
     {
-      tag: "BỐI CẢNH THỜI ĐẠI · 1994",
-      title: "Thung Lũng Công Nghiệp & Màn Ảnh CRT",
-      body: "Swezan nằm lọt thỏm giữa khói than, mưa axit và các xưởng dệt suy thoái cuối thời hậu Chiến tranh Lạnh — nơi hạ tầng công nghiệp cũ va chạm với băng từ VHS, máy đánh chữ và tivi đèn hình.",
+      time: "~14 NGÀY TRƯỚC · SỰ KIỆN ĐẦU TIÊN",
+      title: "Ottomar Burchard (45t) tử vong tại khu chất thải công nghiệp",
+      desc: "Chủ tiệm ăn nhỏ tên Lutz mất tích lúc 02:00 sáng khi đi đổ rác và được phát hiện tử vong sau 7 ngày trong bể hóa chất. Cảnh sát từng tìm cách dìm vụ việc, coi là thanh trừng ngầm ngoài xã hội.",
+      now: false,
     },
     {
-      tag: "TIN ĐỒN & DƯ LUẬN",
-      title: "Hội Chứng Sợ Màn Hình",
-      body: "Sau vụ cướp sóng đài truyền hình K-TV Kênh 8 đêm Chủ nhật tuần trước, nhiều gia đình tại Altstadt dùng khăn dạ trùm kín tivi vào ban đêm vì sợ tiếng rè rít trắng lúc 0 giờ.",
+      time: "00:00 ĐÊM CHỦ NHẬT TUẦN TRƯỚC · CÚ SỐC TRUYỀN HÌNH",
+      title: "Vụ cướp sóng đài K-TV Kênh 8 & Cái chết của Malia Ariane (24t)",
+      desc: "Ái nữ của Nam tước đá quý bị chặn xe giữa sương mù trên Đại lộ Duyên Biên. Đúng nửa đêm Chủ nhật, kẻ tự xưng The Rider chiếm sóng Kênh 8, phát thẳng đoạn băng ghi lại cảnh cô bị giam trong buồng kính hơi nước trước hàng vạn màn hình tivi.",
+      now: false,
     },
     {
-      tag: "KHỞI ĐIỂM · 30/11/1994",
-      title: "Biến Cố Tại Đồn Cảnh Sát Altstadt",
-      body: "Phó Cảnh sát trưởng Matthäus August mất tích 12 tiếng. Sáng nay, một cuộn băng VHS-C xuất hiện cùng lời tuyên án kỳ bí của kẻ tự xưng The Rider, đẩy thị trấn vào cơn hoảng loạn.",
+      time: "12:00 TRƯA CHỦ NHẬT HÔM QUA · MẤT TÍCH",
+      title: "Phó Cảnh Sát Trưởng Matthäus August (52t) biến mất bên hồ",
+      desc: "Cánh tay phải của Cảnh sát trưởng Heckler mất tích trong lúc câu cá tại hồ nước đen sau tư dinh ven rừng. Hiện trường chỉ còn lại chiếc cần câu carbon gãy đôi, đôi dép lê và tẩu thuốc rơi vãi.",
+      now: false,
     },
+    {
+      time: "06:00 SÁNG NAY (30/11/1994) · BĂNG TỪ TRONG BỤNG CÁ",
+      title: "Thu giữ Băng A (Tập 3/4) & Lời đếm ngược 7 ngày",
+      desc: "Từ bụng một con cá chép đột biến dạt bờ hồ, cảnh sát tìm thấy cuộn băng VHS-C bọc kín. Giọng nói biến âm thông báo phiên tòa kéo dài đúng 7 ngày, hạn chót vào 23:59 đêm Chủ Nhật tới.",
+      now: false,
+    },
+    {
+      time: "06:15 SÁNG THỨ HAI (HIỆN TẠI) · KHỞI ĐIỂM CUỘC CHƠI",
+      title: "Swezan bước vào tuần lễ sinh tử (-3°C · Mưa phùn tro than)",
+      desc: "Mọi cầu nối vào phố cổ Altstadt bị dựng rào phong tỏa. Mức độ hoảng loạn thị trấn chạm mốc 75% giữa làn sóng đình công ở bến cảng và nỗi sợ hãi màn ảnh nhỏ.",
+      now: true,
+    },
+  ];
+
+  const WORLD_LIVE_STATE = [
+    {
+      tag: "📻 RADIO & TRUYỀN HÌNH ĐANG PHÁT GÌ?",
+      title: "Sóng Ngắn Căng Thẳng · K-TV Tạm Ngừng",
+      body: "Đài Swan Terof Kênh 8 đã tạm ngưng phát sóng ban đêm sau sự cố nhiễu 50Hz. Trên các băng tần Radio địa phương, Tòa thị chính liên tục phát thông báo giới nghiêm, lệnh kiểm soát các cây cầu vào Altstadt và cảnh báo người dân nộp lại mọi cuộn băng lạ.",
+    },
+    {
+      tag: "👁️ NGƯỜI DÂN ĐANG NHƯ THẾ NÀO?",
+      title: "Hội Chứng Sợ Màn Hình CRT (Hoảng Loạn 75%)",
+      body: "Nhiều hộ dân dùng chăn dạ hoặc báo cũ trùm kín tivi vào ban đêm, trẻ em bật khóc khi thấy đèn LED đầu máy VCR. Tại Bến cảng và Khối 7, công nhân đốt lửa trong thùng phuy bãi công, thậm chí hò reo trước tin Phó cảnh sát trưởng mất tích; còn giới thượng lưu trên Đồi Kranzhügel đóng chặt cổng thuê vệ sĩ gác đêm.",
+    },
+    {
+      tag: "⚖️ ĐỒN CẢNH SÁT & TÒA THỊ CHÍNH",
+      title: "Bộ Máy Công Quyền Hỗn Loạn",
+      body: "Cảnh sát trưởng Heckler giam mình trong phòng cùng mùi rượu gin và thuốc lá Chesterfield trước nguy cơ bị Tòa thị chính cách chức. Tuần tra địa phương tăng cường vây ráp, bắt bớ người vô gia cư để tra khảo, trong khi Công tố viên Julian von Brandt trực tiếp siết chặt giám sát hồ sơ.",
+    },
+  ];
+
+  const WORLD_PRINCIPLES = [
+    {
+      tag: "NGUYÊN TẮC 01 · TỰ DO & KHÔNG LỐI MÒN",
+      title: "Thế Giới Độc Lập — Không “Plot Armor”",
+      body: "Swezan không phải sân khấu xoay quanh riêng bạn. Bạn có quyền bỏ qua vụ án để uống rượu ở phòng trà, lặn ngụp dưới chợ đen hay lục kho lưu trữ — nhưng đồng hồ thị trấn vẫn chạy và không ai cứu bạn nếu bạn tự bước vào cạm bẫy.",
+    },
+    {
+      tag: "NGUYÊN TẮC 02 · ĐỒNG HỒ 2 TẦNG",
+      title: "Hạn Chót 7 Ngày & Giới Hạn Sinh Học",
+      body: "Mỗi hành động đều tiêu tốn thời gian thực: khám nghiệm (+4 giờ), thẩm vấn (+2–3 giờ), di chuyển giữa các khu (+30–60 phút). Thức quá 24–30 giờ liên tục sẽ gây run tay, giảm phán đoán và ảo giác. Đến 23:59 Chủ Nhật, kết cục sẽ tự động chốt.",
+    },
+    {
+      tag: "NGUYÊN TẮC 03 · TỰ SUY LUẬN",
+      title: "Dữ Kiện Thô & Ranh Giới Tri Thức",
+      body: "Không có lời nhắc bài sẵn. Các nhân vật chỉ biết trong phạm vi nghề nghiệp của họ, giữ định kiến giai cấp riêng và sẵn sàng nói dối để che giấu việc làm ăn bất chính. Kết nối manh mối hoàn toàn nằm ở bạn.",
+    },
+    {
+      tag: "NGUYÊN TẮC 04 · CÁI GIÁ CỦA SAI LẦM",
+      title: "Bắt Oan & Thương Tật Vĩnh Viễn",
+      body: "Bắt nhầm nghi phạm khi thiếu bằng chứng vật lý sẽ khiến dư luận bùng nổ (+15% hoảng loạn), châm ngòi bạo loạn hoặc bị tước quyền điều tra. Xông vào khu vực nguy hiểm thiếu chuẩn bị sẽ để lại thương tật vĩnh viễn.",
+    },
+  ];
+
+  const WORLD_ECONOMY = [
+    "<strong>Đơn vị tiền tệ:</strong> Mark Swezan (M)",
+    "<strong>Thu nhập công nhân:</strong> 800 – 1.200 M/tháng",
+    "<strong>Bao thuốc lá:</strong> 4 – 6 M",
+    "<strong>Cà phê / Ly rượu:</strong> 8 – 20 M",
+    "<strong>Mua tin vỉa hè:</strong> 50 – 100 M",
+    "<strong>Trang bị chợ đen / Mặt nạ:</strong> 150 – 300 M",
+    "<strong>Súng lậu không số hiệu:</strong> 800 – 1.500 M",
   ];
 
   const WORLD_ROLES = [
     {
       tag: "THÂN PHẬN 01 · 1.200 MARK",
       title: "Thanh Tra Cấp Cao / Đặc Phái Viên",
-      body: "Mang lệnh trưng dụng từ thủ đô và vũ khí công vụ. Có quyền tiếp cận hiện trường phong tỏa nhưng dễ bị cảnh sát địa phương dè chừng và dân nghèo nghi kỵ.",
+      body: "Mang lệnh trưng dụng từ thủ đô và súng công vụ. Có quyền vào hiện trường phong tỏa và triệu tập người, nhưng bị cảnh sát địa phương dè chừng và công nhân thù địch.",
     },
     {
       tag: "THÂN PHẬN 02 · 300 MARK",
       title: "Thám Tử Tư / Cựu Sĩ Quan",
-      body: "Không có thẩm quyền pháp lý, nhưng hoàn toàn tự do lặn ngụp dưới bến cảng đêm, giao dịch chợ đen và lần theo những ngõ tối ngoài giờ giới nghiêm.",
+      body: "Không có quyền lực pháp lý, nhưng hoàn toàn tự do lặn ngụp dưới bến cảng đêm, giao dịch chợ đen và lần theo những ngõ tối ngoài giờ giới nghiêm.",
     },
     {
       tag: "THÂN PHẬN 03 · 1.500 MARK",
       title: "Bác Sĩ Pháp Y Độc Lập",
-      body: "Làm chủ phòng giải phẫu dưới hầm Tòa án Cũ. Tiếng nói khoa học mang tính quyết định, nhưng thiếu quyền cưỡng chế và dễ gặp áp lực từ giới chức.",
+      body: "Làm chủ phòng giải phẫu dưới hầm Tòa án Cũ. Tiếng nói khoa học mang tính quyết định trước tòa, nhưng thiếu quyền cưỡng chế và dễ gặp áp lực bưng bít.",
     },
     {
       tag: "THÂN PHẬN 04 · 600 MARK",
       title: "Phóng Viên Điều Tra",
-      body: "Sở hữu thẻ nhà báo, máy ảnh 35mm và mạng lưới tin đồn khắp thung lũng. Ngòi bút có thể xoay chuyển dư luận nhưng dễ bị cả hai phía cảnh giác.",
+      body: "Sở hữu thẻ nhà báo, máy ảnh 35mm và mạng lưới tin đồn khắp thung lũng. Ngòi bút có thể xoay chuyển dư luận nhưng dễ bị cả cảnh sát lẫn tội phạm nhắm tới.",
     },
     {
       tag: "THÂN PHẬN 05 · 60 MARK",
       title: "Dân Thường / Thợ Thuyền Bản Địa",
-      body: "Sở hữu lớp vỏ bọc vô hình hoàn hảo để hòa vào dòng người biểu tình và khu chung cư lao động, dùng trực giác và quan hệ xóm giềng để sinh tồn.",
+      body: "Sở hữu lớp vỏ bọc vô hình để hòa vào dòng người biểu tình và khu chung cư lao động, dùng trực giác và quan hệ xóm giềng để sinh tồn (dù dễ bị bắt oan).",
     },
   ];
 
@@ -397,7 +463,7 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       zone: "ĐÔNG · TRUNG TÂM CỔ",
       title: "Phố Cổ Altstadt",
-      items: "Kiến trúc đá sa thạch thế kỷ 19, Đồn Cảnh sát, Tòa Thị chính, Tòa soạn Tagblatt, phòng trà Thiên Nga Đen và các tiệm sách yên tĩnh bên bờ kênh.",
+      items: "Kiến trúc đá sa thạch thế kỷ 19, Đồn Cảnh sát, Tòa Thị chính, Tòa soạn Tagblatt, phòng trà Thiên Nga Đen và các hiệu sách yên tĩnh bên bờ kênh.",
     },
     {
       zone: "TÂY · ĐƯỜNG THỦY",
@@ -412,133 +478,58 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       zone: "BẮC · VÙNG ĐỒI",
       title: "Đồi Kranzhügel & Đồi Gió Hú Wigel",
-      items: "Một bên là những biệt thự quý tộc tách biệt sau cổng sắt rèn; bên kia là tháp tiếp sóng truyền hình K-TV Kênh 8 giữa sương mù.",
+      items: "Một bên là những biệt thự quý tộc sau cổng sắt rèn; bên kia là tháp tiếp sóng truyền hình K-TV Kênh 8 giữa sương mù.",
     },
     {
       zone: "NGOẠI Ô · KHU LAO ĐỘNG",
       title: "Chung Cư Khối 7–12",
-      items: "Những dãy nhà bê tông xám xịt giăng đầy dây phơi và ăng-ten râu thỏ, nơi công nhân tụ tập quanh thùng phuy đốt lửa sưởi ấm.",
+      items: "Những dãy nhà bê tông xám xịt giăng đầy dây phơi và ăng-ten râu thỏ, nơi công nhân tụ tập quanh thùng phuy đốt lửa.",
     },
   ];
 
-  // CHỈ HIỂN THỊ THÔNG TIN CÔNG KHAI CỦA NHÂN VẬT (TUYỆT ĐỐI KHÔNG SPOIL)
-  const PUBLIC_CAST = [
-    {
-      group: "official",
-      badge: "BÍ ẨN · K-TV KÊNH 08",
-      name: "The Rider",
-      role: "Kẻ tự xưng “Biên Kịch” trên sóng truyền hình",
-      desc: "Chưa từng lộ mặt. Chỉ xuất hiện qua khung hình VHS 4:3 đen trắng cùng đôi găng tay da đen và giọng nói biến âm trầm đục tần số thấp.",
-      quote: "“Hãy ngồi xuống trước màn hình và cùng xem vở kịch của thung lũng này.”",
-    },
-    {
-      group: "official",
-      badge: "TÒA THỊ CHÍNH",
-      name: "Julian Viktor von Brandt (31t)",
-      role: "Công Tố Viên Đặc Biệt",
-      desc: "Diện mạo sắc lạnh trong âu phục 3 mảnh xanh than, cặp kính nửa viền và đồng hồ bỏ túi bạch kim. Đại diện cho quyền lực tư pháp đang giám sát toàn bộ cuộc khủng hoảng.",
-      quote: "“Công lý ở thung lũng này nằm dưới ngòi bút ký lệnh truy tố của tôi.”",
-    },
-    {
-      group: "official",
-      badge: "ĐỒN CẢNH SÁT ALTSTADT",
-      name: "Jaxson Heckler (58t) & Ian Alix (22t)",
-      role: "Cảnh Sát Trưởng & Tân Binh",
-      desc: "Heckler bảo thủ, nóng nảy trong làn khói Chesterfield dày đặc; đối lập hoàn toàn với cậu tân binh Ian Alix vụng về trong chiếc áo măng tô vàng mù tạt quá khổ.",
-      quote: "“Ở cái thị trấn này, luật pháp là tao!”",
-    },
-    {
-      group: "official",
-      badge: "HẦM TÒA ÁN CŨ",
-      name: "Bác sĩ Eva Livingston (34t)",
-      role: "Chuyên Viên Pháp Y",
-      desc: "Lạnh lùng, chuẩn xác, mái tóc vàng cắt ngắn và chiếc blouse trắng ám mùi formol cùng tinh dầu bạc hà cay nồng.",
-      quote: "“Người sống nói dối để tự cứu mình; chỉ có những cái xác trên bàn thép là không.”",
-    },
-    {
-      group: "official",
-      badge: "NHẬT BÁO SWEZAN TAGBLATT",
-      name: "Isabel Werner (29t)",
-      role: "Phóng Viên Hiện Trường",
-      desc: "Sắc sảo và tham vọng trong áo măng tô da lộn vàng cát, luôn mang theo chiếc Walkman ghi âm và mùi thuốc lá vani Black Devil.",
-      quote: "“Cảnh sát cần báo cáo, còn tôi cần sự thật để đưa lên trang nhất.”",
-    },
-    {
-      group: "town",
-      badge: "BẾN CẢNG SCHWARZHAVEN",
-      name: "Lukas “Raven” Kováč (29t)",
-      role: "Chủ Tiệm Cầm Đồ & Xưởng Cơ Khí “Tổ Quạ”",
-      desc: "Cựu lính giải ngũ phong trần với vết sẹo ngang mày trái, tấm thẻ bài Dog-tag bạc trên ngực và mùi dầu súng quyện thuốc lá Lucky Strike.",
-      quote: "“Ở bến sông đen ngòm này, lòng tốt không mua được đạn đâu.”",
-    },
-    {
-      group: "town",
-      badge: "PHÒNG TRÀ THIÊN NGA ĐEN",
-      name: "Clara Evelyne Moreau (26t)",
-      role: "Nữ Danh Ca Jazz & Chủ Phòng Trà",
-      desc: "Mái tóc đỏ rượu vang cổ điển, trâm cài trăng lưỡi liềm và găng tay lụa dài; giọng hát trầm khàn làm say lòng giới thượng lưu mỗi đêm mưa.",
-      quote: "“Ngồi xuống đây đi, để tôi rót cho một ly Bordeaux, đêm nay ngoài kia lạnh lắm.”",
-    },
-    {
-      group: "town",
-      badge: "PHỐ CỔ ALTSTADT",
-      name: "Alistair Cassius (28t)",
-      role: "Chủ Tiệm Cà Phê Sách “Cassius & Co.”",
-      desc: "Thiếu gia trầm lặng của một dòng họ buôn bán lâu đời, thích đọc bi kịch cổ Hy Lạp, pha trà Earl Grey và hầu như chẳng bao giờ rời khỏi hiệu sách ấm cúng của mình.",
-      quote: "“Ở đây, ít nhất các trang sách không biết làm tổn thương ai bao giờ.”",
-    },
-    {
-      group: "town",
-      badge: "CÔNG XƯỞNG & NGHIỆP ĐOÀN",
-      name: "Kurt Denholm (52t) · Lotte Loris (45t)",
-      role: "Chủ Lò Luyện Kim Hüt IV · Thủ Lĩnh Công Nhân",
-      desc: "Hai thái cực đối đầu kịch liệt nhất của thung lũng: một ông chủ nhà máy sắt đá giữa những xưởng thép cũ và người đàn bà đanh thép dẫn đầu các cuộc bãi công.",
-      quote: "“Bọn tao đã đổ mồ hôi cho từng tấc đất ở Swezan này!”",
-    },
-    {
-      group: "town",
-      badge: "ĐỒI WIGEL · ST. NAZET · KRANZHÜGEL",
-      name: "Ena Sherley · Dr. Alis Zola · Traudl Vanessa",
-      role: "Kỹ Thuật Viên K-TV · Cựu Bác Sĩ · Quý Bà Kranzhügel",
-      desc: "Ena lập dị bên những cuộn dây tín hiệu trên đồi gió hú; bác sĩ Zola u ám với cặp mắt dị sắc; và góa phụ Vanessa sống khép kín sau cánh cổng dinh thự hoa hồng.",
-      quote: "“Tín hiệu không bao giờ nói dối... chỉ có âm thanh là chứa đầy tạp âm.”",
-    },
-  ];
-
-  const worldEventsGrid = document.getElementById("world-events-grid");
+  const worldTimelineEl = document.getElementById("world-timeline");
+  const worldLiveGrid = document.getElementById("world-live-grid");
+  const worldRulesGrid = document.getElementById("world-rules-grid");
+  const worldEconomyStrip = document.getElementById("world-economy-strip");
   const worldRolesGrid = document.getElementById("world-roles-grid");
   const worldDistrictsGrid = document.getElementById("world-districts-grid");
 
-  if (worldEventsGrid) {
-    worldEventsGrid.innerHTML = WORLD_EVENTS.map(
-      (e) => `
-      <article class="dossier-card">
-        <div class="card-badge-row"><span>${e.tag}</span></div>
-        <h3 class="card-h3">${e.title}</h3>
-        <p class="card-body">${e.body}</p>
+  if (worldTimelineEl) {
+    worldTimelineEl.innerHTML = WORLD_TIMELINE.map(
+      (item) => `
+      <article class="timeline-item ${item.now ? "is-now" : ""}">
+        <div class="timeline-time">${item.time}</div>
+        <h4 class="timeline-title">${item.title}</h4>
+        <p class="timeline-desc">${item.desc}</p>
       </article>`
     ).join("");
   }
 
+  if (worldLiveGrid) {
+    worldLiveGrid.innerHTML = WORLD_LIVE_STATE.map(
+      (s) => `<article class="dossier-card"><div class="card-badge-row"><span>${s.tag}</span></div><h3 class="card-h3">${s.title}</h3><p class="card-body">${s.body}</p></article>`
+    ).join("");
+  }
+
+  if (worldRulesGrid) {
+    worldRulesGrid.innerHTML = WORLD_PRINCIPLES.map(
+      (p) => `<article class="dossier-card"><div class="card-badge-row"><span>${p.tag}</span></div><h3 class="card-h3">${p.title}</h3><p class="card-body">${p.body}</p></article>`
+    ).join("");
+  }
+
+  if (worldEconomyStrip) {
+    worldEconomyStrip.innerHTML = WORLD_ECONOMY.map((item) => `<span>${item}</span>`).join("");
+  }
+
   if (worldRolesGrid) {
     worldRolesGrid.innerHTML = WORLD_ROLES.map(
-      (r) => `
-      <article class="dossier-card">
-        <div class="card-badge-row"><span>${r.tag}</span></div>
-        <h3 class="card-h3">${r.title}</h3>
-        <p class="card-body">${r.body}</p>
-      </article>`
+      (r) => `<article class="dossier-card"><div class="card-badge-row"><span>${r.tag}</span></div><h3 class="card-h3">${r.title}</h3><p class="card-body">${r.body}</p></article>`
     ).join("");
   }
 
   if (worldDistrictsGrid) {
     worldDistrictsGrid.innerHTML = WORLD_DISTRICTS.map(
-      (d) => `
-      <article class="map-card">
-        <div class="card-badge-row"><span>${d.zone}</span></div>
-        <h3 class="card-h3">${d.title}</h3>
-        <p class="card-body">${d.items}</p>
-      </article>`
+      (d) => `<article class="map-card"><div class="card-badge-row"><span>${d.zone}</span></div><h3 class="card-h3">${d.title}</h3><p class="card-body">${d.items}</p></article>`
     ).join("");
   }
 

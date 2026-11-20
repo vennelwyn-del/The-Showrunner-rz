@@ -1119,3 +1119,136 @@ body[data-theme="relic"] .end-rule-box strong {
     grid-template-columns: 1fr;
   }
 }
+/* =========================================================
+   BỔ SUNG: BẢN TIN RADIO TRÊN BÁO, TIMELINE & BẢNG VẬT GIÁ
+   ========================================================= */
+
+.live-wire-box {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: rgba(156, 4, 18, 0.08);
+  border: 1px dashed #8c0612;
+  font-size: 12px;
+}
+
+.live-wire-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #8c0612;
+  margin-bottom: 6px;
+}
+
+.live-badge {
+  padding: 2px 7px;
+  background: #9C0412;
+  color: #ffffff;
+}
+
+.live-wire-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #292220;
+  line-height: 1.5;
+}
+
+/* Timeline sự kiện đường chỉ đỏ */
+.timeline-list {
+  position: relative;
+  padding-left: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.timeline-list::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--red-signal), var(--border-line));
+}
+
+.timeline-item {
+  position: relative;
+  padding: 13px 16px;
+  background: var(--surface-panel);
+  border: 1px solid var(--border-line);
+  backdrop-filter: blur(8px);
+}
+
+.timeline-item.is-now {
+  border-color: var(--red-signal);
+  box-shadow: 0 0 18px var(--accent-glow);
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -23px;
+  top: 18px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--red-signal);
+  border: 2px solid #f2ebeb;
+  box-shadow: 0 0 10px var(--red-signal);
+}
+
+.timeline-time {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  color: #ff7d88;
+  margin-bottom: 4px;
+}
+
+html[data-theme="relic"] .timeline-time,
+body[data-theme="relic"] .timeline-time {
+  color: var(--faded-silver);
+}
+
+.timeline-title {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.timeline-desc {
+  font-size: 13px;
+  line-height: 1.58;
+  color: var(--text-main);
+}
+
+/* Dải vật giá đồng Mark Swezan 1994 */
+.economy-strip {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: var(--surface-panel);
+  border: 1px solid var(--border-frame);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-sub);
+}
+
+.economy-strip strong {
+  color: #ff7d88;
+}
+
+html[data-theme="relic"] .economy-strip strong,
+body[data-theme="relic"] .economy-strip strong {
+  color: #ffffff;
+}

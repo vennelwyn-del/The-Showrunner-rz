@@ -12,9 +12,9 @@
     rel="stylesheet"
   />
 
-  <link rel="stylesheet" href="css/palette.css?v=9" />
-  <link rel="stylesheet" href="css/gate.css?v=9" />
-  <link rel="stylesheet" href="css/main.css?v=9" />
+  <link rel="stylesheet" href="css/palette.css?v=10" />
+  <link rel="stylesheet" href="css/gate.css?v=10" />
+  <link rel="stylesheet" href="css/main.css?v=10" />
 </head>
 <body class="is-standby" data-theme="red">
 
@@ -185,15 +185,18 @@
   </div>
 
   <!-- GIAO DIỆN 2: CRIME BOARD & WEB GIỚI THIỆU -->
-  <section id="main-app" class="main-app" hidden>
-    <div id="main-bg-layer" class="main-bg-layer has-bw-filter" aria-hidden="true"></div>
-    <div class="main-wood-vignette" aria-hidden="true"></div>
+  <!-- =========================================================
+       LỚP NỀN, DÂY ĐỎ, BĂNG CẢNH SÁT & CAMERA FULL MÀN HÌNH
+       (Tách khỏi #main-app để luôn đứng yên full màn khi cuộn)
+       ========================================================= -->
+  <div class="main-fx-backdrop" aria-hidden="true">
+    <div id="main-bg-layer" class="main-bg-layer has-bw-filter"></div>
+    <div class="main-wood-vignette"></div>
+    <div class="hanging-bulb-glow"></div>
+    <div class="blood-stain-corner stain-tl"></div>
+    <div class="blood-stain-corner stain-br"></div>
 
-    <div class="hanging-bulb-glow" aria-hidden="true"></div>
-    <div class="blood-stain-corner stain-tl" aria-hidden="true"></div>
-    <div class="blood-stain-corner stain-br" aria-hidden="true"></div>
-
-    <div class="crime-tape-wrap" aria-hidden="true">
+    <div class="crime-tape-wrap">
       <div class="tape-yellow tape-top-left">
         <span>KEEP OUT /// DON'T TOUCH /// CRIME SCENE /// KEEP OUT /// DON'T TOUCH ///</span>
       </div>
@@ -205,7 +208,7 @@
       </div>
     </div>
 
-    <div class="cctv-hud-overlay" aria-hidden="true">
+    <div class="cctv-hud-overlay">
       <span class="cctv-corner tl"></span>
       <span class="cctv-corner tr"></span>
       <span class="cctv-corner bl"></span>
@@ -218,25 +221,25 @@
       <div class="cctv-crosshair">+</div>
     </div>
 
-    <svg id="forensic-wireframe" class="forensic-wireframe" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true">
+    <svg id="forensic-wireframe" class="forensic-wireframe" viewBox="0 0 1440 900" preserveAspectRatio="none">
       <rect x="42" y="16" width="210" height="58" class="wf-block" />
       <rect x="1285" y="545" width="125" height="62" class="wf-block" />
       <rect x="18" y="810" width="225" height="72" class="wf-block" />
 
-      <path d="M 730,24 Q 440,210 210,360" class="yarn-cord" />
-      <path d="M 730,24 Q 680,260 565,420" class="yarn-cord" />
-      <path d="M 730,24 Q 950,235 1190,345" class="yarn-cord" />
-      <path d="M 730,24 Q 1080,410 1325,650" class="yarn-cord" />
-      <path d="M 210,360 Q 430,590 790,695" class="yarn-cord" />
-      <path d="M 565,420 Q 750,515 1190,345" class="yarn-cord" />
-      <path d="M 320,760 Q 610,630 980,740" class="yarn-cord" />
-      <path d="M 1190,345 Q 1060,565 980,740" class="yarn-cord" />
+      <path d="M 730,24 Q 440,210 210,360" class="yarn-cord" fill="none" />
+      <path d="M 730,24 Q 680,260 565,420" class="yarn-cord" fill="none" />
+      <path d="M 730,24 Q 950,235 1190,345" class="yarn-cord" fill="none" />
+      <path d="M 730,24 Q 1080,410 1325,650" class="yarn-cord" fill="none" />
+      <path d="M 210,360 Q 430,590 790,695" class="yarn-cord" fill="none" />
+      <path d="M 565,420 Q 750,515 1190,345" class="yarn-cord" fill="none" />
+      <path d="M 320,760 Q 610,630 980,740" class="yarn-cord" fill="none" />
+      <path d="M 1190,345 Q 1060,565 980,740" class="yarn-cord" fill="none" />
 
       <line x1="1380" y1="22" x2="360" y2="395" class="wf-line" />
       <line x1="1380" y1="22" x2="860" y2="510" class="wf-line" />
       <line x1="0" y1="465" x2="1440" y2="465" class="wf-dashed" />
-      <rect x="330" y="275" width="245" height="135" class="wf-box" />
-      <rect x="1150" y="16" width="165" height="24" class="wf-box" />
+      <rect x="330" y="275" width="245" height="135" class="wf-box" fill="none" />
+      <rect x="1150" y="16" width="165" height="24" class="wf-box" fill="none" />
 
       <circle cx="730" cy="24" r="9" class="yarn-pin" />
       <circle cx="210" cy="360" r="6" class="yarn-pin" />
@@ -247,6 +250,10 @@
       <text x="1160" y="33" class="wf-label">PRIVATE COLLECTION</text>
       <text x="338" y="292" class="wf-coord">FOR DISPLAY ONLY · CH-08</text>
     </svg>
+  </div>
+
+  <!-- GIAO DIỆN 2: CHỈ CHỨA PHẦN NỘI DUNG CUỘN -->
+  <section id="main-app" class="main-app" hidden>
 
     <div class="desk-shell">
       <!-- THANH ĐIỀU HÀNH (CHỈ CÓ TABS & NÚT TẮT TIVI) -->

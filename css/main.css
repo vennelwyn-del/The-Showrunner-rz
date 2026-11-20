@@ -1,7 +1,17 @@
 /* =========================================================
-   THE SHOWRUNNER — CSS HOÀN CHỈNH GIAO DIỆN 2 (v9)
+   THE SHOWRUNNER — CSS HOÀN CHỈNH GIAO DIỆN 2 (v9 CLEAN)
    ========================================================= */
 
+/* Chỉ hiện lớp nền, dây đỏ, băng cảnh sát & viền CCTV khi đã bật tivi */
+.main-fx-backdrop {
+  display: none;
+}
+
+body.is-main-active .main-fx-backdrop {
+  display: block;
+}
+
+/* #main-app làm khung cuộn trong suốt, không tự tô nền che lớp dưới */
 .main-app {
   position: relative;
   z-index: 20;
@@ -9,15 +19,15 @@
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: clamp(60px, 6.5vw, 74px) clamp(14px, 3vw, 34px) 68px;
-  background-color: var(--bg-edge);
+  padding: clamp(60px, 6.5vw, 74px) clamp(14px, 3vw, 34px) 78px;
+  background: transparent !important;
   opacity: 0;
 }
 
 .main-app.is-visible {
-  animation: none;
-  transform: none;
-  filter: none;
+  animation: none !important;
+  transform: none !important;
+  filter: none !important;
   opacity: 1;
   transition: opacity 0.28s ease;
 }
@@ -99,12 +109,12 @@
   background: radial-gradient(circle at 65% 65%, rgba(156, 4, 18, 0.8) 0%, rgba(82, 1, 2, 0.42) 48%, transparent 74%);
 }
 
-/* Băng cảnh sát KEEP OUT & CRIME SCENE */
+/* Băng cảnh sát KEEP OUT (vàng đen) & CRIME SCENE (đỏ) */
 .crime-tape-wrap {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 15;
+  z-index: 25;
   overflow: hidden;
 }
 
@@ -128,29 +138,27 @@
 
 .tape-red-bottom {
   position: absolute;
-  bottom: 0px;
-  left: -20px;
-  right: -20px;
+  bottom: 0;
+  left: 0;
+  right: 0;
   padding: 4px 0;
-  background: rgba(156, 4, 18, 0.86);
+  background: rgba(156, 4, 18, 0.9);
   border-top: 1px solid rgba(255, 160, 165, 0.35);
-  border-bottom: 1px solid rgba(255, 160, 165, 0.35);
   color: #fbeaea;
   text-align: center;
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.24em;
-  transform: rotate(0deg);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 -2px 14px rgba(0, 0, 0, 0.65);
 }
 
-/* Khung Camera CCTV 1994 */
+/* Khung Camera CCTV 1994 (Đã gộp sạch, không trùng lặp) */
 .cctv-hud-overlay {
   position: fixed;
-  inset: 14px;
+  inset: 10px;
   pointer-events: none;
-  z-index: 16;
+  z-index: 26;
   font-family: var(--font-mono);
 }
 
@@ -168,13 +176,13 @@
 
 .cctv-rec-tag {
   position: absolute;
-  bottom: 24px;
-  left: 16px;
+  bottom: 22px;
+  left: 12px;
   display: inline-flex;
   align-items: center;
   gap: 7px;
   padding: 3px 9px;
-  background: rgba(16, 12, 13, 0.72);
+  background: rgba(16, 12, 13, 0.78);
   border: 1px solid rgba(200, 16, 32, 0.55);
   font-size: 10px;
   letter-spacing: 0.14em;
@@ -193,12 +201,12 @@
 
 .cctv-cam-meta {
   position: absolute;
-  bottom: 24px;
-  right: 16px;
+  bottom: 22px;
+  right: 12px;
   font-size: 10px;
   letter-spacing: 0.14em;
-  color: rgba(235, 224, 224, 0.68);
-  background: rgba(16, 12, 13, 0.65);
+  color: rgba(235, 224, 224, 0.72);
+  background: rgba(16, 12, 13, 0.72);
   padding: 3px 8px;
 }
 
@@ -211,7 +219,7 @@
   color: rgba(255, 255, 255, 0.18);
 }
 
-/* Mạng Dây Dụa Đỏ & Tọa Độ SVG (BẮT BUỘC fill: none để không thành mảng đen) */
+/* Mạng Dây Dụa Đỏ & Tọa Độ SVG */
 .forensic-wireframe {
   position: fixed;
   inset: 0;
@@ -352,7 +360,6 @@ body[data-theme="relic"] .wf-coord { fill: rgba(232, 230, 228, 0.72); }
 
 .desk-action-btn.btn-danger:hover { background: var(--red-signal); border-color: #ffffff; color: #ffffff; }
 
-/* Nút dùng chung (Filter, Copy, End...) */
 .studio-btn {
   padding: 7px 11px;
   background: rgba(48, 38, 40, 0.9);

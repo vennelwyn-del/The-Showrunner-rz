@@ -15,7 +15,15 @@
 }
 
 .main-app.is-visible {
-  animation: verticalHoldSettle 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: none;
+  transform: none;
+  filter: none;
+  opacity: 1;
+  transition: opacity 0.28s ease;
+}
+
+.main-app.is-visible .desk-shell {
+  animation: verticalHoldSettle 0.65s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Nền sáng vừa kiểu bảng hồ sơ xám-đỏ + đọc ảnh từ config.js */
@@ -120,7 +128,7 @@
 
 .tape-red-bottom {
   position: absolute;
-  bottom: 8px;
+  bottom: 0px;
   left: -20px;
   right: -20px;
   padding: 4px 0;
@@ -133,7 +141,7 @@
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.24em;
-  transform: rotate(-0.6deg);
+  transform: rotate(0deg);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
 }
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" data-theme="red">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -26,6 +26,109 @@
   <div class="crt-scanlines" aria-hidden="true"></div>
   <div class="crt-tracking-bar" aria-hidden="true"></div>
   <div class="crt-vignette" aria-hidden="true"></div>
+
+  <!-- =========================================================
+       THANH PILL BAR TRÊN CÙNG (HIỆN XUYÊN SUỐT CẢ 2 GIAO DIỆN)
+       Trái: Link về Web Chính | Phải: Đổi 2 màu + Radio
+       ========================================================= -->
+  <nav class="top-pill-bar" aria-label="Điều hướng nhanh và thiết lập giao diện">
+    <!-- BÊN TRÁI: CÁC NÚT NHỎ LINK VỀ WEB CHÍNH CỦA NHÓM -->
+    <div class="pill-group pill-group-left">
+      <!-- THAY LINK WEB CHÍNH CỦA BẠN Ở ĐÂY -->
+      <a
+        class="pill-btn pill-glass"
+        href="https://vennelwyn-del.github.io/Baoungdoinhau/"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Quay về trang web chính của tụi mình"
+      >
+        <span class="pill-badge-circle" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
+            <path d="M3 3v5h5" />
+          </svg>
+        </span>
+        <span class="pill-text">Web Chính</span>
+      </a>
+
+      <!-- NÚT PHỤ DẪN TỚI WEB THAM CHIẾU / CREATORS (CÓ THỂ XÓA HOẶC ĐỔI TÊN) -->
+      <a
+        class="pill-btn pill-glass pill-compact"
+        href="https://vennelwyn-del.github.io/-Nhat-Xuyen-/"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Xem dự án khác của Creators"
+      >
+        <span class="pill-star" aria-hidden="true">&#10022;</span>
+        <span class="pill-text">Creators</span>
+      </a>
+    </div>
+
+    <!-- BÊN PHẢI: NÚT ĐỔI 2 GIAO DIỆN MÀU + NÚT RADIO -->
+    <div class="pill-group pill-group-right">
+      <!-- Nút bật tắt đổi 2 giao diện màu (Red vs Silent Relic) -->
+      <button
+        id="theme-toggle-btn"
+        class="pill-btn pill-dark pill-theme-btn"
+        type="button"
+        title="Chuyển đổi giữa 2 bảng màu: Red Palette & Silent Relic (黒鍵の祈り)"
+        aria-label="Đổi màu giao diện"
+      >
+        <span class="theme-dual-dot" aria-hidden="true"></span>
+        <span id="theme-label" class="theme-label">
+          <span class="theme-opt opt-red">Đỏ</span>
+          <span class="theme-sep">/</span>
+          <span class="theme-opt opt-relic">Đen</span>
+        </span>
+      </button>
+
+      <!-- Nút Radio (style đĩa CD bạc + chữ R A D I O) -->
+      <button
+        id="radio-toggle-btn"
+        class="pill-btn pill-dark pill-radio-btn"
+        type="button"
+        aria-expanded="false"
+        aria-controls="radio-panel"
+        title="Mở máy phát Radio Analog 1994"
+      >
+        <span class="radio-cd-disc" aria-hidden="true"></span>
+        <span class="radio-word">RADIO</span>
+      </button>
+    </div>
+
+    <!-- BẢNG ĐIỀU KHIỂN RADIO MINI (XỔ XUỐNG KHI BẤM NÚT RADIO) -->
+    <aside id="radio-panel" class="radio-panel" hidden aria-label="Bộ phát Radio Swezan 1994">
+      <div class="radio-panel-head">
+        <span class="radio-freq-tag">TUNER // SWEZAN 1994</span>
+        <span id="radio-status-text" class="radio-status">ĐANG TẮT</span>
+      </div>
+
+      <div id="radio-station-list" class="radio-stations">
+        <button class="radio-station-btn is-selected" type="button" data-station="cassius">
+          <span class="st-freq">94.1 FM</span>
+          <span class="st-name">Cassius &amp; Co. (Chopin Vinyl)</span>
+        </button>
+        <button class="radio-station-btn" type="button" data-station="swan">
+          <span class="st-freq">102.8 FM</span>
+          <span class="st-name">Thiên Nga Đen (Midnight Jazz)</span>
+        </button>
+        <button class="radio-station-btn" type="button" data-station="static">
+          <span class="st-freq">CH-08</span>
+          <span class="st-name">Tín Hiệu 50Hz &amp; Mưa Tro</span>
+        </button>
+      </div>
+
+      <div class="radio-controls">
+        <button id="radio-play-btn" class="radio-play-btn" type="button">
+          &#9654; PHÁT RADIO
+        </button>
+        <label class="radio-vol-wrap">
+          <span class="vol-label">VOL</span>
+          <input id="radio-volume" type="range" min="0" max="100" value="45" />
+        </label>
+      </div>
+    </aside>
+  </nav>
 
   <!-- =========================================================
        GIAO DIỆN 1: MÀN HÌNH ANALOG CHỜ & NÚT MỞ TIVI
@@ -151,15 +254,15 @@
         <h2 class="main-title">THE SHOWRUNNER</h2>
         <div class="gate-divider" aria-hidden="true"></div>
         <p class="main-desc">
-          Màn hình tivi đã bật thành công. Đây là khung sảnh chính (Giao diện 2) —
-          nơi chúng ta sẽ tiếp tục xây dựng các mục: Bối cảnh Swezan, Hồ sơ 4 Vụ án,
-          Hệ thống Nhân vật &amp; Lenormand, Trình tạo Hồ sơ User và Copy Prompt.
+          Màn hình tivi đã bật thành công. Thanh chuyển 2 màu (Đỏ / Đen) và Radio ở góc trên
+          vẫn hoạt động xuyên suốt tại đây. Hãy gửi thêm ảnh/bố cục bạn muốn cho sảnh chính
+          để chúng ta tiếp tục build Bước 2 nhé!
         </p>
       </div>
     </div>
   </section>
 
-  <!-- Scripts (không dùng ES Module để chạy được cả bằng Live Server lẫn mở file trực tiếp) -->
+  <!-- Scripts -->
   <script src="js/static-noise.js" defer></script>
   <script src="js/gate.js" defer></script>
 </body>

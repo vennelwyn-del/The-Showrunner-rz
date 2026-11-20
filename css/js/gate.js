@@ -1,9 +1,12 @@
 /* =========================================================
-   THE SHOWRUNNER — LOGIC GIAO DIỆN 1 (MỞ TIVI & CHUYỂN CẢNH)
+   THE SHOWRUNNER — LOGIC CHUYỂN MÀU, RADIO & MỞ TIVI CRT
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
+  const htmlEl = document.documentElement;
   const body = document.body;
+
+  // Các thành phần Giao diện 1 & Giao diện 2
   const analogGate = document.getElementById("analog-gate");
   const tvPowerBtn = document.getElementById("tv-power-btn");
   const tvOffBtn = document.getElementById("tv-off-btn");
@@ -12,6 +15,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const glitchOsd = document.getElementById("glitch-osd");
   const mainApp = document.getElementById("main-app");
   const osdClock = document.getElementById("osd-clock");
+
+  // Các thành phần Đổi 2 màu & Radio ở góc trên
+  const themeToggleBtn = document.getElementById("theme-toggle-btn");
+  const radioToggleBtn = document.getElementById("radio-toggle-btn");
+  const radioPanel = document.getElementById("radio-panel");
+  const radioPlayBtn = document.getElementById("radio-play-btn");
+  const radioStatusText = document.getElementById("radio-status-text");
+  const radioStationList = document.getElementById("radio-station-list");
+  const radioVolumeInput = document.getElementById("radio-volume");
 
   let isTransitioning = false;
   let activeTimers = [];
@@ -28,9 +40,121 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* -------------------------------------------------------
-     1. ĐỒNG HỒ SWEZAN 1994 CHẠY THỜI GIAN THỰC (30/11/1994 06:15)
+     1. CHUYỂN ĐỔI 2 GIAO DIỆN MÀU (RED <-> SILENT RELIC)
      ------------------------------------------------------- */
-  let simSeconds = 6 * 3600 + 15 * 60; // 06:15:00 sáng Thứ Hai
+  const THEME_STORAGE_KEY = "showrunner_theme";
+
+  function applyTheme(themeName, withBlip = false) {
+    const safeTheme = themeName === "relic" ? "relic" : "red";
+    htmlEl.setAttribute("data-theme", safeTheme);
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, safeTheme);
+    } catch (e) {}
+
+    if (withBlip) {
+      if (window.AnalogAudio) {
+        window.AnalogAudio.playClickBlip();
+      }
+      body.classList.add("is-switching-theme");
+      setTimeout(() => {
+        body.classList.remove("is-switching-theme");
+      }, 240);
+    }
+  }
+
+  // Khôi phục theme đã lưu trước đó (mặc định là "red")
+  try {
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+    if (savedTheme === "relic" || savedTheme === "red") {
+      applyTheme(savedTheme, false);
+    }
+  } catch (e) {}
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener("click", () => {
+      const current = htmlEl.getAttribute("data-theme") || "red";
+      const next = current === "red" ? "relic" : "red";
+      applyTheme(next, true);
+    });
+  }
+
+  /* -------------------------------------------------------
+     2. BỘ PHÁT RADIO ANALOG & ĐĨA CD QUAY TRÒN
+     ------------------------------------------------------- */
+  function syncRadioUI(playing) {
+    if (radioToggleBtn) {
+      radioToggleBtn.classList.toggle("is-playing", playing);
+    }
+    if (radioPlayBtn) {
+      radioPlayBtn.innerHTML = playing ? "&#10074;&#10074; TẠM DỪNG" : "&#9654; PHÁT RADIO";
+    }
+    if (radioStatusText) {
+      radioStatusText.textContent = playing ? "ĐANG PHÁT SÓNG" : "ĐANG TẮT";
+      radioStatusText.classList.toggle("is-live", playing);
+    }
+  }
+
+  if (radioToggleBtn && radioPanel) {
+    radioToggleBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const willOpen = radioPanel.hidden;
+      radioPanel.hidden = !willOpen;
+      radioToggleBtn.setAttribute("aria-expanded", String(willOpen));
+    });
+
+    // Bấm ra ngoài thì tự đóng bảng Radio gọn gàng
+    document.addEventListener("click", (e) => {
+      if (
+        !radioPanel.hidden &&
+        !radioPanel.contains(e.target) &&
+        !radioToggleBtn.contains(e.target)
+      ) {
+        radioPanel.hidden = true;
+        radioToggleBtn.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
+
+  if (radioPlayBtn) {
+    radioPlayBtn.addEventListener("click", () => {
+      if (!window.AnalogRadio) return;
+      const isNowPlaying = window.AnalogRadio.toggle();
+      syncRadioUI(isNowPlaying);
+    });
+  }
+
+  if (radioStationList) {
+    const stationBtns = radioStationList.querySelectorAll(".radio-station-btn");
+    stationBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        stationBtns.forEach((b) => b.classList.remove("is-selected"));
+        btn.classList.add("is-selected");
+
+        const stationId = btn.getAttribute("data-station");
+        if (window.AnalogRadio && stationId) {
+          window.AnalogRadio.setStation(stationId);
+          // Tự động phát luôn khi chọn kênh mới nếu đang tắt
+          if (!window.AnalogRadio.isPlaying()) {
+            window.AnalogRadio.start();
+            syncRadioUI(true);
+          }
+        }
+      });
+    });
+  }
+
+  if (radioVolumeInput) {
+    radioVolumeInput.addEventListener("input", () => {
+      if (window.AnalogRadio) {
+        window.AnalogRadio.setVolume(Number(radioVolumeInput.value) / 100);
+      }
+    });
+  }
+
+  /* -------------------------------------------------------
+     3. ĐỒNG HỒ SWEZAN 1994 CHẠY THỜI GIAN THỰC (30/11/1994 06:15)
+     ------------------------------------------------------- */
+  let simSeconds = 6 * 3600 + 15 * 60;
 
   function formatSimClock(totalSec) {
     const h = Math.floor((totalSec / 3600) % 24);
@@ -49,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* -------------------------------------------------------
-     2. TƯƠNG TÁC HOVER NÚT NGUỒN (TĂNG NHIỄU NHẸ TRÊN TIÊU ĐỀ)
+     4. TƯƠNG TÁC NÚT NGUỒN & ÂM THANH TIVI
      ------------------------------------------------------- */
   if (tvPowerBtn && analogGate) {
     tvPowerBtn.addEventListener("mouseenter", () => {
@@ -66,9 +190,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* -------------------------------------------------------
-     3. NÚT BẬT / TẮT ÂM THANH ANALOG
-     ------------------------------------------------------- */
   if (audioToggleBtn) {
     audioToggleBtn.addEventListener("click", () => {
       if (!window.AnalogAudio) return;
@@ -81,7 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* -------------------------------------------------------
-     4. HÀNH ĐỘNG MỞ TIVI (BẮT ĐẦU CHUỖI ANIMATION LÀM NHIỄU)
+     5. HÀNH ĐỘNG MỞ TIVI (ANIMATION NHIỄU SÓNG -> VÀO TRANG CHÍNH)
      ------------------------------------------------------- */
   function triggerTvPowerOn() {
     if (isTransitioning) return;
@@ -95,7 +216,6 @@ document.addEventListener("DOMContentLoaded", () => {
       window.AnalogAudio.playPowerOnSound();
     }
 
-    // Bước 1 (100ms): Bắt đầu xé hình giao diện chờ & bùng nhiễu tuyết
     schedule(() => {
       body.classList.remove("is-standby");
       body.classList.add("is-bursting");
@@ -110,7 +230,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (glitchOsd) glitchOsd.textContent = "SIGNAL DETECTED // K-TV CH-08";
     }, 100);
 
-    // Bước 2: Chớp các khung dữ liệu cướp sóng
     schedule(() => {
       if (glitchOsd) glitchOsd.textContent = "TRACKING 50Hz... [TẬP 3/4: PHÁ KÉN]";
     }, 550);
@@ -123,7 +242,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (glitchOsd) glitchOsd.textContent = "▶ PLAY // ĐANG VÀO KÊNH CHÍNH";
     }, 1400);
 
-    // Bước 3 (1820ms): Ổn định màn hình & mở Giao diện chính
     schedule(() => {
       analogGate.hidden = true;
       analogGate.classList.remove("is-powering-on", "is-hover-charged");
@@ -139,7 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       mainApp.hidden = false;
-      void mainApp.offsetWidth; // Trigger reflow để chạy verticalHoldSettle mượt
+      void mainApp.offsetWidth;
       mainApp.classList.add("is-visible");
 
       isTransitioning = false;
@@ -147,7 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* -------------------------------------------------------
-     5. HÀNH ĐỘNG TẮT TIVI (QUAY LẠI GIAO DIỆN 1 ĐỂ TEST LẠI)
+     6. HÀNH ĐỘNG TẮT TIVI (QUAY VỀ GIAO DIỆN 1)
      ------------------------------------------------------- */
   function triggerTvPowerOff() {
     if (isTransitioning) return;
@@ -161,29 +279,37 @@ document.addEventListener("DOMContentLoaded", () => {
     body.classList.remove("is-main-active");
     body.classList.add("is-bursting");
 
+    mainApp.classList.remove("is-visible");
+    mainApp.hidden = true;
+
     if (window.AnalogNoise) {
       window.AnalogNoise.setMode("burst");
     }
 
-    glitchOverlay.className = "crt-glitch-overlay is-active is-powering-off";
+    glitchOverlay.className =
+      "crt-glitch-overlay is-active is-powering-off is-showing-osd";
+    if (glitchOsd) glitchOsd.textContent = "NO SIGNAL // NGẮT GUỒNG";
 
     schedule(() => {
-      mainApp.classList.remove("is-visible");
-      mainApp.hidden = true;
-    }, 280);
+      if (glitchOsd) glitchOsd.textContent = "STANDBY // CHỜ KHỞI ĐỘNG";
+    }, 650);
 
     schedule(() => {
       glitchOverlay.className = "crt-glitch-overlay";
       body.classList.remove("is-bursting");
       body.classList.add("is-standby");
 
+      analogGate.hidden = false;
+      analogGate.classList.remove("is-powering-on", "is-hover-charged");
+
       if (window.AnalogNoise) {
-        window.AnalogNoise.setMode("standby");
+        window.AnalogNoise.setMode("calm");
       }
 
-      analogGate.hidden = false;
+      tvPowerBtn.disabled = false;
+      tvPowerBtn.classList.remove("is-pressing");
       isTransitioning = false;
-    }, 680);
+    }, 1200);
   }
 
   if (tvPowerBtn) {

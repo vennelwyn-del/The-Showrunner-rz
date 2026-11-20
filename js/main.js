@@ -1,5 +1,5 @@
 /* =========================================================
-   THE SHOWRUNNER — GIAO DIỆN 2: ĐỔI NỀN, THÊM NHẠC & HỒ SƠ
+   THE SHOWRUNNER — GIAO DIỆN 2: WEB GIỚI THIỆU, ĐỔI NỀN & NHẠC
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!cleanUrl) {
       bgLayer.style.backgroundImage = "";
-      if (bgStatusMsg) bgStatusMsg.textContent = "Đang dùng: Bàn Gỗ & Tư Liệu Mặc Định";
+      if (bgStatusMsg) bgStatusMsg.textContent = "Đang dùng: Nền Tư Liệu Mặc Định";
       if (save) localStorage.removeItem("showrunner_bg_url");
       return;
     }
@@ -65,14 +65,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function applyDim(val) {
-    const opacity = Math.max(0.15, Math.min(0.9, Number(val) / 100));
+    const opacity = Math.max(0.05, Math.min(0.8, Number(val) / 100));
     document.documentElement.style.setProperty("--bg-dim", String(opacity));
     try {
       localStorage.setItem("showrunner_bg_dim", String(val));
     } catch (e) {}
   }
 
-  // Nạp lại Background đã lưu
   try {
     const savedBg = localStorage.getItem("showrunner_bg_url");
     if (savedBg) applyBackgroundUrl(savedBg, false);
@@ -119,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (bgDimSlider) bgDimSlider.addEventListener("input", () => applyDim(bgDimSlider.value));
 
   /* -------------------------------------------------------
-     2. HỆ THỐNG THÊM LINK NHẠC & TRÌNH PHÁT CASSETTE
+     2. HỆ THỐNG THÊM LINK NHẠC & TRÌNH PHÁT
      ------------------------------------------------------- */
   const musicTitleInput = document.getElementById("music-title-input");
   const musicUrlInput = document.getElementById("music-url-input");
@@ -154,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!musicPlaylistEl) return;
     if (tracks.length === 0) {
       musicPlaylistEl.innerHTML =
-        `<div class="studio-status">Chưa có link nhạc nào. Hãy dán link .mp3 / .ogg / .wav ở trên rồi bấm + THÊM NHẠC.</div>`;
+        `<div class="studio-status">Chưa có link nhạc nào. Dán link .mp3 / .ogg / .wav ở trên rồi bấm + THÊM NHẠC.</div>`;
       return;
     }
 
@@ -176,7 +175,6 @@ document.addEventListener("DOMContentLoaded", () => {
     currentTrackIndex = index;
     const track = tracks[index];
 
-    // Dừng Radio synth ở góc trên nếu đang phát để tránh chồng tiếng
     if (window.AnalogRadio && window.AnalogRadio.isPlaying()) {
       window.AnalogRadio.togglePlay();
     }
@@ -195,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch(() => {
         if (musicNowPlaying) {
-          musicNowPlaying.textContent = "Lỗi phát link (hãy dùng link trực tiếp .mp3/.ogg/.wav)";
+          musicNowPlaying.textContent = "Lỗi phát link (cần link file âm thanh trực tiếp .mp3/.ogg/.wav)";
         }
       });
   }
@@ -207,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (/youtube\.com|youtu\.be|spotify\.com/i.test(url)) {
       if (musicNowPlaying) {
-        musicNowPlaying.textContent = "Lưu ý: Trình phát cần link file âm thanh trực tiếp (.mp3/.ogg/.wav)";
+        musicNowPlaying.textContent = "Lưu ý: Cần dán link file âm thanh trực tiếp (.mp3/.ogg/.wav)";
       }
       return;
     }
@@ -310,8 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     audioPlayer.addEventListener("ended", () => {
       if (!isLooping && tracks.length > 0) {
-        const nextIdx = (currentTrackIndex + 1) % tracks.length;
-        loadAndPlayTrack(nextIdx);
+        loadAndPlayTrack((currentTrackIndex + 1) % tracks.length);
       }
     });
   }
@@ -325,7 +322,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* -------------------------------------------------------
-     3. CHUYỂN TAB BÀN ĐIỀU TRA & BẤM VÀO POLAROID
+     3. CHUYỂN TAB GIỚI THIỆU
      ------------------------------------------------------- */
   const tabBtns = document.querySelectorAll(".desk-tab");
   const deskPanels = document.querySelectorAll(".desk-panel");
@@ -348,160 +345,202 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* -------------------------------------------------------
-     4. DỮ LIỆU HỒ SƠ 4 VỤ ÁN, NHÂN VẬT & 16 ĐỊA DANH SWEZAN
+     4. DỮ LIỆU CÔNG KHAI (CHỈ HIỂN THỊ THÔNG TIN BỀ MẶT)
      ------------------------------------------------------- */
-  let secretsUnlocked = false;
-  const secretLockBtn = document.getElementById("secret-lock-btn");
-  const casesGrid = document.getElementById("cases-grid");
-
-  const CASES_DATA = [
+  const WORLD_EVENTS = [
     {
-      ep: "TẬP 1/4 — ĐÃ KHÉP HỒ SƠ",
-      title: "Tái Sinh — Ottomar Burchard",
-      card: "Lá 28: The Man · Chủ tiệm ăn Lutz (45t)",
-      status: "Đã tử vong (Xà phòng hóa trong bể xút 09)",
-      surface: "Bị quấn kén bằng 12 cuộn băng keo treo trên bể NaOH 60°C, thả rơi sau 7 ngày ăn mòn then kẽm. Pháp y phát hiện hóa chất nhuộm độc quyền Alizarin-Fixer TX và nút thắt thợ săn Prusik.",
-      secret: "MẮT XÍCH 1974: Ottomar chính là gã đầu bếp đã pha thuốc mê vào bữa tối của 40 đứa trẻ trại mồ côi St. Leopold đêm hỏa hoạn.",
-      active: false,
+      tag: "BỐI CẢNH THỜI ĐẠI · 1994",
+      title: "Thung Lũng Công Nghiệp & Màn Ảnh CRT",
+      body: "Swezan nằm lọt thỏm giữa khói than, mưa axit và các xưởng dệt suy thoái cuối thời hậu Chiến tranh Lạnh — nơi hạ tầng công nghiệp cũ va chạm với băng từ VHS, máy đánh chữ và tivi đèn hình.",
     },
     {
-      ep: "TẬP 2/4 — CƯỚP SÓNG KÊNH 8",
-      title: "Trứng Ấu Trùng — Malia Ariane",
-      card: "Lá 30: Lilies · Ái nữ Nam tước đá quý (24t)",
-      status: "Đã tử vong (Phù phổi cấp bởi hơi nước 100°C & SO2)",
-      surface: "Bị nhốt trong buồng kính hình quả trứng tại Nhà kính C-4 cùng hoa loa kèn trắng. Hiện trường bắt cóc để lại vỏ đạn .32 ACP khắc đáy RWS-P của Hội Xạ Thủ Quý Tộc.",
-      secret: "MẮT XÍCH 1974: Gia tộc Ariane đã chi tiền mua chuộc thanh tra đất đai và bảo an để giải tỏa trại mồ côi xây xưởng.",
-      active: false,
+      tag: "TIN ĐỒN & DƯ LUẬN",
+      title: "Hội Chứng Sợ Màn Hình",
+      body: "Sau vụ cướp sóng đài truyền hình K-TV Kênh 8 đêm Chủ nhật tuần trước, nhiều gia đình tại Altstadt dùng khăn dạ trùm kín tivi vào ban đêm vì sợ tiếng rè rít trắng lúc 0 giờ.",
     },
     {
-      ep: "TẬP 3/4 — ĐANG ĐẾM NGƯỢC (56 TURN)",
-      title: "Phá Kén — Matthäus August",
-      card: "Lá 35: The Anchor · Phó Cảnh Sát Trưởng (52t)",
-      status: "Mất tích 12 tiếng · Hạn chót 23:59 Chủ Nhật",
-      surface: "Bị chụp thuốc mê Halothane bên hồ câu. Băng A giấu trong bụng cá chép đột biến chiếu cảnh August bị treo trên ghế sắt bên trên bể cá dữ, hậu cảnh có tem [SCHWARZHAVEN-AQUACULTURE 1974].",
-      secret: "TỌA ĐỘ THẬT: Hầm bảo quản ấu trùng thủy sản số 03 (Schwarzhaven). Ngắt cầu dao bơm oxy trước khi kéo tời. August là kẻ đã khóa cửa phòng ngủ và châm lửa đốt St. Leopold.",
-      active: true,
-    },
-    {
-      ep: "TẬP 4/4 — SẮP KHỞI CHẠY (TURN 57–112)",
-      title: "Bản Ghi Chép Tội Lỗi — Traudl Vanessa",
-      card: "Lá 24: The Heart · Góa phụ Đồi Kranzhügel (45t)",
-      status: "Chưa bị bắt cóc · Đang sống tại Dinh thự Vanessa",
-      surface: "Teaser Băng A Tập 3 hé lộ thỏi son đỏ thẫm đặt cạnh mũ voan đen góa phụ. Đang tiêm thuốc trẻ hóa chui sau cánh cổng sắt Đồi Kranzhügel.",
-      secret: "TỌA ĐỘ THẬT: Hầm mộ nhà kính giấu sau tượng Vệ Nữ không đầu. Chồng ả (Heinrich Vanessa) là kẻ lấy tiền bảo hiểm 1974 xây chuỗi khách sạn.",
-      active: false,
+      tag: "KHỞI ĐIỂM · 30/11/1994",
+      title: "Biến Cố Tại Đồn Cảnh Sát Altstadt",
+      body: "Phó Cảnh sát trưởng Matthäus August mất tích 12 tiếng. Sáng nay, một cuộn băng VHS-C xuất hiện cùng lời tuyên án kỳ bí của kẻ tự xưng The Rider, đẩy thị trấn vào cơn hoảng loạn.",
     },
   ];
 
-  function renderCases() {
-    if (!casesGrid) return;
-    casesGrid.innerHTML = CASES_DATA.map(
-      (c) => `
-      <article class="dossier-card ${c.active ? "is-active-case" : ""}">
-        <div class="card-badge-row">
-          <span>${c.ep}</span>
-        </div>
-        <h3 class="card-h3">${c.title}</h3>
-        <div class="card-sub">${c.card}</div>
-        <p class="card-body"><strong>Hiện trạng:</strong> ${c.status}</p>
-        <p class="card-body">${c.surface}</p>
-        ${secretsUnlocked ? `<div class="card-secret-box">&#128275; ${c.secret}</div>` : ""}
+  const WORLD_ROLES = [
+    {
+      tag: "THÂN PHẬN 01 · 1.200 MARK",
+      title: "Thanh Tra Cấp Cao / Đặc Phái Viên",
+      body: "Mang lệnh trưng dụng từ thủ đô và vũ khí công vụ. Có quyền tiếp cận hiện trường phong tỏa nhưng dễ bị cảnh sát địa phương dè chừng và dân nghèo nghi kỵ.",
+    },
+    {
+      tag: "THÂN PHẬN 02 · 300 MARK",
+      title: "Thám Tử Tư / Cựu Sĩ Quan",
+      body: "Không có thẩm quyền pháp lý, nhưng hoàn toàn tự do lặn ngụp dưới bến cảng đêm, giao dịch chợ đen và lần theo những ngõ tối ngoài giờ giới nghiêm.",
+    },
+    {
+      tag: "THÂN PHẬN 03 · 1.500 MARK",
+      title: "Bác Sĩ Pháp Y Độc Lập",
+      body: "Làm chủ phòng giải phẫu dưới hầm Tòa án Cũ. Tiếng nói khoa học mang tính quyết định, nhưng thiếu quyền cưỡng chế và dễ gặp áp lực từ giới chức.",
+    },
+    {
+      tag: "THÂN PHẬN 04 · 600 MARK",
+      title: "Phóng Viên Điều Tra",
+      body: "Sở hữu thẻ nhà báo, máy ảnh 35mm và mạng lưới tin đồn khắp thung lũng. Ngòi bút có thể xoay chuyển dư luận nhưng dễ bị cả hai phía cảnh giác.",
+    },
+    {
+      tag: "THÂN PHẬN 05 · 60 MARK",
+      title: "Dân Thường / Thợ Thuyền Bản Địa",
+      body: "Sở hữu lớp vỏ bọc vô hình hoàn hảo để hòa vào dòng người biểu tình và khu chung cư lao động, dùng trực giác và quan hệ xóm giềng để sinh tồn.",
+    },
+  ];
+
+  const WORLD_DISTRICTS = [
+    {
+      zone: "ĐÔNG · TRUNG TÂM CỔ",
+      title: "Phố Cổ Altstadt",
+      items: "Kiến trúc đá sa thạch thế kỷ 19, Đồn Cảnh sát, Tòa Thị chính, Tòa soạn Tagblatt, phòng trà Thiên Nga Đen và các tiệm sách yên tĩnh bên bờ kênh.",
+    },
+    {
+      zone: "TÂY · ĐƯỜNG THỦY",
+      title: "Bến Cảng Sông Đen (Schwarzhaven)",
+      items: "Bãi than ướt, sà lan chở hàng đêm, tiệm cầm đồ Tổ Quạ và quán rượu ngầm Mỏ Neo Mù nồng mùi rượu gin và thuốc lá sợi.",
+    },
+    {
+      zone: "NAM · VÀNH ĐAI RỈ SÉT",
+      title: "Tổ Hợp Công Nghiệp Hüt IV & Ga Güterof",
+      items: "Những ống khói lò luyện kim sừng sững, phân xưởng dệt cũ và bãi toa xe lửa bỏ không giữa rừng thông ẩm ướt.",
+    },
+    {
+      zone: "BẮC · VÙNG ĐỒI",
+      title: "Đồi Kranzhügel & Đồi Gió Hú Wigel",
+      items: "Một bên là những biệt thự quý tộc tách biệt sau cổng sắt rèn; bên kia là tháp tiếp sóng truyền hình K-TV Kênh 8 giữa sương mù.",
+    },
+    {
+      zone: "NGOẠI Ô · KHU LAO ĐỘNG",
+      title: "Chung Cư Khối 7–12",
+      items: "Những dãy nhà bê tông xám xịt giăng đầy dây phơi và ăng-ten râu thỏ, nơi công nhân tụ tập quanh thùng phuy đốt lửa sưởi ấm.",
+    },
+  ];
+
+  // CHỈ HIỂN THỊ THÔNG TIN CÔNG KHAI CỦA NHÂN VẬT (TUYỆT ĐỐI KHÔNG SPOIL)
+  const PUBLIC_CAST = [
+    {
+      group: "official",
+      badge: "BÍ ẨN · K-TV KÊNH 08",
+      name: "The Rider",
+      role: "Kẻ tự xưng “Biên Kịch” trên sóng truyền hình",
+      desc: "Chưa từng lộ mặt. Chỉ xuất hiện qua khung hình VHS 4:3 đen trắng cùng đôi găng tay da đen và giọng nói biến âm trầm đục tần số thấp.",
+      quote: "“Hãy ngồi xuống trước màn hình và cùng xem vở kịch của thung lũng này.”",
+    },
+    {
+      group: "official",
+      badge: "TÒA THỊ CHÍNH",
+      name: "Julian Viktor von Brandt (31t)",
+      role: "Công Tố Viên Đặc Biệt",
+      desc: "Diện mạo sắc lạnh trong âu phục 3 mảnh xanh than, cặp kính nửa viền và đồng hồ bỏ túi bạch kim. Đại diện cho quyền lực tư pháp đang giám sát toàn bộ cuộc khủng hoảng.",
+      quote: "“Công lý ở thung lũng này nằm dưới ngòi bút ký lệnh truy tố của tôi.”",
+    },
+    {
+      group: "official",
+      badge: "ĐỒN CẢNH SÁT ALTSTADT",
+      name: "Jaxson Heckler (58t) & Ian Alix (22t)",
+      role: "Cảnh Sát Trưởng & Tân Binh",
+      desc: "Heckler bảo thủ, nóng nảy trong làn khói Chesterfield dày đặc; đối lập hoàn toàn với cậu tân binh Ian Alix vụng về trong chiếc áo măng tô vàng mù tạt quá khổ.",
+      quote: "“Ở cái thị trấn này, luật pháp là tao!”",
+    },
+    {
+      group: "official",
+      badge: "HẦM TÒA ÁN CŨ",
+      name: "Bác sĩ Eva Livingston (34t)",
+      role: "Chuyên Viên Pháp Y",
+      desc: "Lạnh lùng, chuẩn xác, mái tóc vàng cắt ngắn và chiếc blouse trắng ám mùi formol cùng tinh dầu bạc hà cay nồng.",
+      quote: "“Người sống nói dối để tự cứu mình; chỉ có những cái xác trên bàn thép là không.”",
+    },
+    {
+      group: "official",
+      badge: "NHẬT BÁO SWEZAN TAGBLATT",
+      name: "Isabel Werner (29t)",
+      role: "Phóng Viên Hiện Trường",
+      desc: "Sắc sảo và tham vọng trong áo măng tô da lộn vàng cát, luôn mang theo chiếc Walkman ghi âm và mùi thuốc lá vani Black Devil.",
+      quote: "“Cảnh sát cần báo cáo, còn tôi cần sự thật để đưa lên trang nhất.”",
+    },
+    {
+      group: "town",
+      badge: "BẾN CẢNG SCHWARZHAVEN",
+      name: "Lukas “Raven” Kováč (29t)",
+      role: "Chủ Tiệm Cầm Đồ & Xưởng Cơ Khí “Tổ Quạ”",
+      desc: "Cựu lính giải ngũ phong trần với vết sẹo ngang mày trái, tấm thẻ bài Dog-tag bạc trên ngực và mùi dầu súng quyện thuốc lá Lucky Strike.",
+      quote: "“Ở bến sông đen ngòm này, lòng tốt không mua được đạn đâu.”",
+    },
+    {
+      group: "town",
+      badge: "PHÒNG TRÀ THIÊN NGA ĐEN",
+      name: "Clara Evelyne Moreau (26t)",
+      role: "Nữ Danh Ca Jazz & Chủ Phòng Trà",
+      desc: "Mái tóc đỏ rượu vang cổ điển, trâm cài trăng lưỡi liềm và găng tay lụa dài; giọng hát trầm khàn làm say lòng giới thượng lưu mỗi đêm mưa.",
+      quote: "“Ngồi xuống đây đi, để tôi rót cho một ly Bordeaux, đêm nay ngoài kia lạnh lắm.”",
+    },
+    {
+      group: "town",
+      badge: "PHỐ CỔ ALTSTADT",
+      name: "Alistair Cassius (28t)",
+      role: "Chủ Tiệm Cà Phê Sách “Cassius & Co.”",
+      desc: "Thiếu gia trầm lặng của một dòng họ buôn bán lâu đời, thích đọc bi kịch cổ Hy Lạp, pha trà Earl Grey và hầu như chẳng bao giờ rời khỏi hiệu sách ấm cúng của mình.",
+      quote: "“Ở đây, ít nhất các trang sách không biết làm tổn thương ai bao giờ.”",
+    },
+    {
+      group: "town",
+      badge: "CÔNG XƯỞNG & NGHIỆP ĐOÀN",
+      name: "Kurt Denholm (52t) · Lotte Loris (45t)",
+      role: "Chủ Lò Luyện Kim Hüt IV · Thủ Lĩnh Công Nhân",
+      desc: "Hai thái cực đối đầu kịch liệt nhất của thung lũng: một ông chủ nhà máy sắt đá giữa những xưởng thép cũ và người đàn bà đanh thép dẫn đầu các cuộc bãi công.",
+      quote: "“Bọn tao đã đổ mồ hôi cho từng tấc đất ở Swezan này!”",
+    },
+    {
+      group: "town",
+      badge: "ĐỒI WIGEL · ST. NAZET · KRANZHÜGEL",
+      name: "Ena Sherley · Dr. Alis Zola · Traudl Vanessa",
+      role: "Kỹ Thuật Viên K-TV · Cựu Bác Sĩ · Quý Bà Kranzhügel",
+      desc: "Ena lập dị bên những cuộn dây tín hiệu trên đồi gió hú; bác sĩ Zola u ám với cặp mắt dị sắc; và góa phụ Vanessa sống khép kín sau cánh cổng dinh thự hoa hồng.",
+      quote: "“Tín hiệu không bao giờ nói dối... chỉ có âm thanh là chứa đầy tạp âm.”",
+    },
+  ];
+
+  const worldEventsGrid = document.getElementById("world-events-grid");
+  const worldRolesGrid = document.getElementById("world-roles-grid");
+  const worldDistrictsGrid = document.getElementById("world-districts-grid");
+
+  if (worldEventsGrid) {
+    worldEventsGrid.innerHTML = WORLD_EVENTS.map(
+      (e) => `
+      <article class="dossier-card">
+        <div class="card-badge-row"><span>${e.tag}</span></div>
+        <h3 class="card-h3">${e.title}</h3>
+        <p class="card-body">${e.body}</p>
       </article>`
     ).join("");
   }
 
-  const CAST_DATA = [
-    {
-      group: "core",
-      badge: "01 — THE RIDER (VỎ BỌC)",
-      name: "Alistair Cassius (28t)",
-      role: "Chủ tiệm cà phê sách Cassius & Co. · Altstadt",
-      desc: "Quý tộc thanh lịch, đeo găng tay da cừu đen không bao giờ tháo, thích ngủ gục bên sách kịch cổ Hy Lạp và trà Earl Grey.",
-      secret: "CHÂN TƯỚNG: Tên gốc là Enes Venn Amory — đứa trẻ duy nhất sống sót sau vụ hỏa thiêu Trại trẻ mồ côi St. Leopold năm 1974; chính là The Rider.",
-      quote: "“Ở đây, ít nhất các trang sách không biết mưu sát ai bao giờ.”",
-    },
-    {
-      group: "core",
-      badge: "11 — THE WHIP",
-      name: "Julian Viktor von Brandt (31t)",
-      role: "Công Tố Viên Đặc Biệt · Tòa Thị Chính",
-      desc: "Âu phục 3 mảnh xanh than, mắt hổ phách sau kính nửa viền, luôn bật đồng hồ bạch kim. Hội viên Hội Xạ Thủ Quý Tộc (dùng đạn .32 ACP RWS-P).",
-      secret: "BÍ MẬT: Đang giữ hồ sơ giải tỏa đất năm 1974 để tống tiền ngược Thị trưởng và Kurt Denholm thâu tóm đường sắt.",
-      quote: "“Công lý không nằm trong họng súng, nó nằm dưới ngòi bút ký lệnh truy tố của tôi.”",
-    },
-    {
-      group: "core",
-      badge: "03 — THE SHIP",
-      name: "Lukas “Raven” Kováč (29t)",
-      role: "Chủ tiệm cầm đồ Tổ Quạ · Schwarzhaven",
-      desc: "Cựu lính bắn tỉa mang thẻ bài Dog-tag bạc, vết sẹo ngang mày trái, nồng mùi thuốc lá Lucky Strike và dầu súng Ballistol.",
-      secret: "BÍ MẬT: Đã bán tời điện công nghiệp & 2 lọ Halothane cho khách che mặt trả bằng tiền vàng cổ; đang giấu hóa đơn trong két sắt.",
-      quote: "“Đặt năm mươi Mark lên mặt quầy... rồi tôi kể cho nghe sà lan nào lướt qua Hầm 03.”",
-    },
-    {
-      group: "core",
-      badge: "32 — THE MOON",
-      name: "Clara Evelyne Moreau (26t)",
-      role: "Danh ca Jazz · Phòng trà Thiên Nga Đen",
-      desc: "Tóc đỏ rượu vang uốn sóng, trâm cài trăng lưỡi liềm, đầm nhung xẻ đùi, hương hoa nhài đêm và rượu vang Bordeaux.",
-      secret: "BÍ MẬT: Anh nuôi từng bị August đánh chết trong phòng biệt giam; đang giấu băng ghi âm phòng VIP dưới sàn phòng thay đồ.",
-      quote: "“Khi ánh đèn tắt đi, họ đều quỳ dưới gấu váy nhung của tôi để thú nhận tội lỗi.”",
-    },
-    {
-      group: "core",
-      badge: "08 — THE COFFIN",
-      name: "Bác sĩ Eva Livingston (34t)",
-      role: "Pháp Y · Nhà Xác Hầm Tòa Án Cũ",
-      desc: "Tóc vàng pixie, đeo mặt dây quan tài bạc, lạnh lẽo mùi formol và tinh dầu bạc hà.",
-      secret: "BÍ MẬT: Từng bị ép sửa hồ sơ ngộ độc hóa chất của công nhân 4 năm trước.",
-      quote: "“Chỉ có những kẻ nằm trên bàn thép này là chưa từng biết bịa đặt một lời nào.”",
-    },
-    {
-      group: "core",
-      badge: "14 — THE FOX & 19 — THE TOWER & 13 — THE CHILD",
-      name: "Isabel · Heckler · Ian Alix",
-      role: "Báo Tagblatt · Cảnh Sát Trưởng · Tân Binh",
-      desc: "Isabel (29t) giữ ảnh độc quyền; Heckler (58t) phát điên giữ ghế; Ian (22t) vụng về nhưng vô tình nhặt trúng manh mối.",
-      secret: "BÍ MẬT: Isabel từng ỉm thư cảnh báo Tập 1; Heckler nhận bảo kê xưởng; Ian bị The Rider chọn làm con cờ gài bẫy.",
-      quote: "“Chúng ta đều kiếm sống trên máu của người khác cả thôi.”",
-    },
-    {
-      group: "suspect",
-      badge: "15 — THE BEAR (NGHI PHẠM 1)",
-      name: "Kurt Denholm (52t)",
-      role: "Trùm Lò Luyện Kim Hüt IV",
-      desc: "Nắm chìa khóa toàn bộ tổ hợp xưởng dệt/thép nơi xảy ra Tập 1 & 2. Nợ ngập đầu, đang có nguy cơ phá sản.",
-      secret: "RED HERRING: Không phải The Rider — hắn lén chứa súng lậu & hàng mafia dưới Hüt IV để gán nợ.",
-      quote: "“Tao giết người bằng cách cắt cơm và đóng cửa lò sưởi, không rảnh chơi trò nghệ thuật!”",
-    },
-    {
-      group: "suspect",
-      badge: "25 — THE RING (NGHI PHẠM 2)",
-      name: "Ena Sherley (27t)",
-      role: "Kỹ Thuật Viên Ca Đêm · Đài K-TV Kênh 8",
-      desc: "Ám ảnh sóng vô tuyến và CRT, đeo vòng bện ruột băng VHS, am hiểu tháp tiếp sóng Đồi Gió Hú Wigel.",
-      secret: "RED HERRING: Mắc chứng quay lén bệnh hoạn; từng tự cướp sóng thử nghiệm một đoạn hoạt hình méo tiếng.",
-      quote: "“Tiếng rít 15kHz từ tháp Wigel đang bảo rằng cuốn băng tiếp theo sẽ tuyệt đẹp đấy.”",
-    },
-    {
-      group: "suspect",
-      badge: "36 — THE CROSS (NGHI PHẠM 3)",
-      name: "Lotte Loris (45t)",
-      role: "Thủ Lĩnh Nghiệp Đoàn Công Nhân",
-      desc: "Thù ghét giới tư bản và cảnh sát sâu sắc, nắm rõ đường cống ngầm công xưởng và ga hàng hóa Güterof.",
-      secret: "RED HERRING: Đang giấu súng trường quân dụng & thuốc nổ công nghiệp để chuẩn bị nổi dậy vũ trang.",
-      quote: "“Bọn tao không rảnh khóc mướn cho mấy cái xác mặc áo vest!”",
-    },
-    {
-      group: "suspect",
-      badge: "06 — THE CLOUDS (NGHI PHẠM 4)",
-      name: "Dr. Alis Zola (33t)",
-      role: "Cựu Bác Sĩ Tâm Thần · Viện St. Nazet",
-      desc: "Mắt dị sắc, mang dao mổ số 11 trong hộp thuốc lá bạc, từng căng da mặt chui cho Traudl Vanessa.",
-      secret: "RED HERRING: Thực hiện thí nghiệm sốc điện não bất hợp pháp dưới tầng hầm hoang phế Viện St. Nazet.",
-      quote: "“Kẻ Biên Kịch chỉ đang giúp họ chụp lại khoảnh khắc linh hồn bốc hơi mà thôi.”",
-    },
-  ];
+  if (worldRolesGrid) {
+    worldRolesGrid.innerHTML = WORLD_ROLES.map(
+      (r) => `
+      <article class="dossier-card">
+        <div class="card-badge-row"><span>${r.tag}</span></div>
+        <h3 class="card-h3">${r.title}</h3>
+        <p class="card-body">${r.body}</p>
+      </article>`
+    ).join("");
+  }
+
+  if (worldDistrictsGrid) {
+    worldDistrictsGrid.innerHTML = WORLD_DISTRICTS.map(
+      (d) => `
+      <article class="map-card">
+        <div class="card-badge-row"><span>${d.zone}</span></div>
+        <h3 class="card-h3">${d.title}</h3>
+        <p class="card-body">${d.items}</p>
+      </article>`
+    ).join("");
+  }
 
   let castFilter = "all";
   const castGrid = document.getElementById("cast-grid");
@@ -510,7 +549,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderCast() {
     if (!castGrid) return;
     const list =
-      castFilter === "all" ? CAST_DATA : CAST_DATA.filter((c) => c.group === castFilter);
+      castFilter === "all" ? PUBLIC_CAST : PUBLIC_CAST.filter((c) => c.group === castFilter);
     castGrid.innerHTML = list
       .map(
         (c) => `
@@ -519,23 +558,10 @@ document.addEventListener("DOMContentLoaded", () => {
         <h3 class="card-h3">${c.name}</h3>
         <div class="card-sub">${c.role}</div>
         <p class="card-body">${c.desc}</p>
-        ${secretsUnlocked ? `<div class="card-secret-box">&#128275; ${c.secret}</div>` : ""}
         <p class="card-quote">${c.quote}</p>
       </article>`
       )
       .join("");
-  }
-
-  if (secretLockBtn) {
-    secretLockBtn.addEventListener("click", () => {
-      secretsUnlocked = !secretsUnlocked;
-      secretLockBtn.innerHTML = secretsUnlocked
-        ? "&#128275; HỒ SƠ MẬT (GM): ĐÃ MỞ"
-        : "&#128274; HỒ SƠ MẬT (GM): ĐANG KHÓA";
-      secretLockBtn.classList.toggle("studio-btn-red", secretsUnlocked);
-      renderCases();
-      renderCast();
-    });
   }
 
   castFilterBtns.forEach((btn) => {
@@ -546,51 +572,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  const MAP_ZONES = [
-    {
-      zone: "ĐÔNG · PHỐ CỔ ALTSTADT",
-      title: "1–6. Trung Tâm Hành Chính & Đời Sống Đêm",
-      items: "Đồn Cảnh Sát Altstadt · Nhà Xác Hầm Tòa Án Cũ · Tiệm Sách Cassius & Co. · Tòa Soạn Tagblatt · Văn Phòng Công Tố & Kho Vi Phim · Phòng Trà Thiên Nga Đen.",
-    },
-    {
-      zone: "TÂY · BẾN CẢNG SÔNG ĐEN (SCHWARZHAVEN)",
-      title: "9 & 15. Hầm Thủy Sản 03, Tổ Quạ & Mỏ Neo Mù",
-      items: "Hầm bảo quản ấu trùng 03 (Nơi giam giữ August ở Tập 3) · Tiệm cầm đồ chợ đen Tổ Quạ của Lukas Kováč · Quán rượu ngầm Mỏ Neo Mù · Sà lan than.",
-    },
-    {
-      zone: "NAM · VÀNH ĐAI RỈ SÉT HÜT IV & GÜTEROF",
-      title: "7, 8, 11, 12. Công Xưởng & Hiện Trường Tập 1–2",
-      items: "Trạm chất thải ngầm 09 (Án 1) · Nhà kính C-4 (Án 2) · Lò luyện kim Số 4 của Kurt Denholm · Ga hàng hóa Güterof của Lotte Loris.",
-    },
-    {
-      zone: "BẮC · ĐỒI WIGEL & ĐỒI KRANZHÜGEL",
-      title: "10 & 13. Tháp Sóng Kênh 8 & Dinh Thự Vanessa",
-      items: "Tháp truyền hình Đồi Gió Hú Wigel (Ena Sherley) · Dinh thự Vanessa & Hầm mộ nhà kính sau tượng Vệ Nữ không đầu (Án 4).",
-    },
-    {
-      zone: "NGOẠI Ô · KHỐI 7–12 & TRO TÀN 1974",
-      title: "14 & 16. Bệnh Viện St. Nazet & St. Leopold",
-      items: "Chung cư bê tông công nhân Khối 7–12 · Bệnh viện tâm thần bỏ hoang St. Nazet (Dr. Alis Zola) · Tàn tích Trại trẻ mồ côi St. Leopold cháy năm 1974.",
-    },
-  ];
-
-  const mapZonesGrid = document.getElementById("map-zones-grid");
-  if (mapZonesGrid) {
-    mapZonesGrid.innerHTML = MAP_ZONES.map(
-      (z) => `
-      <article class="map-card">
-        <div class="card-badge-row"><span>${z.zone}</span></div>
-        <h3 class="card-h3">${z.title}</h3>
-        <p class="card-body">${z.items}</p>
-      </article>`
-    ).join("");
-  }
-
-  renderCases();
   renderCast();
 
   /* -------------------------------------------------------
-     5. TRÌNH TẠO HỒ SƠ NHẬP TỊCH & COPY PROMPT
+     5. TRÌNH TẠO HỒ SƠ NHẬP VAI & COPY PROMPT
      ------------------------------------------------------- */
   const pfFields = [
     "pf-name",
@@ -618,12 +603,12 @@ document.addEventListener("DOMContentLoaded", () => {
 **Họ và tên:** ${val("pf-name", "[Chưa điền tên]")}
 **Tuổi & Giới tính / Xưng hô:** ${val("pf-age-gender", "28 tuổi | Nam (Anh / Tôi)")}
 **Thân phận khởi điểm:** ${val("pf-archetype", "Thanh Tra Cấp Cao (1.200 M)")}
-**Địa bàn cư trú & Lá bài Lenormand:** ${val("pf-district", "Phố cổ Altstadt | Lá 33 - Chìa Khóa")}
+**Địa bàn cư trú & Kỷ vật:** ${val("pf-district", "Phố cổ Altstadt | Chiếc bật lửa bạc")}
 **Ngoại hình & Mùi hương (1994 Noir):** ${val("pf-look", "Áo măng tô dạ tối màu, mùi cà phê đen và khói than Swezan.")}
-**Trang bị & Vũ khí khởi điểm:** ${val("pf-gear", "Đèn pin kim loại, sổ tay da, bộ dụng cụ chuyên môn.")}
-**Bí mật đen tối & Mục tiêu trước mắt:** ${val("pf-secret", "Tìm ra vị trí giam giữ Phó cảnh sát trưởng August trước 23:59 Chủ Nhật.")}
+**Trang bị mang theo:** ${val("pf-gear", "Đèn pin kim loại, sổ tay da, bộ dụng cụ chuyên môn.")}
+**Động cơ & Mục tiêu tại Swezan:** ${val("pf-secret", "Tìm hiểu sự thật sau những cuộn băng cướp sóng trên K-TV Kênh 8.")}
 **Câu thoại mẫu:**
-> ${val("pf-quote", "“Người chết không biết nói dối, chỉ có kẻ đứng sau ống kính mới làm vậy.”")}`;
+> ${val("pf-quote", "“Mọi cuộn băng đều có điểm dừng, chỉ có sự thật là ở lại.”")}`;
 
     if (profileOutput) profileOutput.textContent = text;
     return text;

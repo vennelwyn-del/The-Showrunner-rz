@@ -27,7 +27,6 @@ body {
   transition: background-color 0.35s ease, color 0.35s ease;
 }
 
-/* Nền Analog đa tầng tự đổi màu theo theme [red] hoặc [relic] */
 body {
   position: relative;
   background-image:
@@ -37,14 +36,13 @@ body {
   background-color: var(--bg-deep);
 }
 
-/* Nháy nhẹ kiểu đổi kênh khi bấm nút chuyển màu */
 body.is-switching-theme .analog-gate,
 body.is-switching-theme .main-app {
   animation: channelSwitchFlash 0.24s steps(3);
 }
 
 /* =========================================================
-   LỚP HIỆU ỨNG ANALOG TOÀN MÀN HÌNH (CANVAS + CRT OVERLAYS)
+   LỚP HIỆU ỨNG ANALOG TOÀN MÀN HÌNH
    ========================================================= */
 
 #analog-noise-canvas {
@@ -79,7 +77,7 @@ body.is-main-active #analog-noise-canvas {
       to bottom,
       rgba(9, 9, 9, 0) 0px,
       rgba(9, 9, 9, 0) 2px,
-      rgba(9, 9, 9, 0.5) 3px,
+      rgba(9, 9, 9, 0.45) 3px,
       rgba(172, 172, 172, 0.05) 4px
     );
   animation: scanlineFlicker 0.14s infinite;
@@ -111,12 +109,12 @@ body.is-main-active #analog-noise-canvas {
   z-index: 4;
   pointer-events: none;
   box-shadow:
-    inset 0 0 130px rgba(9, 9, 9, 0.92),
+    inset 0 0 110px rgba(9, 9, 9, 0.72),
     inset 0 0 44px var(--crt-tint);
   background: radial-gradient(
     circle at center,
-    transparent 52%,
-    rgba(9, 9, 9, 0.45) 85%,
+    transparent 56%,
+    rgba(9, 9, 9, 0.35) 86%,
     rgba(9, 9, 9, 0.72) 100%
   );
 }
@@ -130,7 +128,7 @@ body.is-main-active #analog-noise-canvas {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 40;
+  z-index: 90;
   padding: 14px clamp(14px, 3vw, 32px);
   display: flex;
   justify-content: space-between;
@@ -140,6 +138,8 @@ body.is-main-active #analog-noise-canvas {
 }
 
 .pill-group {
+  position: relative;
+  z-index: 91;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -147,9 +147,10 @@ body.is-main-active #analog-noise-canvas {
   pointer-events: auto;
 }
 
-/* Nút Pill bo tròn phong cách kính kim loại mờ */
 .pill-btn {
-  position: relative; z-index: 42; pointer-events: auto;
+  position: relative;
+  z-index: 92;
+  pointer-events: auto;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -167,6 +168,11 @@ body.is-main-active #analog-noise-canvas {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   transition: transform 0.16s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+/* Đảm bảo chữ và icon bên trong không nuốt mất sự kiện click của nút */
+.pill-btn * {
+  pointer-events: none;
 }
 
 .pill-glass {
@@ -193,10 +199,6 @@ body.is-main-active #analog-noise-canvas {
     0 6px 16px rgba(0, 0, 0, 0.48);
 }
 
-.pill-compact {
-  padding: 0 13px;
-}
-
 .pill-btn:hover {
   transform: translateY(-1px);
   border-color: var(--text-main);
@@ -210,7 +212,6 @@ body.is-main-active #analog-noise-canvas {
   transform: translateY(1px) scale(0.97);
 }
 
-/* Vòng tròn icon trắng nhỏ giống nút quay về web chính */
 .pill-badge-circle {
   width: 20px;
   height: 20px;
@@ -227,11 +228,6 @@ body.is-main-active #analog-noise-canvas {
   height: 12px;
 }
 
-.pill-star {
-  font-size: 13px;
-  color: var(--text-muted);
-}
-
 /* Nút chuyển 2 giao diện màu */
 .pill-theme-btn {
   font-family: var(--font-sans);
@@ -244,20 +240,25 @@ body.is-main-active #analog-noise-canvas {
   height: 14px;
   border-radius: 50%;
   background: linear-gradient(135deg, #9C0412 50%, #acacac 50%);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.45);
   box-shadow: 0 0 8px var(--glow-accent);
   flex-shrink: 0;
+  transition: transform 0.35s ease;
+}
+
+[data-theme="relic"] .theme-dual-dot {
+  transform: rotate(180deg);
 }
 
 .theme-label {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   font-weight: 500;
 }
 
 .theme-opt {
-  opacity: 0.45;
+  opacity: 0.42;
   transition: opacity 0.2s ease, color 0.2s ease;
 }
 
@@ -268,13 +269,15 @@ body.is-main-active #analog-noise-canvas {
 [data-theme="red"] .opt-red {
   opacity: 1;
   color: #ffffff;
-  text-shadow: 0 0 8px rgba(156, 4, 18, 0.85);
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(156, 4, 18, 0.9);
 }
 
 [data-theme="relic"] .opt-relic {
   opacity: 1;
   color: #ffffff;
-  text-shadow: 0 0 8px rgba(172, 172, 172, 0.65);
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(172, 172, 172, 0.75);
 }
 
 /* Nút RADIO có đĩa CD ánh kim bên trái */
@@ -332,7 +335,7 @@ body.is-main-active #analog-noise-canvas {
   letter-spacing: 0.24em;
 }
 
-/* Bảng điều khiển Radio mini xổ xuống ở góc phải */
+/* Bảng điều khiển Radio mini xổ xuống */
 .radio-panel {
   position: absolute;
   top: 58px;
@@ -347,7 +350,7 @@ body.is-main-active #analog-noise-canvas {
     0 0 24px var(--glow-accent);
   backdrop-filter: blur(14px);
   pointer-events: auto;
-  z-index: 48;
+  z-index: 95;
   animation: panelFadeIn 0.22s ease forwards;
 }
 
@@ -367,14 +370,8 @@ body.is-main-active #analog-noise-canvas {
   letter-spacing: 0.14em;
 }
 
-.radio-freq-tag {
-  color: var(--text-muted);
-}
-
-.radio-status {
-  color: var(--text-dim);
-}
-
+.radio-freq-tag { color: var(--text-muted); }
+.radio-status { color: var(--text-dim); }
 .radio-status.is-live {
   color: var(--led-active);
   text-shadow: 0 0 8px var(--glow-accent);
@@ -446,13 +443,8 @@ body.is-main-active #analog-noise-canvas {
   transition: box-shadow 0.2s ease, transform 0.12s ease;
 }
 
-.radio-play-btn:hover {
-  box-shadow: 0 0 14px var(--glow-accent);
-}
-
-.radio-play-btn:active {
-  transform: scale(0.96);
-}
+.radio-play-btn:hover { box-shadow: 0 0 14px var(--glow-accent); }
+.radio-play-btn:active { transform: scale(0.96); }
 
 .radio-vol-wrap {
   display: flex;
@@ -499,7 +491,6 @@ body.is-main-active #analog-noise-canvas {
   animation-duration: 0.28s;
 }
 
-/* Khung ngắm kỹ thuật nằm gọn bên dưới thanh Pill Bar */
 .monitor-frame {
   position: fixed;
   top: 62px;
@@ -532,21 +523,9 @@ body.is-main-active #analog-noise-canvas {
   opacity: 0.35;
 }
 
-.monitor-frame .reticle-h {
-  left: 0;
-  right: 0;
-  top: 50%;
-  height: 1px;
-}
+.monitor-frame .reticle-h { left: 0; right: 0; top: 50%; height: 1px; }
+.monitor-frame .reticle-v { top: 0; bottom: 0; left: 50%; width: 1px; }
 
-.monitor-frame .reticle-v {
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 1px;
-}
-
-/* Thanh thông số OSD (On-Screen Display) */
 .osd-bar {
   position: relative;
   z-index: 12;
@@ -561,20 +540,9 @@ body.is-main-active #analog-noise-canvas {
   color: var(--text-muted);
 }
 
-.osd-bottom {
-  align-items: flex-end;
-}
-
-.osd-group {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.osd-right {
-  text-align: right;
-  align-items: flex-end;
-}
+.osd-bottom { align-items: flex-end; }
+.osd-group { display: flex; flex-direction: column; gap: 5px; }
+.osd-right { text-align: right; align-items: flex-end; }
 
 .rec-indicator {
   display: inline-flex;
@@ -593,20 +561,9 @@ body.is-main-active #analog-noise-canvas {
   animation: recBlink 1.3s steps(2, start) infinite;
 }
 
-.osd-sub {
-  color: var(--text-dim);
-}
-
-.osd-clock {
-  color: var(--text-main);
-  text-shadow: 0 0 8px var(--glow-accent);
-}
-
-.osd-alert {
-  color: var(--led-active);
-  text-shadow: 0 0 8px var(--glow-accent);
-  font-weight: 500;
-}
+.osd-sub { color: var(--text-dim); }
+.osd-clock { color: var(--text-main); text-shadow: 0 0 8px var(--glow-accent); }
+.osd-alert { color: var(--led-active); text-shadow: 0 0 8px var(--glow-accent); font-weight: 500; }
 
 .audio-toggle-btn {
   background: transparent;
@@ -696,10 +653,7 @@ body.is-main-active #analog-noise-canvas {
   color: var(--text-muted);
 }
 
-.gate-subtitle em {
-  color: var(--text-main);
-  font-style: italic;
-}
+.gate-subtitle em { color: var(--text-main); font-style: italic; }
 
 .gate-divider {
   width: min(260px, 60vw);
@@ -716,7 +670,6 @@ body.is-main-active #analog-noise-canvas {
   opacity: 0.85;
 }
 
-/* Bộ công tắc nguồn Tivi CRT */
 .tv-switch-deck {
   display: flex;
   flex-direction: column;
@@ -807,6 +760,7 @@ body.is-main-active #analog-noise-canvas {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  pointer-events: none;
 }
 
 .btn-led {
@@ -869,22 +823,20 @@ body.is-main-active #analog-noise-canvas {
 }
 
 /* =========================================================
-   LỚP CHUYỂN CẢNH CRT: TIA SÁNG BẬT TIVI & NHIỄU SÓNG MẠNH
+   LỚP CHUYỂN CẢNH CRT
    ========================================================= */
 
 .crt-glitch-overlay {
   position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: 100;
   pointer-events: none;
   display: none;
   align-items: center;
   justify-content: center;
 }
 
-.crt-glitch-overlay.is-active {
-  display: flex;
-}
+.crt-glitch-overlay.is-active { display: flex; }
 
 .crt-beam {
   position: absolute;
@@ -928,7 +880,7 @@ body.is-main-active #analog-noise-canvas {
 
 .glitch-osd {
   position: relative;
-  z-index: 52;
+  z-index: 102;
   padding: 10px 20px;
   border: 1px solid var(--accent-primary);
   background: rgba(9, 9, 9, 0.88);
@@ -968,8 +920,8 @@ body.is-main-active #analog-noise-canvas {
 
 [data-theme="red"] .main-app {
   background:
-    radial-gradient(circle at 50% 18%, rgba(156, 4, 18, 0.28) 0%, transparent 58%),
-    rgba(32, 3, 4, 0.82);
+    radial-gradient(circle at 50% 18%, rgba(156, 4, 18, 0.32) 0%, transparent 58%),
+    rgba(36, 4, 5, 0.82);
 }
 
 .main-app.is-visible {
@@ -1148,74 +1100,18 @@ body.is-main-active #analog-noise-canvas {
   100% { opacity: 1; transform: translateY(0) scaleY(1); filter: none; }
 }
 
-/* =========================================================
-   RESPONSIVE CHO ĐIỆN THOẠI & MÀN HÌNH NHỎ
-   ========================================================= */
-
 @media (max-width: 640px) {
-  .top-pill-bar {
-    padding: 10px 12px;
-    gap: 8px;
-  }
-
-  .pill-btn {
-    height: 32px;
-    padding: 0 11px;
-    font-size: 12px;
-    gap: 6px;
-  }
-
-  .pill-radio-btn {
-    padding: 0 11px 0 5px;
-  }
-
-  .radio-cd-disc {
-    width: 20px;
-    height: 20px;
-  }
-
-  .radio-cd-disc::after {
-    inset: 6px;
-  }
-
-  .radio-word {
-    font-size: 11px;
-    letter-spacing: 0.16em;
-  }
-
-  .radio-panel {
-    top: 52px;
-    right: 12px;
-  }
-
-  .analog-gate {
-    padding-top: 76px;
-  }
-
-  .osd-bar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-    font-size: 10px;
-  }
-
-  .osd-right {
-    text-align: left;
-    align-items: flex-start;
-  }
-
-  .tv-dial-plate {
-    width: 126px;
-    height: 126px;
-  }
-
-  .tv-power-btn {
-    width: 90px;
-    height: 90px;
-  }
-
-  .btn-bezel {
-    width: 70px;
-    height: 70px;
-  }
+  .top-pill-bar { padding: 10px 12px; gap: 8px; }
+  .pill-btn { height: 32px; padding: 0 11px; font-size: 12px; gap: 6px; }
+  .pill-radio-btn { padding: 0 11px 0 5px; }
+  .radio-cd-disc { width: 20px; height: 20px; }
+  .radio-cd-disc::after { inset: 6px; }
+  .radio-word { font-size: 11px; letter-spacing: 0.16em; }
+  .radio-panel { top: 52px; right: 12px; }
+  .analog-gate { padding-top: 76px; }
+  .osd-bar { flex-direction: column; align-items: flex-start; gap: 6px; font-size: 10px; }
+  .osd-right { text-align: left; align-items: flex-start; }
+  .tv-dial-plate { width: 126px; height: 126px; }
+  .tv-power-btn { width: 90px; height: 90px; }
+  .btn-bezel { width: 70px; height: 70px; }
 }

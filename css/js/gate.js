@@ -1,4 +1,4 @@
-  /* =========================================================
+/* =========================================================
    THE SHOWRUNNER — LOGIC CHUYỂN MÀU, RADIO & MỞ TIVI CRT
    ========================================================= */
 
@@ -72,6 +72,7 @@ function initShowrunnerGate() {
   if (themeToggleBtn) {
     themeToggleBtn.addEventListener("click", (e) => {
       e.preventDefault();
+      e.stopPropagation();
       const current = htmlEl.getAttribute("data-theme") || "red";
       const next = current === "red" ? "relic" : "red";
       applyTheme(next, true);
@@ -307,6 +308,7 @@ function initShowrunnerGate() {
     tvOffBtn.addEventListener("click", triggerTvPowerOff);
   }
 }
+
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initShowrunnerGate);
 } else {

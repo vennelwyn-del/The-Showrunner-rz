@@ -1,5 +1,5 @@
 /* =========================================================
-   THE SHOWRUNNER — GIAO DIỆN 1: TOP PILL BAR, ANALOG CRT & 2 THEMES
+   THE SHOWRUNNER — GIAO DIỆN 1 & THANH ĐIỀU HƯỚNG ANALOG
    ========================================================= */
 
 *,
@@ -19,26 +19,21 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background-color: var(--bg-deep);
+  background-color: var(--abyss-black);
   color: var(--text-main);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   user-select: none;
-  transition: background-color 0.35s ease, color 0.35s ease;
 }
 
 body {
   position: relative;
   background-image:
-    radial-gradient(circle at 22% 28%, var(--bg-glow-1) 0%, transparent 48%),
-    radial-gradient(circle at 78% 74%, var(--bg-glow-2) 0%, transparent 52%),
-    radial-gradient(ellipse at 50% 50%, var(--bg-surface) 0%, var(--bg-mid) 36%, var(--bg-deep) 82%);
-  background-color: var(--bg-deep);
-}
-
-body.is-switching-theme .analog-gate,
-body.is-switching-theme .main-app {
-  animation: channelSwitchFlash 0.24s steps(3);
+    radial-gradient(circle at 22% 28%, var(--bg-radial-1) 0%, transparent 48%),
+    radial-gradient(circle at 78% 72%, var(--bg-radial-2) 0%, transparent 52%),
+    radial-gradient(ellipse at 50% 50%, var(--bg-core) 0%, var(--bg-mid) 34%, var(--bg-deep) 66%, var(--bg-edge) 100%);
+  background-color: var(--bg-edge);
+  transition: background-color 0.45s ease, color 0.35s ease;
 }
 
 /* =========================================================
@@ -52,7 +47,7 @@ body.is-switching-theme .main-app {
   height: 100%;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.25;
+  opacity: 0.24;
   mix-blend-mode: screen;
   transition: opacity 0.25s ease;
 }
@@ -72,14 +67,13 @@ body.is-main-active #analog-noise-canvas {
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      rgba(9, 9, 9, 0) 0px,
-      rgba(9, 9, 9, 0) 2px,
-      rgba(9, 9, 9, 0.45) 3px,
-      rgba(172, 172, 172, 0.05) 4px
-    );
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(9, 9, 9, 0) 0px,
+    rgba(9, 9, 9, 0) 2px,
+    rgba(9, 9, 9, 0.52) 3px,
+    rgba(53, 53, 53, 0.12) 4px
+  );
   animation: scanlineFlicker 0.14s infinite;
 }
 
@@ -94,9 +88,9 @@ body.is-main-active #analog-noise-canvas {
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(255, 255, 255, 0.03) 35%,
-    var(--bg-glow-1) 50%,
-    rgba(255, 255, 255, 0.02) 65%,
+    rgba(172, 172, 172, 0.04) 35%,
+    var(--bg-radial-1) 50%,
+    rgba(172, 172, 172, 0.03) 65%,
     transparent 100%
   );
   backdrop-filter: contrast(1.16);
@@ -109,27 +103,26 @@ body.is-main-active #analog-noise-canvas {
   z-index: 4;
   pointer-events: none;
   box-shadow:
-    inset 0 0 110px rgba(9, 9, 9, 0.72),
-    inset 0 0 44px var(--crt-tint);
+    inset 0 0 130px rgba(9, 9, 9, 0.95),
+    inset 0 0 42px var(--bg-deep);
   background: radial-gradient(
     circle at center,
-    transparent 56%,
-    rgba(9, 9, 9, 0.35) 86%,
-    rgba(9, 9, 9, 0.72) 100%
+    transparent 52%,
+    rgba(9, 9, 9, 0.55) 85%,
+    rgba(9, 9, 9, 0.92) 100%
   );
 }
 
 /* =========================================================
-   THANH PILL BAR TRÊN CÙNG (WEB CHÍNH · ĐỔI MÀU · RADIO)
+   THANH PILL BAR TRÊN CÙNG (WEB CHÍNH | ĐỔI MÀU | RADIO)
    ========================================================= */
 
 .top-pill-bar {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 90;
-  padding: 14px clamp(14px, 3vw, 32px);
+  top: clamp(12px, 2vw, 22px);
+  left: clamp(14px, 2.4vw, 32px);
+  right: clamp(14px, 2.4vw, 32px);
+  z-index: 40;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -138,289 +131,205 @@ body.is-main-active #analog-noise-canvas {
 }
 
 .pill-group {
-  position: relative;
-  z-index: 91;
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-wrap: wrap;
   pointer-events: auto;
 }
 
 .pill-btn {
-  position: relative;
-  z-index: 92;
-  pointer-events: auto;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  height: 36px;
-  padding: 0 15px;
+  height: 34px;
+  padding: 0 13px;
   border-radius: 999px;
-  text-decoration: none;
-  font-family: var(--font-serif);
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.03em;
+  border: 1px solid var(--border-line);
+  background: var(--surface-btn);
   color: var(--text-main);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   cursor: pointer;
-  border: 1px solid var(--pill-border);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: transform 0.16s ease, border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-}
-
-/* Đảm bảo chữ và icon bên trong không nuốt mất sự kiện click của nút */
-.pill-btn * {
-  pointer-events: none;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 20px rgba(9, 9, 9, 0.65);
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
 
 .pill-glass {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.16) 0%,
-    var(--pill-bg) 48%,
-    rgba(9, 9, 9, 0.84) 100%
-  );
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.24),
-    0 6px 18px rgba(0, 0, 0, 0.45);
-}
-
-.pill-dark {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.08) 0%,
-    var(--pill-bg) 52%,
-    rgba(9, 9, 9, 0.92) 100%
-  );
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.14),
-    0 6px 16px rgba(0, 0, 0, 0.48);
+  background: rgba(9, 9, 9, 0.55);
 }
 
 .pill-btn:hover {
-  transform: translateY(-1px);
+  background: var(--surface-hover);
   border-color: var(--text-main);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.28),
-    0 8px 22px rgba(0, 0, 0, 0.58),
-    0 0 14px var(--glow-accent);
-}
-
-.pill-btn:active {
-  transform: translateY(1px) scale(0.97);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(9, 9, 9, 0.8), 0 0 14px var(--accent-glow);
 }
 
 .pill-badge-circle {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: var(--text-main);
-  color: var(--bg-deep);
   display: grid;
   place-items: center;
-  flex-shrink: 0;
+  background: var(--accent-dark);
+  border: 1px solid var(--border-line);
+  color: var(--text-main);
 }
 
-.pill-badge-circle svg {
-  width: 12px;
-  height: 12px;
-}
-
-/* Nút chuyển 2 giao diện màu */
-.pill-theme-btn {
-  font-family: var(--font-sans);
-  font-size: 12px;
-  padding: 0 13px;
-}
-
+/* Nút chuyển 2 bảng màu Đỏ / Đen */
 .theme-dual-dot {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #9C0412 50%, #acacac 50%);
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  box-shadow: 0 0 8px var(--glow-accent);
+  border: 1px solid rgba(172, 172, 172, 0.6);
+  background: linear-gradient(135deg, var(--red-signal) 50%, var(--abyss-black) 50%);
   flex-shrink: 0;
-  transition: transform 0.35s ease;
-}
-
-[data-theme="relic"] .theme-dual-dot {
-  transform: rotate(180deg);
 }
 
 .theme-label {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  font-weight: 500;
+  gap: 4px;
 }
 
 .theme-opt {
-  opacity: 0.42;
-  transition: opacity 0.2s ease, color 0.2s ease;
+  opacity: 0.45;
+  transition: opacity 0.2s ease, color 0.2s ease, text-shadow 0.2s ease;
 }
 
 .theme-sep {
   opacity: 0.35;
 }
 
-[data-theme="red"] .opt-red {
+html[data-theme="red"] .opt-red,
+body[data-theme="red"] .opt-red {
+  opacity: 1;
+  color: #ff4a58;
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(156, 4, 18, 0.85);
+}
+
+html[data-theme="relic"] .opt-relic,
+body[data-theme="relic"] .opt-relic {
   opacity: 1;
   color: #ffffff;
   font-weight: 600;
-  text-shadow: 0 0 8px rgba(156, 4, 18, 0.9);
+  text-shadow: 0 0 8px rgba(172, 172, 172, 0.65);
 }
 
-[data-theme="relic"] .opt-relic {
-  opacity: 1;
-  color: #ffffff;
-  font-weight: 600;
-  text-shadow: 0 0 8px rgba(172, 172, 172, 0.75);
-}
-
-/* Nút RADIO có đĩa CD ánh kim bên trái */
-.pill-radio-btn {
-  padding: 0 15px 0 6px;
-  gap: 10px;
-}
-
+/* Nút & Đĩa Radio */
 .radio-cd-disc {
-  position: relative;
-  width: 24px;
-  height: 24px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background:
-    conic-gradient(
-      from 30deg,
-      #525252 0deg,
-      #e6e6e6 42deg,
-      #6a6a6a 95deg,
-      #1d1d1d 150deg,
-      #d8d8d8 210deg,
-      #5a5a5a 270deg,
-      #ececec 318deg,
-      #525252 360deg
-    );
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+    radial-gradient(circle at center, var(--abyss-black) 0 22%, var(--faded-silver) 23% 34%, var(--accent-main) 35% 75%, var(--fog-stone) 76% 100%);
+  border: 1px solid var(--border-line);
   flex-shrink: 0;
 }
 
-.radio-cd-disc::after {
-  content: "";
-  position: absolute;
-  inset: 7px;
-  border-radius: 50%;
-  background: var(--bg-deep);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-}
-
 .pill-radio-btn.is-playing .radio-cd-disc {
-  animation: spinDisc 3.2s linear infinite;
+  animation: spinDisc 2.4s linear infinite;
 }
 
 .pill-radio-btn.is-playing {
-  border-color: var(--accent-primary);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.25),
-    0 0 16px var(--glow-accent);
-}
-
-.radio-word {
-  font-family: var(--font-serif);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.24em;
+  border-color: var(--red-signal);
+  box-shadow: 0 0 16px var(--accent-glow);
 }
 
 /* Bảng điều khiển Radio mini xổ xuống */
 .radio-panel {
   position: absolute;
-  top: 58px;
-  right: clamp(14px, 3vw, 32px);
-  width: min(304px, calc(100vw - 28px));
+  top: 44px;
+  right: 0;
+  width: min(310px, calc(100vw - 28px));
   padding: 14px;
-  border-radius: 14px;
-  background: linear-gradient(165deg, rgba(24, 14, 15, 0.94) 0%, rgba(9, 9, 9, 0.96) 100%);
-  border: 1px solid var(--pill-border);
-  box-shadow:
-    0 18px 42px rgba(0, 0, 0, 0.78),
-    0 0 24px var(--glow-accent);
-  backdrop-filter: blur(14px);
+  border: 1px solid var(--border-line);
+  background: var(--surface-panel);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 18px 46px rgba(9, 9, 9, 0.92), 0 0 24px var(--accent-glow);
   pointer-events: auto;
-  z-index: 95;
-  animation: panelFadeIn 0.22s ease forwards;
-}
-
-[data-theme="relic"] .radio-panel {
-  background: linear-gradient(165deg, rgba(36, 36, 38, 0.95) 0%, rgba(9, 9, 9, 0.97) 100%);
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .radio-panel-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-frame);
   font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.14em;
 }
 
-.radio-freq-tag { color: var(--text-muted); }
-.radio-status { color: var(--text-dim); }
+.radio-freq-tag {
+  color: var(--text-sub);
+}
+
+.radio-status {
+  color: var(--text-main);
+  font-weight: 500;
+}
+
 .radio-status.is-live {
-  color: var(--led-active);
-  text-shadow: 0 0 8px var(--glow-accent);
+  color: #ff4a58;
+  text-shadow: 0 0 8px var(--red-signal);
 }
 
 .radio-stations {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-bottom: 12px;
 }
 
 .radio-station-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   width: 100%;
-  padding: 7px 10px;
-  border-radius: 8px;
-  border: 1px solid transparent;
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text-muted);
-  font-family: var(--font-sans);
-  font-size: 12px;
+  padding: 8px 10px;
   text-align: left;
+  border: 1px solid var(--border-frame);
+  background: rgba(9, 9, 9, 0.55);
+  color: var(--text-sub);
+  font-family: var(--font-mono);
+  font-size: 11px;
   cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
 }
 
 .radio-station-btn:hover {
-  background: var(--pill-highlight);
+  border-color: var(--border-line);
   color: var(--text-main);
 }
 
 .radio-station-btn.is-selected {
-  background: var(--pill-highlight);
-  border-color: var(--accent-primary);
-  color: var(--text-main);
+  border-color: var(--accent-main);
+  background: var(--surface-hover);
+  color: #ffffff;
 }
 
 .st-freq {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--text-dim);
+  font-weight: 500;
+  color: var(--text-main);
   min-width: 54px;
 }
 
-.radio-station-btn.is-selected .st-freq {
-  color: var(--text-main);
+.st-name {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .radio-controls {
@@ -428,40 +337,40 @@ body.is-main-active #analog-noise-canvas {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border-frame);
 }
 
 .radio-play-btn {
-  padding: 7px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--accent-primary);
-  background: var(--btn-core);
-  color: var(--text-main);
+  flex: 1;
+  padding: 7px 10px;
+  border: 1px solid var(--border-line);
+  background: var(--accent-dark);
+  color: #ffffff;
   font-family: var(--font-mono);
   font-size: 11px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   cursor: pointer;
-  transition: box-shadow 0.2s ease, transform 0.12s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-.radio-play-btn:hover { box-shadow: 0 0 14px var(--glow-accent); }
-.radio-play-btn:active { transform: scale(0.96); }
+.radio-play-btn:hover {
+  background: var(--accent-main);
+  border-color: var(--text-main);
+}
 
 .radio-vol-wrap {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  flex: 1;
-}
-
-.vol-label {
   font-family: var(--font-mono);
   font-size: 10px;
-  color: var(--text-dim);
+  color: var(--text-sub);
 }
 
 .radio-vol-wrap input[type="range"] {
-  width: 100%;
-  accent-color: var(--led-active);
+  width: 72px;
+  accent-color: var(--red-signal);
   cursor: pointer;
 }
 
@@ -474,7 +383,7 @@ body.is-main-active #analog-noise-canvas {
   z-index: 10;
   width: 100%;
   height: 100%;
-  padding: 74px clamp(18px, 3vw, 40px) clamp(18px, 3vw, 34px);
+  padding: clamp(64px, 7.5vw, 82px) clamp(18px, 3vw, 40px) clamp(18px, 3vw, 36px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -493,22 +402,19 @@ body.is-main-active #analog-noise-canvas {
 
 .monitor-frame {
   position: fixed;
-  top: 62px;
-  left: clamp(12px, 2vw, 24px);
-  right: clamp(12px, 2vw, 24px);
-  bottom: clamp(12px, 2vw, 24px);
-  border: 1px solid var(--border-subtle);
+  inset: clamp(10px, 1.5vw, 18px);
+  border: 1px solid var(--border-frame);
   pointer-events: none;
   z-index: 9;
-  opacity: 0.72;
+  transition: border-color 0.35s ease;
 }
 
 .monitor-frame .corner {
   position: absolute;
   width: 18px;
   height: 18px;
-  border-color: var(--text-muted);
-  opacity: 0.65;
+  border-color: var(--text-main);
+  opacity: 0.58;
 }
 
 .monitor-frame .tl { top: -1px; left: -1px; border-top: 2px solid; border-left: 2px solid; }
@@ -519,8 +425,8 @@ body.is-main-active #analog-noise-canvas {
 .monitor-frame .reticle-h,
 .monitor-frame .reticle-v {
   position: absolute;
-  background: var(--border-subtle);
-  opacity: 0.35;
+  background: var(--border-frame);
+  opacity: 0.45;
 }
 
 .monitor-frame .reticle-h { left: 0; right: 0; top: 50%; height: 1px; }
@@ -534,15 +440,26 @@ body.is-main-active #analog-noise-canvas {
   align-items: flex-start;
   gap: 16px;
   font-family: var(--font-mono);
-  font-size: clamp(10px, 1.05vw, 12px);
+  font-size: clamp(10px, 1.1vw, 12px);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-main);
 }
 
-.osd-bottom { align-items: flex-end; }
-.osd-group { display: flex; flex-direction: column; gap: 5px; }
-.osd-right { text-align: right; align-items: flex-end; }
+.osd-bottom {
+  align-items: flex-end;
+}
+
+.osd-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.osd-right {
+  text-align: right;
+  align-items: flex-end;
+}
 
 .rec-indicator {
   display: inline-flex;
@@ -556,19 +473,30 @@ body.is-main-active #analog-noise-canvas {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: var(--led-active);
-  box-shadow: 0 0 10px var(--led-active), 0 0 18px var(--glow-accent);
+  background-color: var(--red-signal);
+  box-shadow: 0 0 10px var(--red-signal), 0 0 18px var(--accent-glow);
   animation: recBlink 1.3s steps(2, start) infinite;
 }
 
-.osd-sub { color: var(--text-dim); }
-.osd-clock { color: var(--text-main); text-shadow: 0 0 8px var(--glow-accent); }
-.osd-alert { color: var(--led-active); text-shadow: 0 0 8px var(--glow-accent); font-weight: 500; }
+.osd-sub {
+  color: var(--text-sub);
+}
+
+.osd-clock {
+  color: var(--text-main);
+  text-shadow: 0 0 8px var(--accent-glow);
+}
+
+.osd-alert {
+  color: var(--red-signal);
+  text-shadow: 0 0 8px rgba(156, 4, 18, 0.55);
+  font-weight: 500;
+}
 
 .audio-toggle-btn {
-  background: transparent;
-  border: 1px solid var(--border-subtle);
-  color: var(--text-muted);
+  background: var(--surface-btn);
+  border: 1px solid var(--border-line);
+  color: var(--text-main);
   font-family: var(--font-mono);
   font-size: inherit;
   letter-spacing: 0.12em;
@@ -578,9 +506,9 @@ body.is-main-active #analog-noise-canvas {
 }
 
 .audio-toggle-btn:hover {
-  border-color: var(--text-main);
-  color: var(--text-main);
-  background-color: var(--pill-highlight);
+  border-color: var(--red-signal);
+  color: #ffffff;
+  background-color: var(--surface-hover);
 }
 
 /* =========================================================
@@ -602,10 +530,10 @@ body.is-main-active #analog-noise-canvas {
 
 .gate-kicker {
   font-family: var(--font-mono);
-  font-size: clamp(10px, 1.1vw, 12px);
-  letter-spacing: 0.32em;
+  font-size: clamp(10px, 1.15vw, 12px);
+  letter-spacing: 0.34em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-sub);
   margin-bottom: 12px;
 }
 
@@ -613,12 +541,12 @@ body.is-main-active #analog-noise-canvas {
   position: relative;
   font-family: var(--font-serif);
   font-weight: 600;
-  font-size: clamp(2.4rem, 6.4vw, 5.1rem);
+  font-size: clamp(2.4rem, 6.6vw, 5.1rem);
   line-height: 0.96;
   letter-spacing: 0.12em;
   color: var(--text-main);
   text-shadow:
-    0 0 24px var(--glow-accent),
+    0 0 28px var(--accent-glow),
     0 2px 12px rgba(9, 9, 9, 0.95);
   animation: subtleCrtBreath 5s ease-in-out infinite;
 }
@@ -633,13 +561,13 @@ body.is-main-active #analog-noise-canvas {
 }
 
 .gate-title::before {
-  color: var(--led-active);
+  color: var(--red-signal);
   transform: translate(-2px, 0);
   animation: titleGlitchLeft 6.5s infinite;
 }
 
 .gate-title::after {
-  color: var(--text-muted);
+  color: var(--faded-silver);
   transform: translate(2px, 0);
   animation: titleGlitchRight 6.5s infinite;
 }
@@ -647,13 +575,16 @@ body.is-main-active #analog-noise-canvas {
 .gate-subtitle {
   margin-top: 12px;
   font-family: var(--font-serif);
-  font-size: clamp(1.05rem, 1.9vw, 1.38rem);
+  font-size: clamp(1.05rem, 2vw, 1.38rem);
   font-weight: 400;
   letter-spacing: 0.04em;
-  color: var(--text-muted);
+  color: var(--text-sub);
 }
 
-.gate-subtitle em { color: var(--text-main); font-style: italic; }
+.gate-subtitle em {
+  color: var(--text-main);
+  font-style: italic;
+}
 
 .gate-divider {
   width: min(260px, 60vw);
@@ -662,9 +593,9 @@ body.is-main-active #analog-noise-canvas {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    var(--accent-primary) 20%,
+    var(--accent-main) 18%,
     var(--text-main) 50%,
-    var(--accent-primary) 80%,
+    var(--accent-main) 82%,
     transparent 100%
   );
   opacity: 0.85;
@@ -679,17 +610,17 @@ body.is-main-active #analog-noise-canvas {
 
 .tv-dial-plate {
   position: relative;
-  width: 146px;
-  height: 146px;
+  width: 144px;
+  height: 144px;
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: var(--dial-body);
-  border: 1px solid var(--pill-border);
+  background: radial-gradient(circle at 35% 30%, #444444 0%, var(--fog-stone) 35%, #191919 85%, var(--abyss-black) 100%);
+  border: 1px solid var(--border-line);
   box-shadow:
-    0 20px 50px rgba(9, 9, 9, 0.92),
-    0 0 36px var(--glow-accent),
-    inset 0 2px 4px rgba(255, 255, 255, 0.2),
+    0 20px 50px rgba(9, 9, 9, 0.96),
+    0 0 40px var(--accent-glow),
+    inset 0 2px 4px rgba(172, 172, 172, 0.25),
     inset 0 -8px 18px rgba(9, 9, 9, 0.9);
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
@@ -700,22 +631,22 @@ body.is-main-active #analog-noise-canvas {
   border-radius: 50%;
   background: repeating-conic-gradient(
     from -1deg,
-    var(--text-muted) 0deg 2deg,
+    var(--text-sub) 0deg 2deg,
     transparent 2deg 15deg
   );
   -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 8px), #000 calc(100% - 7px));
   mask: radial-gradient(farthest-side, transparent calc(100% - 8px), #000 calc(100% - 7px));
   pointer-events: none;
-  opacity: 0.65;
+  opacity: 0.72;
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
 }
 
 .tv-dial-plate:hover {
-  border-color: var(--text-main);
+  border-color: var(--red-signal);
   box-shadow:
-    0 20px 55px rgba(9, 9, 9, 0.96),
-    0 0 46px var(--glow-accent),
-    inset 0 2px 4px rgba(255, 255, 255, 0.28),
+    0 20px 55px rgba(9, 9, 9, 0.98),
+    0 0 52px var(--accent-glow),
+    inset 0 2px 4px rgba(172, 172, 172, 0.3),
     inset 0 -8px 18px rgba(9, 9, 9, 0.9);
 }
 
@@ -726,51 +657,55 @@ body.is-main-active #analog-noise-canvas {
 
 .tv-power-btn {
   position: relative;
-  width: 104px;
-  height: 104px;
+  width: 102px;
+  height: 102px;
   border-radius: 50%;
-  border: 2px solid var(--bg-deep);
-  background: var(--btn-core);
+  border: 2px solid var(--abyss-black);
+  background: radial-gradient(
+    circle at 38% 30%,
+    var(--accent-main) 0%,
+    var(--accent-mid) 46%,
+    var(--abyss-black) 100%
+  );
   color: var(--text-main);
   cursor: pointer;
   display: grid;
   place-items: center;
   outline: none;
   box-shadow:
-    0 8px 16px rgba(9, 9, 9, 0.92),
-    0 0 0 3px rgba(0, 0, 0, 0.55),
-    inset 0 2px 6px rgba(255, 255, 255, 0.2),
-    inset 0 -6px 14px rgba(9, 9, 9, 0.9);
+    0 8px 16px rgba(9, 9, 9, 0.95),
+    0 0 0 3px #1c1c1c,
+    inset 0 2px 6px rgba(172, 172, 172, 0.2),
+    inset 0 -6px 14px rgba(9, 9, 9, 0.92);
   transition: transform 0.14s ease, box-shadow 0.2s ease, color 0.2s ease;
 }
 
 .tv-power-btn:focus-visible {
-  outline: 2px solid var(--led-active);
+  outline: 2px solid var(--red-signal);
   outline-offset: 6px;
 }
 
 .btn-bezel {
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 78px;
+  height: 78px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: radial-gradient(circle at center, var(--pill-highlight) 0%, rgba(9, 9, 9, 0.92) 85%);
+  border: 1px solid var(--border-line);
+  background: radial-gradient(circle at center, var(--bg-mid) 0%, rgba(9, 9, 9, 0.95) 85%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  pointer-events: none;
 }
 
 .btn-led {
   position: absolute;
-  top: 10px;
+  top: 9px;
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: var(--led-active);
-  box-shadow: 0 0 6px var(--led-active), 0 0 14px var(--glow-accent);
+  background-color: var(--red-signal);
+  box-shadow: 0 0 6px var(--red-signal), 0 0 12px var(--red-scarlet);
   animation: ledStandbyPulse 2.2s ease-in-out infinite;
 }
 
@@ -779,14 +714,19 @@ body.is-main-active #analog-noise-canvas {
   height: 34px;
   margin-top: 6px;
   color: var(--text-main);
-  filter: drop-shadow(0 0 6px var(--glow-accent));
+  filter: drop-shadow(0 0 6px var(--accent-glow));
   transition: color 0.25s ease, filter 0.25s ease, transform 0.2s ease;
 }
 
 .tv-power-btn:hover .power-icon {
   color: #ffffff;
-  filter: drop-shadow(0 0 12px var(--led-active));
-  transform: scale(1.06);
+  filter: drop-shadow(0 0 12px var(--red-signal));
+  transform: scale(1.05);
+}
+
+.tv-power-btn:hover .btn-led {
+  background-color: #ff1e2d;
+  box-shadow: 0 0 12px var(--red-signal), 0 0 24px var(--red-signal);
 }
 
 .tv-power-btn:active,
@@ -794,9 +734,9 @@ body.is-main-active #analog-noise-canvas {
   transform: translateY(3px) scale(0.95);
   box-shadow:
     0 2px 6px rgba(9, 9, 9, 0.98),
-    0 0 0 3px var(--accent-primary),
+    0 0 0 3px var(--red-blood),
     inset 0 4px 12px rgba(9, 9, 9, 0.98),
-    0 0 28px var(--glow-accent);
+    0 0 28px rgba(156, 4, 18, 0.65);
 }
 
 .tv-switch-label {
@@ -808,8 +748,8 @@ body.is-main-active #analog-noise-canvas {
 
 .switch-code {
   font-size: 11px;
-  letter-spacing: 0.22em;
-  color: var(--text-dim);
+  letter-spacing: 0.24em;
+  color: var(--text-sub);
   text-transform: uppercase;
 }
 
@@ -818,7 +758,7 @@ body.is-main-active #analog-noise-canvas {
   letter-spacing: 0.28em;
   color: var(--text-main);
   text-transform: uppercase;
-  text-shadow: 0 0 10px var(--glow-accent);
+  text-shadow: 0 0 10px var(--accent-glow);
   animation: hintPulse 2.4s ease-in-out infinite;
 }
 
@@ -829,14 +769,16 @@ body.is-main-active #analog-noise-canvas {
 .crt-glitch-overlay {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: 50;
   pointer-events: none;
   display: none;
   align-items: center;
   justify-content: center;
 }
 
-.crt-glitch-overlay.is-active { display: flex; }
+.crt-glitch-overlay.is-active {
+  display: flex;
+}
 
 .crt-beam {
   position: absolute;
@@ -848,14 +790,12 @@ body.is-main-active #analog-noise-canvas {
   background: linear-gradient(
     to bottom,
     rgba(9, 9, 9, 0.15) 0%,
-    var(--glow-accent) 35%,
-    var(--beam-core) 50%,
-    var(--glow-accent) 65%,
+    var(--accent-glow) 35%,
+    rgba(255, 255, 255, 0.96) 50%,
+    var(--accent-glow) 65%,
     rgba(9, 9, 9, 0.15) 100%
   );
-  box-shadow:
-    0 0 40px var(--text-main),
-    0 0 90px var(--glow-accent);
+  box-shadow: 0 0 40px var(--faded-silver), 0 0 90px var(--red-signal);
   opacity: 0;
 }
 
@@ -870,7 +810,7 @@ body.is-main-active #analog-noise-canvas {
 .crt-flash {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.28) 0%, var(--bg-glow-1) 45%, rgba(9, 9, 9, 0.94) 100%);
+  background: radial-gradient(circle, rgba(172, 172, 172, 0.36) 0%, var(--accent-glow) 45%, rgba(9, 9, 9, 0.95) 100%);
   opacity: 0;
 }
 
@@ -880,19 +820,17 @@ body.is-main-active #analog-noise-canvas {
 
 .glitch-osd {
   position: relative;
-  z-index: 102;
+  z-index: 52;
   padding: 10px 20px;
-  border: 1px solid var(--accent-primary);
+  border: 1px solid var(--red-signal);
   background: rgba(9, 9, 9, 0.88);
   color: var(--text-main);
   font-family: var(--font-mono);
-  font-size: clamp(12px, 1.5vw, 15px);
+  font-size: clamp(12px, 1.6vw, 15px);
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  text-shadow:
-    -2px 0 var(--led-active),
-    2px 0 var(--text-muted);
-  box-shadow: 0 0 30px var(--glow-accent);
+  text-shadow: -2px 0 var(--red-signal), 2px 0 rgba(172, 172, 172, 0.75);
+  box-shadow: 0 0 30px rgba(156, 4, 18, 0.55);
   opacity: 0;
 }
 
@@ -911,17 +849,11 @@ body.is-main-active #analog-noise-canvas {
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  padding: 78px clamp(20px, 4vw, 48px) clamp(24px, 4vw, 48px);
+  padding: clamp(72px, 8vw, 90px) clamp(20px, 4vw, 48px) clamp(24px, 4vw, 48px);
   background:
-    radial-gradient(circle at 50% 18%, var(--bg-glow-1) 0%, transparent 58%),
-    rgba(9, 9, 9, 0.72);
+    radial-gradient(circle at 50% 18%, var(--bg-radial-1) 0%, transparent 58%),
+    rgba(9, 9, 9, 0.84);
   opacity: 0;
-}
-
-[data-theme="red"] .main-app {
-  background:
-    radial-gradient(circle at 50% 18%, rgba(156, 4, 18, 0.32) 0%, transparent 58%),
-    rgba(36, 4, 5, 0.82);
 }
 
 .main-app.is-visible {
@@ -931,7 +863,7 @@ body.is-main-active #analog-noise-canvas {
 .main-shell {
   max-width: 960px;
   margin: 0 auto;
-  min-height: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -943,7 +875,7 @@ body.is-main-active #analog-noise-canvas {
   align-items: center;
   gap: 12px;
   padding-bottom: 18px;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-line);
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.16em;
@@ -951,26 +883,25 @@ body.is-main-active #analog-noise-canvas {
 
 .play-badge {
   color: var(--text-main);
-  text-shadow: 0 0 8px var(--glow-accent);
+  text-shadow: 0 0 8px var(--accent-glow);
 }
 
 .tv-off-btn {
-  background: var(--pill-bg);
-  border: 1px solid var(--pill-border);
-  border-radius: 999px;
+  background: var(--surface-btn);
+  border: 1px solid var(--border-line);
   color: var(--text-main);
   font-family: var(--font-mono);
   font-size: 11px;
-  letter-spacing: 0.14em;
-  padding: 8px 16px;
+  letter-spacing: 0.16em;
+  padding: 8px 14px;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .tv-off-btn:hover {
-  background: var(--accent-primary);
-  border-color: var(--text-main);
-  box-shadow: 0 0 14px var(--glow-accent);
+  background: var(--red-scarlet);
+  border-color: var(--red-signal);
+  color: #ffffff;
 }
 
 .main-placeholder {
@@ -993,27 +924,16 @@ body.is-main-active #analog-noise-canvas {
 .main-desc {
   font-size: 15px;
   line-height: 1.75;
-  color: var(--text-muted);
+  color: var(--text-sub);
 }
 
 /* =========================================================
-   KEYFRAMES ANIMATION
+   KEYFRAMES
    ========================================================= */
 
 @keyframes spinDisc {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
-}
-
-@keyframes panelFadeIn {
-  from { opacity: 0; transform: translateY(-6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes channelSwitchFlash {
-  0%   { filter: brightness(1.4) contrast(1.4); transform: translateX(-3px); }
-  50%  { filter: brightness(0.85) contrast(1.6); transform: translateX(3px); }
-  100% { filter: none; transform: translateX(0); }
 }
 
 @keyframes scanlineFlicker {
@@ -1027,17 +947,17 @@ body.is-main-active #analog-noise-canvas {
 }
 
 @keyframes recBlink {
-  0%, 49%  { opacity: 1; }
-  50%, 100%{ opacity: 0.18; }
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0.18; }
 }
 
 @keyframes ledStandbyPulse {
   0%, 100% { opacity: 0.55; transform: scale(0.95); }
-  50%      { opacity: 1;    transform: scale(1.1); }
+  50%      { opacity: 1; transform: scale(1.1); }
 }
 
 @keyframes hintPulse {
-  0%, 100% { opacity: 0.65; }
+  0%, 100% { opacity: 0.6; }
   50%      { opacity: 1; }
 }
 
@@ -1101,17 +1021,25 @@ body.is-main-active #analog-noise-canvas {
 }
 
 @media (max-width: 640px) {
-  .top-pill-bar { padding: 10px 12px; gap: 8px; }
-  .pill-btn { height: 32px; padding: 0 11px; font-size: 12px; gap: 6px; }
-  .pill-radio-btn { padding: 0 11px 0 5px; }
-  .radio-cd-disc { width: 20px; height: 20px; }
-  .radio-cd-disc::after { inset: 6px; }
-  .radio-word { font-size: 11px; letter-spacing: 0.16em; }
-  .radio-panel { top: 52px; right: 12px; }
-  .analog-gate { padding-top: 76px; }
-  .osd-bar { flex-direction: column; align-items: flex-start; gap: 6px; font-size: 10px; }
-  .osd-right { text-align: left; align-items: flex-start; }
-  .tv-dial-plate { width: 126px; height: 126px; }
-  .tv-power-btn { width: 90px; height: 90px; }
-  .btn-bezel { width: 70px; height: 70px; }
+  .pill-btn {
+    padding: 0 10px;
+    font-size: 10px;
+    height: 31px;
+  }
+
+  .osd-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 10px;
+  }
+
+  .osd-right {
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .tv-dial-plate { width: 124px; height: 124px; }
+  .tv-power-btn  { width: 88px; height: 88px; }
+  .btn-bezel     { width: 68px; height: 68px; }
 }

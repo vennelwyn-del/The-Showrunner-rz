@@ -1,10 +1,18 @@
 /* =========================================================
-   THE SHOWRUNNER — LOGIC CHUYỂN MÀU, RADIO & MỞ TIVI CRT
+   THE SHOWRUNNER — LOGIC GIAO DIỆN 1, ĐỔI MÀU (ĐỎ/ĐEN) & RADIO
    ========================================================= */
 
-function initShowrunnerGate() {
-  const htmlEl = document.documentElement;
+document.addEventListener("DOMContentLoaded", () => {
+  const root = document.documentElement;
   const body = document.body;
+
+  const themeToggleBtn = document.getElementById("theme-toggle-btn");
+  const radioToggleBtn = document.getElementById("radio-toggle-btn");
+  const radioPanel = document.getElementById("radio-panel");
+  const radioStatusText = document.getElementById("radio-status-text");
+  const radioStationList = document.getElementById("radio-station-list");
+  const radioPlayBtn = document.getElementById("radio-play-btn");
+  const radioVolumeInput = document.getElementById("radio-volume");
 
   const analogGate = document.getElementById("analog-gate");
   const tvPowerBtn = document.getElementById("tv-power-btn");
@@ -14,14 +22,6 @@ function initShowrunnerGate() {
   const glitchOsd = document.getElementById("glitch-osd");
   const mainApp = document.getElementById("main-app");
   const osdClock = document.getElementById("osd-clock");
-
-  const themeToggleBtn = document.getElementById("theme-toggle-btn");
-  const radioToggleBtn = document.getElementById("radio-toggle-btn");
-  const radioPanel = document.getElementById("radio-panel");
-  const radioPlayBtn = document.getElementById("radio-play-btn");
-  const radioStatusText = document.getElementById("radio-status-text");
-  const radioStationList = document.getElementById("radio-station-list");
-  const radioVolumeInput = document.getElementById("radio-volume");
 
   let isTransitioning = false;
   let activeTimers = [];
@@ -38,56 +38,48 @@ function initShowrunnerGate() {
   }
 
   /* -------------------------------------------------------
-     1. CHUYỂN ĐỔI 2 GIAO DIỆN MÀU (RED <-> SILENT RELIC)
+     1. CHUYỂN ĐỔI 2 GIAO DIỆN MÀU: ĐỎ (red) <-> ĐEN (relic)
+     (Đồng bộ lên cả <html> và <body> để tránh bị ghi đè CSS)
      ------------------------------------------------------- */
-  const THEME_STORAGE_KEY = "showrunner_theme";
-
-  function applyTheme(themeName, withBlip = false) {
+  function applyTheme(themeName) {
     const safeTheme = themeName === "relic" ? "relic" : "red";
-    htmlEl.setAttribute("data-theme", safeTheme);
+    root.setAttribute("data-theme", safeTheme);
     body.setAttribute("data-theme", safeTheme);
 
-    try {
-      localStorage.setItem(THEME_STORAGE_KEY, safeTheme);
-    } catch (e) {}
-
-    if (withBlip) {
-      if (window.AnalogAudio) {
-        window.AnalogAudio.playClickBlip();
-      }
-      body.classList.add("is-switching-theme");
-      setTimeout(() => {
-        body.classList.remove("is-switching-theme");
-      }, 240);
+    if (window.AnalogNoise && typeof window.AnalogNoise.setTheme === "function") {
+      window.AnalogNoise.setTheme(safeTheme);
     }
+
+    try {
+      localStorage.setItem("showrunner_theme", safeTheme);
+    } catch (e) {}
   }
 
+  // Khởi tạo theme đã lưu (mặc định là "red")
+  let savedTheme = "red";
   try {
-    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-    if (savedTheme === "relic" || savedTheme === "red") {
-      applyTheme(savedTheme, false);
-    }
+    savedTheme = localStorage.getItem("showrunner_theme") || "red";
   } catch (e) {}
+  applyTheme(savedTheme);
 
   if (themeToggleBtn) {
-    themeToggleBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const current = htmlEl.getAttribute("data-theme") || "red";
+    themeToggleBtn.addEventListener("click", () => {
+      const current = body.getAttribute("data-theme") || "red";
       const next = current === "red" ? "relic" : "red";
-      applyTheme(next, true);
+      applyTheme(next);
     });
   }
 
   /* -------------------------------------------------------
-     2. BỘ PHÁT RADIO ANALOG & ĐĨA CD QUAY TRÒN
+     2. BỘ ĐIỀU KHIỂN RADIO ANALOG
      ------------------------------------------------------- */
-  function syncRadioUI(playing) {
+  function syncRadioUI() {
+    const playing = window.AnalogRadio ? window.AnalogRadio.isPlaying() : false;
     if (radioToggleBtn) {
       radioToggleBtn.classList.toggle("is-playing", playing);
     }
     if (radioPlayBtn) {
-      radioPlayBtn.innerHTML = playing ? "&#10074;&#10074; TẠM DỪNG" : "&#9654; PHÁT RADIO";
+      radioPlayBtn.innerHTML = playing ? "&#9632; DỪNG RADIO" : "&#9654; PHÁT RADIO";
     }
     if (radioStatusText) {
       radioStatusText.textContent = playing ? "ĐANG PHÁT SÓNG" : "ĐANG TẮT";
@@ -103,6 +95,7 @@ function initShowrunnerGate() {
       radioToggleBtn.setAttribute("aria-expanded", String(willOpen));
     });
 
+    // Bấm ra ngoài thì đóng bảng radio cho gọn màn hình
     document.addEventListener("click", (e) => {
       if (
         !radioPanel.hidden &&
@@ -115,43 +108,42 @@ function initShowrunnerGate() {
     });
   }
 
-  if (radioPlayBtn) {
-    radioPlayBtn.addEventListener("click", () => {
-      if (!window.AnalogRadio) return;
-      const isNowPlaying = window.AnalogRadio.toggle();
-      syncRadioUI(isNowPlaying);
+  if (radioStationList) {
+    radioStationList.addEventListener("click", (e) => {
+      const btn = e.target.closest(".radio-station-btn");
+      if (!btn) return;
+      radioStationList
+        .querySelectorAll(".radio-station-btn")
+        .forEach((b) => b.classList.remove("is-selected"));
+      btn.classList.add("is-selected");
+
+      if (window.AnalogRadio) {
+        window.AnalogRadio.setStation(btn.dataset.station);
+      }
     });
   }
 
-  if (radioStationList) {
-    const stationBtns = radioStationList.querySelectorAll(".radio-station-btn");
-    stationBtns.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        stationBtns.forEach((b) => b.classList.remove("is-selected"));
-        btn.classList.add("is-selected");
-
-        const stationId = btn.getAttribute("data-station");
-        if (window.AnalogRadio && stationId) {
-          window.AnalogRadio.setStation(stationId);
-          if (!window.AnalogRadio.isPlaying()) {
-            window.AnalogRadio.start();
-            syncRadioUI(true);
-          }
-        }
-      });
+  if (radioPlayBtn) {
+    radioPlayBtn.addEventListener("click", () => {
+      if (window.AnalogRadio) {
+        window.AnalogRadio.togglePlay();
+        syncRadioUI();
+      }
     });
   }
 
   if (radioVolumeInput) {
     radioVolumeInput.addEventListener("input", () => {
       if (window.AnalogRadio) {
-        window.AnalogRadio.setVolume(Number(radioVolumeInput.value) / 100);
+        window.AnalogRadio.setVolume(radioVolumeInput.value);
       }
     });
   }
 
+  syncRadioUI();
+
   /* -------------------------------------------------------
-     3. ĐỒNG HỒ SWEZAN 1994 CHẠY THỜI GIAN THỰC
+     3. ĐỒNG HỒ SWEZAN 1994 (30/11/1994 — 06:15:00)
      ------------------------------------------------------- */
   let simSeconds = 6 * 3600 + 15 * 60;
 
@@ -172,37 +164,24 @@ function initShowrunnerGate() {
   }
 
   /* -------------------------------------------------------
-     4. TƯƠNG TÁC NÚT NGUỒN & ÂM THANH TIVI
+     4. TƯƠNG TÁC NÚT MỞ TIVI & ÂM THANH TIVI
      ------------------------------------------------------- */
   if (tvPowerBtn && analogGate) {
-    tvPowerBtn.addEventListener("mouseenter", () => {
-      analogGate.classList.add("is-hover-charged");
-    });
-    tvPowerBtn.addEventListener("mouseleave", () => {
-      analogGate.classList.remove("is-hover-charged");
-    });
-    tvPowerBtn.addEventListener("focus", () => {
-      analogGate.classList.add("is-hover-charged");
-    });
-    tvPowerBtn.addEventListener("blur", () => {
-      analogGate.classList.remove("is-hover-charged");
-    });
+    tvPowerBtn.addEventListener("mouseenter", () => analogGate.classList.add("is-hover-charged"));
+    tvPowerBtn.addEventListener("mouseleave", () => analogGate.classList.remove("is-hover-charged"));
+    tvPowerBtn.addEventListener("focus", () => analogGate.classList.add("is-hover-charged"));
+    tvPowerBtn.addEventListener("blur", () => analogGate.classList.remove("is-hover-charged"));
   }
 
   if (audioToggleBtn) {
     audioToggleBtn.addEventListener("click", () => {
       if (!window.AnalogAudio) return;
       const muted = window.AnalogAudio.toggleMute();
-      audioToggleBtn.textContent = muted
-        ? "[ÂM THANH TIVI: TẮT]"
-        : "[ÂM THANH TIVI: BẬT]";
+      audioToggleBtn.textContent = muted ? "[ÂM THANH TIVI: TẮT]" : "[ÂM THANH TIVI: BẬT]";
       audioToggleBtn.setAttribute("aria-pressed", String(!muted));
     });
   }
 
-  /* -------------------------------------------------------
-     5. HÀNH ĐỘNG MỞ TIVI & TẮT TIVI
-     ------------------------------------------------------- */
   function triggerTvPowerOn() {
     if (isTransitioning) return;
     isTransitioning = true;
@@ -211,21 +190,16 @@ function initShowrunnerGate() {
     tvPowerBtn.disabled = true;
     tvPowerBtn.classList.add("is-pressing");
 
-    if (window.AnalogAudio) {
-      window.AnalogAudio.playPowerOnSound();
-    }
+    if (window.AnalogAudio) window.AnalogAudio.playPowerOnSound();
 
     schedule(() => {
       body.classList.remove("is-standby");
       body.classList.add("is-bursting");
       analogGate.classList.add("is-powering-on");
 
-      if (window.AnalogNoise) {
-        window.AnalogNoise.setMode("burst");
-      }
+      if (window.AnalogNoise) window.AnalogNoise.setMode("burst");
 
-      glitchOverlay.className =
-        "crt-glitch-overlay is-active is-powering-on is-showing-osd";
+      glitchOverlay.className = "crt-glitch-overlay is-active is-powering-on is-showing-osd";
       if (glitchOsd) glitchOsd.textContent = "SIGNAL DETECTED // K-TV CH-08";
     }, 100);
 
@@ -251,9 +225,7 @@ function initShowrunnerGate() {
       body.classList.remove("is-bursting");
       body.classList.add("is-main-active");
 
-      if (window.AnalogNoise) {
-        window.AnalogNoise.setMode("calm");
-      }
+      if (window.AnalogNoise) window.AnalogNoise.setMode("calm");
 
       mainApp.hidden = false;
       void mainApp.offsetWidth;
@@ -268,16 +240,12 @@ function initShowrunnerGate() {
     isTransitioning = true;
     clearAllTimers();
 
-    if (window.AnalogAudio) {
-      window.AnalogAudio.playPowerOffSound();
-    }
+    if (window.AnalogAudio) window.AnalogAudio.playPowerOffSound();
 
     body.classList.remove("is-main-active");
     body.classList.add("is-bursting");
 
-    if (window.AnalogNoise) {
-      window.AnalogNoise.setMode("burst");
-    }
+    if (window.AnalogNoise) window.AnalogNoise.setMode("burst");
 
     glitchOverlay.className = "crt-glitch-overlay is-active is-powering-off";
 
@@ -291,26 +259,13 @@ function initShowrunnerGate() {
       body.classList.remove("is-bursting");
       body.classList.add("is-standby");
 
-      if (window.AnalogNoise) {
-        window.AnalogNoise.setMode("standby");
-      }
+      if (window.AnalogNoise) window.AnalogNoise.setMode("standby");
 
       analogGate.hidden = false;
       isTransitioning = false;
     }, 680);
   }
 
-  if (tvPowerBtn) {
-    tvPowerBtn.addEventListener("click", triggerTvPowerOn);
-  }
-
-  if (tvOffBtn) {
-    tvOffBtn.addEventListener("click", triggerTvPowerOff);
-  }
-}
-
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initShowrunnerGate);
-} else {
-  initShowrunnerGate();
-}
+  if (tvPowerBtn) tvPowerBtn.addEventListener("click", triggerTvPowerOn);
+  if (tvOffBtn) tvOffBtn.addEventListener("click", triggerTvPowerOff);
+});

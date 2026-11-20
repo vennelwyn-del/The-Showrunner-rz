@@ -1,5 +1,5 @@
 /* =========================================================
-   THE SHOWRUNNER — CANVAS HẠT NHIỄU 2 THEME, ÂM THANH TIVI & RADIO 1994
+   THE SHOWRUNNER — CANVAS NHIỄU ANALOG, ÂM THANH CRT & RADIO 1994
    ========================================================= */
 
 (function () {
@@ -7,15 +7,12 @@
   const ctx = canvas ? canvas.getContext("2d", { alpha: true }) : null;
 
   let mode = "standby"; // "standby" | "burst" | "calm"
+  let currentTheme = "red"; // "red" | "relic"
   let width = 0;
   let height = 0;
   let frameCount = 0;
 
   const PIXEL_SCALE = 3;
-
-  function getActiveTheme() {
-    return document.documentElement.getAttribute("data-theme") || "red";
-  }
 
   function resizeCanvas() {
     if (!canvas) return;
@@ -25,70 +22,46 @@
     canvas.height = height;
   }
 
+  function getAccentRgb() {
+    return currentTheme === "red" ? [156, 4, 18] : [172, 172, 172];
+  }
+
   function renderStandbyFrame() {
     const imgData = ctx.createImageData(width, height);
     const data = imgData.data;
-    const isRed = getActiveTheme() === "red";
+    const [ar, ag, ab] = getAccentRgb();
 
     for (let i = 0; i < data.length; i += 4) {
       const r = Math.random();
-      if (isRed) {
-        if (r > 0.93) {
-          // Tia nhiễu đỏ tươi (#9C0412) & kem nhẹ
-          data[i] = 175 + Math.floor(Math.random() * 45);
-          data[i + 1] = 28 + Math.floor(Math.random() * 25);
-          data[i + 2] = 38 + Math.floor(Math.random() * 25);
-          data[i + 3] = 125;
-        } else if (r < 0.03) {
-          // Hạt sáng kem
-          data[i] = 225;
-          data[i + 1] = 205;
-          data[i + 2] = 200;
-          data[i + 3] = 95;
-        } else {
-          // Nền đỏ thẫm (#340506 - #520102)
-          data[i] = 48 + Math.floor(Math.random() * 35);
-          data[i + 1] = 4;
-          data[i + 2] = 6;
-          data[i + 3] = 65;
-        }
+      if (r > 0.92) {
+        const v = 135 + Math.floor(Math.random() * 50);
+        data[i] = v;
+        data[i + 1] = v;
+        data[i + 2] = v;
+        data[i + 3] = 105;
+      } else if (r < 0.018) {
+        data[i] = ar;
+        data[i + 1] = ag;
+        data[i + 2] = ab;
+        data[i + 3] = 140;
       } else {
-        // Theme Silent Relic (Đen tuyền #090909 - Xám đá #353535 - Bạc #acacac)
-        if (r > 0.92) {
-          const v = 140 + Math.floor(Math.random() * 45);
-          data[i] = v;
-          data[i + 1] = v;
-          data[i + 2] = v;
-          data[i + 3] = 115;
-        } else if (r < 0.015) {
-          // Điểm nhấn Blood Wine (#3f1117)
-          data[i] = 95;
-          data[i + 1] = 22;
-          data[i + 2] = 30;
-          data[i + 3] = 110;
-        } else {
-          const v = 9 + Math.floor(Math.random() * 36);
-          data[i] = v;
-          data[i + 1] = v;
-          data[i + 2] = v;
-          data[i + 3] = 70;
-        }
+        const v = 9 + Math.floor(Math.random() * 28);
+        data[i] = v;
+        data[i + 1] = v;
+        data[i + 2] = v;
+        data[i + 3] = 65;
       }
     }
 
     ctx.putImageData(imgData, 0, 0);
 
-    // Vệt xước sọc ngang VHS
     if (Math.random() > 0.78) {
       const y = Math.floor(Math.random() * height);
       const h = 1 + Math.floor(Math.random() * 2);
-      ctx.fillStyle = isRed
-        ? Math.random() > 0.5
-          ? "rgba(156, 4, 18, 0.42)"
-          : "rgba(242, 230, 228, 0.25)"
-        : Math.random() > 0.78
-          ? "rgba(63, 17, 23, 0.45)"
-          : "rgba(172, 172, 172, 0.28)";
+      ctx.fillStyle =
+        Math.random() > 0.65
+          ? `rgba(${ar}, ${ag}, ${ab}, 0.36)`
+          : "rgba(172, 172, 172, 0.24)";
       ctx.fillRect(0, y, width, h);
     }
   }
@@ -96,86 +69,52 @@
   function renderBurstFrame() {
     const imgData = ctx.createImageData(width, height);
     const data = imgData.data;
-    const isRed = getActiveTheme() === "red";
+    const [ar, ag, ab] = getAccentRgb();
 
     for (let i = 0; i < data.length; i += 4) {
       const roll = Math.random();
-      if (isRed) {
-        if (roll > 0.85) {
-          // Đỏ tín hiệu (#9C0412)
-          data[i] = 156 + Math.floor(Math.random() * 50);
-          data[i + 1] = 8;
-          data[i + 2] = 22;
-          data[i + 3] = 255;
-        } else if (roll > 0.52) {
-          // Tuyết sáng hồng tro
-          const v = 150 + Math.floor(Math.random() * 85);
-          data[i] = v;
-          data[i + 1] = v - 22;
-          data[i + 2] = v - 24;
-          data[i + 3] = 245;
-        } else {
-          // Đỏ đen (#340506)
-          data[i] = 20 + Math.floor(Math.random() * 40);
-          data[i + 1] = 4;
-          data[i + 2] = 5;
-          data[i + 3] = 255;
-        }
+      if (roll > 0.93) {
+        data[i] = ar;
+        data[i + 1] = ag;
+        data[i + 2] = ab;
+        data[i + 3] = 255;
+      } else if (roll > 0.48) {
+        const v = 120 + Math.floor(Math.random() * 115);
+        data[i] = v;
+        data[i + 1] = v;
+        data[i + 2] = v;
+        data[i + 3] = 245;
       } else {
-        if (roll > 0.94) {
-          // Đốm rượu vang (#3f1117)
-          data[i] = 105;
-          data[i + 1] = 22;
-          data[i + 2] = 30;
-          data[i + 3] = 255;
-        } else if (roll > 0.48) {
-          // Tuyết bạc phai (#acacac)
-          const v = 130 + Math.floor(Math.random() * 100);
-          data[i] = v;
-          data[i + 1] = v;
-          data[i + 2] = v;
-          data[i + 3] = 245;
-        } else {
-          // Đen xám đá (#090909 - #353535)
-          const v = 9 + Math.floor(Math.random() * 44);
-          data[i] = v;
-          data[i + 1] = v;
-          data[i + 2] = v;
-          data[i + 3] = 255;
-        }
+        const v = 9 + Math.floor(Math.random() * 44);
+        data[i] = v;
+        data[i + 1] = v;
+        data[i + 2] = v;
+        data[i + 3] = 255;
       }
     }
 
     ctx.putImageData(imgData, 0, 0);
 
-    // Dải xé hình ngang
     const tearCount = 4 + Math.floor(Math.random() * 6);
     for (let t = 0; t < tearCount; t++) {
       const y = Math.floor(Math.random() * height);
       const h = 2 + Math.floor(Math.random() * 10);
       const xOffset = Math.floor((Math.random() - 0.5) * 40);
 
-      if (isRed) {
-        ctx.fillStyle =
-          Math.random() > 0.45
-            ? "rgba(156, 4, 18, 0.62)"
-            : "rgba(242, 230, 228, 0.45)";
+      if (Math.random() > 0.45) {
+        ctx.fillStyle = `rgba(${ar}, ${ag}, ${ab}, 0.52)`;
+      } else if (Math.random() > 0.5) {
+        ctx.fillStyle = "rgba(172, 172, 172, 0.58)";
       } else {
-        ctx.fillStyle =
-          Math.random() > 0.72
-            ? "rgba(63, 17, 23, 0.55)"
-            : "rgba(172, 172, 172, 0.52)";
+        ctx.fillStyle = "rgba(9, 9, 9, 0.85)";
       }
       ctx.fillRect(xOffset, y, width, h);
     }
   }
 
   function renderCalmFrame() {
-    const isRed = getActiveTheme() === "red";
     ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = isRed
-      ? "rgba(242, 230, 228, 0.16)"
-      : "rgba(172, 172, 172, 0.18)";
+    ctx.fillStyle = "rgba(172, 172, 172, 0.18)";
     for (let i = 0; i < 120; i++) {
       const x = Math.floor(Math.random() * width);
       const y = Math.floor(Math.random() * height);
@@ -207,10 +146,13 @@
     setMode(nextMode) {
       mode = nextMode;
     },
+    setTheme(nextTheme) {
+      currentTheme = nextTheme === "relic" ? "relic" : "red";
+    },
   };
 
   /* =======================================================
-     BỘ TỔNG HỢP ÂM THANH ANALOG CHUNG (TV SFX + RADIO)
+     WEB AUDIO API: ÂM THANH TIVI + RADIO ANALOG 3 KÊNH
      ======================================================= */
   let audioCtx = null;
   let isMuted = false;
@@ -247,24 +189,6 @@
       isMuted = !isMuted;
       return isMuted;
     },
-    playClickBlip() {
-      if (isMuted) return;
-      try {
-        const ctxAudio = ensureAudioContext();
-        if (!ctxAudio) return;
-        const now = ctxAudio.currentTime;
-        const osc = ctxAudio.createOscillator();
-        const gain = ctxAudio.createGain();
-        osc.type = "triangle";
-        osc.frequency.setValueAtTime(240, now);
-        osc.frequency.exponentialRampToValueAtTime(65, now + 0.04);
-        gain.gain.setValueAtTime(0.18, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
-        osc.connect(gain).connect(ctxAudio.destination);
-        osc.start(now);
-        osc.stop(now + 0.05);
-      } catch (err) {}
-    },
     playPowerOnSound() {
       if (isMuted) return;
       try {
@@ -277,7 +201,7 @@
         clickOsc.type = "triangle";
         clickOsc.frequency.setValueAtTime(160, now);
         clickOsc.frequency.exponentialRampToValueAtTime(42, now + 0.065);
-        clickGain.gain.setValueAtTime(0.42, now);
+        clickGain.gain.setValueAtTime(0.45, now);
         clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
         clickOsc.connect(clickGain).connect(ctxAudio.destination);
         clickOsc.start(now);
@@ -297,6 +221,7 @@
 
         const noiseSrc = ctxAudio.createBufferSource();
         noiseSrc.buffer = createNoiseBuffer(ctxAudio, 1.6);
+
         const bandpass = ctxAudio.createBiquadFilter();
         bandpass.type = "bandpass";
         bandpass.frequency.setValueAtTime(1400, now + 0.12);
@@ -335,177 +260,145 @@
   };
 
   /* =======================================================
-     BỘ PHÁT RADIO ANALOG 3 KÊNH (CHẠY NGAY KHÔNG CẦN MP3)
-     (Nếu bạn muốn dùng file .mp3 riêng sau này, có thể gắn thẻ <audio> vào đây)
+     BỘ PHÁT RADIO ANALOG SWEZAN 1994 (3 KÊNH)
      ======================================================= */
   let radioPlaying = false;
-  let currentStation = "cassius";
+  let radioStation = "cassius";
   let radioVolume = 0.45;
   let radioMasterGain = null;
-  let radioLoopTimer = null;
   let radioNoiseSrc = null;
+  let radioHumOsc = null;
+  let radioNoteTimer = null;
   let noteStep = 0;
 
-  // Chuỗi hợp âm trầm buồn cho 2 kênh âm nhạc
-  const PIANO_SCALE = [220.0, 261.63, 329.63, 293.66, 246.94, 196.0, 261.63, 246.94];
-  const JAZZ_CHORDS = [
-    [146.83, 220.0, 261.63, 329.63], // Dm9
-    [130.81, 196.0, 246.94, 293.66], // Cmaj9
-    [123.47, 185.0, 220.0, 293.66],  // Bm7b5
-    [110.0, 164.81, 207.65, 261.63], // AmMaj7
+  const CHOPIN_NOTES = [220.0, 261.63, 329.63, 311.13, 246.94, 293.66, 220.0, 196.0];
+  const SWAN_CHORDS = [
+    [146.83, 174.61, 220.0, 261.63],
+    [130.81, 164.81, 196.0, 246.94],
+    [110.0, 130.81, 164.81, 196.0],
   ];
 
-  function triggerPianoNote(ctxAudio, freq, duration, vol) {
+  function stopRadioNodes() {
+    if (radioNoteTimer) {
+      clearInterval(radioNoteTimer);
+      radioNoteTimer = null;
+    }
+    try {
+      if (radioNoiseSrc) radioNoiseSrc.stop();
+      if (radioHumOsc) radioHumOsc.stop();
+    } catch (e) {}
+    radioNoiseSrc = null;
+    radioHumOsc = null;
+  }
+
+  function playSoftTone(ctxAudio, freq, duration, type, peakGain) {
     if (!radioMasterGain) return;
     const now = ctxAudio.currentTime;
     const osc = ctxAudio.createOscillator();
     const filter = ctxAudio.createBiquadFilter();
-    const g = ctxAudio.createGain();
+    const gain = ctxAudio.createGain();
 
-    osc.type = "triangle";
+    osc.type = type;
     osc.frequency.setValueAtTime(freq, now);
 
-    // Giả lập âm thanh ấm qua loa đĩa than cũ
     filter.type = "lowpass";
-    filter.frequency.setValueAtTime(1100, now);
+    filter.frequency.setValueAtTime(950, now);
 
-    g.gain.setValueAtTime(0.0001, now);
-    g.gain.linearRampToValueAtTime(vol, now + 0.03);
-    g.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.linearRampToValueAtTime(peakGain, now + 0.08);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
 
-    osc.connect(filter).connect(g).connect(radioMasterGain);
+    osc.connect(filter).connect(gain).connect(radioMasterGain);
     osc.start(now);
     osc.stop(now + duration + 0.05);
   }
 
-  function startAmbientNoise(ctxAudio, level, lowFreq) {
-    stopAmbientNoise();
-    const buf = createNoiseBuffer(ctxAudio, 2.5);
-    const src = ctxAudio.createBufferSource();
-    src.buffer = buf;
-    src.loop = true;
-
-    const filter = ctxAudio.createBiquadFilter();
-    filter.type = "bandpass";
-    filter.frequency.setValueAtTime(lowFreq, ctxAudio.currentTime);
-    filter.Q.setValueAtTime(1.1, ctxAudio.currentTime);
-
-    const g = ctxAudio.createGain();
-    g.gain.setValueAtTime(level, ctxAudio.currentTime);
-
-    src.connect(filter).connect(g).connect(radioMasterGain);
-    src.start();
-    radioNoiseSrc = src;
-  }
-
-  function stopAmbientNoise() {
-    if (radioNoiseSrc) {
-      try {
-        radioNoiseSrc.stop();
-      } catch (e) {}
-      radioNoiseSrc = null;
-    }
-  }
-
-  function startStationEngine() {
+  function startRadioStation() {
+    stopRadioNodes();
     const ctxAudio = ensureAudioContext();
     if (!ctxAudio) return;
 
-    if (radioLoopTimer) {
-      clearInterval(radioLoopTimer);
-      radioLoopTimer = null;
-    }
-    stopAmbientNoise();
+    radioMasterGain = ctxAudio.createGain();
+    radioMasterGain.gain.setValueAtTime(radioVolume * 0.45, ctxAudio.currentTime);
+    radioMasterGain.connect(ctxAudio.destination);
 
-    if (!radioMasterGain) {
-      radioMasterGain = ctxAudio.createGain();
-      radioMasterGain.connect(ctxAudio.destination);
-    }
-    radioMasterGain.gain.setValueAtTime(radioVolume * 0.55, ctxAudio.currentTime);
+    // Lớp nền tiếng rè đĩa than / nhiễu sóng nhẹ
+    const noiseBuffer = createNoiseBuffer(ctxAudio, 2.0);
+    radioNoiseSrc = ctxAudio.createBufferSource();
+    radioNoiseSrc.buffer = noiseBuffer;
+    radioNoiseSrc.loop = true;
+
+    const filter = ctxAudio.createBiquadFilter();
+    filter.type = "bandpass";
+    filter.frequency.setValueAtTime(radioStation === "static" ? 900 : 1800, ctxAudio.currentTime);
+    filter.Q.setValueAtTime(radioStation === "static" ? 0.6 : 1.4, ctxAudio.currentTime);
+
+    const noiseGain = ctxAudio.createGain();
+    noiseGain.gain.setValueAtTime(radioStation === "static" ? 0.24 : 0.045, ctxAudio.currentTime);
+
+    radioNoiseSrc.connect(filter).connect(noiseGain).connect(radioMasterGain);
+    radioNoiseSrc.start();
 
     noteStep = 0;
 
-    if (currentStation === "cassius") {
-      // Tiếng đĩa than lách tách nhẹ + giai điệu piano buồn
-      startAmbientNoise(ctxAudio, 0.035, 1900);
-      triggerPianoNote(ctxAudio, PIANO_SCALE[0], 2.2, 0.25);
-      radioLoopTimer = setInterval(() => {
-        if (!radioPlaying) return;
-        noteStep = (noteStep + 1) % PIANO_SCALE.length;
-        const freq = PIANO_SCALE[noteStep];
-        triggerPianoNote(ctxAudio, freq, 2.0, 0.22);
-        if (noteStep % 2 === 0) {
-          triggerPianoNote(ctxAudio, freq * 0.5, 2.8, 0.14);
-        }
+    if (radioStation === "cassius") {
+      // 94.1 FM: Giai điệu piano vinyl u sầu
+      playSoftTone(ctxAudio, CHOPIN_NOTES[0], 1.4, "triangle", 0.22);
+      radioNoteTimer = setInterval(() => {
+        noteStep = (noteStep + 1) % CHOPIN_NOTES.length;
+        playSoftTone(ctxAudio, CHOPIN_NOTES[noteStep], 1.35, "triangle", 0.2);
       }, 950);
-    } else if (currentStation === "swan") {
-      // Tiếng mưa đêm nhẹ + hợp âm Jazz chậm
-      startAmbientNoise(ctxAudio, 0.055, 850);
-      const firstChord = JAZZ_CHORDS[0];
-      firstChord.forEach((f) => triggerPianoNote(ctxAudio, f, 2.6, 0.11));
-      radioLoopTimer = setInterval(() => {
-        if (!radioPlaying) return;
-        noteStep = (noteStep + 1) % JAZZ_CHORDS.length;
-        const chord = JAZZ_CHORDS[noteStep];
-        chord.forEach((f, idx) => {
-          setTimeout(() => {
-            if (radioPlaying) triggerPianoNote(ctxAudio, f, 2.5, 0.1);
-          }, idx * 75);
-        });
-      }, 2100);
+    } else if (radioStation === "swan") {
+      // 102.8 FM: Hợp âm Jazz khuya Thiên Nga Đen
+      const triggerChord = () => {
+        const chord = SWAN_CHORDS[noteStep % SWAN_CHORDS.length];
+        chord.forEach((f) => playSoftTone(ctxAudio, f, 2.2, "sine", 0.09));
+        noteStep++;
+      };
+      triggerChord();
+      radioNoteTimer = setInterval(triggerChord, 2100);
     } else {
-      // K-TV 50Hz nhiễu sóng bến cảng
-      startAmbientNoise(ctxAudio, 0.16, 1150);
-      radioLoopTimer = setInterval(() => {
-        if (!radioPlaying) return;
-        triggerPianoNote(ctxAudio, 100, 0.6, 0.04);
-      }, 650);
-    }
-  }
+      // CH-08: Tín hiệu 50Hz trầm rền
+      radioHumOsc = ctxAudio.createOscillator();
+      const humGain = ctxAudio.createGain();
+      radioHumOsc.type = "sawtooth";
+      radioHumOsc.frequency.setValueAtTime(50, ctxAudio.currentTime);
 
-  function stopStationEngine() {
-    if (radioLoopTimer) {
-      clearInterval(radioLoopTimer);
-      radioLoopTimer = null;
+      const lowpass = ctxAudio.createBiquadFilter();
+      lowpass.type = "lowpass";
+      lowpass.frequency.setValueAtTime(180, ctxAudio.currentTime);
+
+      humGain.gain.setValueAtTime(0.16, ctxAudio.currentTime);
+      radioHumOsc.connect(lowpass).connect(humGain).connect(radioMasterGain);
+      radioHumOsc.start();
     }
-    stopAmbientNoise();
   }
 
   window.AnalogRadio = {
     isPlaying() {
       return radioPlaying;
     },
-    start() {
-      radioPlaying = true;
-      startStationEngine();
+    getStation() {
+      return radioStation;
     },
-    stop() {
-      radioPlaying = false;
-      stopStationEngine();
+    setStation(st) {
+      radioStation = st || "cassius";
+      if (radioPlaying) startRadioStation();
     },
-    toggle() {
+    setVolume(val) {
+      radioVolume = Math.max(0, Math.min(1, Number(val) / 100));
+      if (radioMasterGain && audioCtx) {
+        radioMasterGain.gain.setValueAtTime(radioVolume * 0.45, audioCtx.currentTime);
+      }
+    },
+    togglePlay() {
+      radioPlaying = !radioPlaying;
       if (radioPlaying) {
-        this.stop();
+        startRadioStation();
       } else {
-        this.start();
+        stopRadioNodes();
       }
       return radioPlaying;
-    },
-    setStation(stationId) {
-      currentStation = stationId;
-      if (radioPlaying) {
-        startStationEngine();
-      }
-    },
-    setVolume(val01) {
-      radioVolume = Math.max(0, Math.min(1, val01));
-      if (radioMasterGain && audioCtx) {
-        radioMasterGain.gain.setTargetAtTime(
-          radioVolume * 0.55,
-          audioCtx.currentTime,
-          0.04
-        );
-      }
     },
   };
 })();

@@ -1,79 +1,85 @@
 /* =========================================================
-   THE SHOWRUNNER (1994) — HỆ THỐNG 2 BẢNG MÀU CHUYỂN ĐỔI
-   Theme 1 [red]:   Red Color Palette (#9C0412 -> #340506)
-   Theme 2 [relic]: 黒鍵の祈り / Silent Relic (#090909 -> #acacac)
+   THE SHOWRUNNER (1994) — BẢNG MÀU & BIẾN ĐỔI 2 GIAO DIỆN
    ========================================================= */
 :root {
+  /* --- Bảng 1: Red Color Palette --- */
   --red-signal:    #9C0412;
   --red-scarlet:   #740107;
   --red-blood:     #520102;
   --red-oxblood:   #3D0606;
   --red-abyss:     #340506;
 
+  /* --- Bảng 2: 黒鍵の祈り (Silent Relic) --- */
   --abyss-black:   #090909;
   --dark-espresso: #280e11;
   --blood-wine:    #3f1117;
   --fog-stone:     #353535;
   --faded-silver:  #acacac;
 
+  /* --- Typography hỗ trợ tiếng Việt --- */
   --font-serif: "Cormorant Garamond", Georgia, serif;
   --font-sans:  "Be Vietnam Pro", system-ui, -apple-system, sans-serif;
   --font-mono:  "IBM Plex Mono", "Courier New", monospace;
 }
 
-/* GIAO DIỆN MÀU 1: RED COLOR PALETTE */
-:root,
-[data-theme="red"] {
-  --bg-deep:        var(--red-abyss);      /* #340506 */
-  --bg-mid:         var(--red-oxblood);    /* #3D0606 */
-  --bg-surface:     var(--red-scarlet);    /* #740107 */
-  --bg-glow-1:      rgba(156, 4, 18, 0.46);
-  --bg-glow-2:      rgba(116, 1, 7, 0.44);
+/* =========================================================
+   THEME 1: ĐỎ (RED COLOR PALETTE)
+   ========================================================= */
+html[data-theme="red"],
+body[data-theme="red"] {
+  --bg-radial-1:   rgba(156, 4, 18, 0.34);
+  --bg-radial-2:   rgba(116, 1, 7, 0.30);
+  --bg-core:       #520102;
+  --bg-mid:        #3D0606;
+  --bg-deep:       #340506;
+  --bg-edge:       #090909;
 
-  --accent-primary: var(--red-signal);     /* #9C0412 */
-  --accent-deep:    var(--red-blood);      /* #520102 */
-  --led-active:     #ff2638;
-  --glow-accent:    rgba(156, 4, 18, 0.65);
+  --surface-panel: rgba(52, 5, 6, 0.90);
+  --surface-btn:   rgba(61, 6, 6, 0.85);
+  --surface-hover: rgba(116, 1, 7, 0.68);
 
-  --pill-bg:        rgba(82, 1, 2, 0.78);
-  --pill-highlight: rgba(156, 4, 18, 0.36);
-  --pill-border:    rgba(242, 230, 228, 0.28);
+  --accent-main:   #9C0412;
+  --accent-mid:    #740107;
+  --accent-dark:   #520102;
+  --accent-glow:   rgba(156, 4, 18, 0.62);
 
-  --text-main:      #f2e6e4;
-  --text-muted:     rgba(242, 230, 228, 0.78);
-  --text-dim:       rgba(230, 188, 184, 0.62);
-  --border-subtle:  rgba(156, 4, 18, 0.56);
+  --text-main:     #e6cfcf;
+  --text-sub:      rgba(220, 178, 178, 0.72);
+  --border-frame:  rgba(156, 4, 18, 0.45);
+  --border-line:   rgba(156, 4, 18, 0.65);
 
-  --dial-body:      radial-gradient(circle at 35% 30%, #9C0412 0%, #740107 38%, #520102 72%, #340506 100%);
-  --btn-core:       radial-gradient(circle at 38% 30%, #9C0412 0%, #520102 52%, #340506 100%);
-  --beam-core:      rgba(255, 235, 235, 0.96);
-  --crt-tint:       rgba(52, 5, 6, 0.42);
+  --noise-r:       156;
+  --noise-g:       4;
+  --noise-b:       18;
 }
 
-/* GIAO DIỆN MÀU 2: 黒鍵の祈り — SILENT RELIC */
-[data-theme="relic"] {
-  --bg-deep:        var(--abyss-black);    /* #090909 */
-  --bg-mid:         #141414;
-  --bg-surface:     var(--fog-stone);      /* #353535 */
-  --bg-glow-1:      rgba(63, 17, 23, 0.30); /* #3f1117 */
-  --bg-glow-2:      rgba(53, 53, 53, 0.32); /* #353535 */
+/* =========================================================
+   THEME 2: ĐEN (黒鍵の祈り / SILENT RELIC)
+   ========================================================= */
+html[data-theme="relic"],
+body[data-theme="relic"] {
+  --bg-radial-1:   rgba(53, 53, 53, 0.24);
+  --bg-radial-2:   rgba(63, 17, 23, 0.22);
+  --bg-core:       #1d1416;
+  --bg-mid:        #151515;
+  --bg-deep:       #0d0d0d;
+  --bg-edge:       #090909;
 
-  --accent-primary: var(--blood-wine);     /* #3f1117 */
-  --accent-deep:    var(--dark-espresso);  /* #280e11 */
-  --led-active:     #9e2d3b;
-  --glow-accent:    rgba(172, 172, 172, 0.36);
+  --surface-panel: rgba(16, 16, 16, 0.92);
+  --surface-btn:   rgba(40, 14, 17, 0.72);
+  --surface-hover: rgba(63, 17, 23, 0.75);
 
-  --pill-bg:        rgba(42, 42, 46, 0.76);
-  --pill-highlight: rgba(172, 172, 172, 0.24);
-  --pill-border:    rgba(172, 172, 172, 0.28);
+  --accent-main:   #3f1117;
+  --accent-mid:    #280e11;
+  --accent-dark:   #353535;
+  --accent-glow:   rgba(172, 172, 172, 0.30);
 
-  --text-main:      #dedede;
-  --text-muted:     var(--faded-silver);   /* #acacac */
-  --text-dim:       rgba(172, 172, 172, 0.58);
-  --border-subtle:  rgba(53, 53, 53, 0.88);
+  --text-main:     #acacac;
+  --text-sub:      rgba(172, 172, 172, 0.60);
+  --border-frame:  rgba(53, 53, 53, 0.65);
+  --border-line:   rgba(172, 172, 172, 0.38);
 
-  --dial-body:      radial-gradient(circle at 35% 30%, #484848 0%, #353535 38%, #181818 85%, #090909 100%);
-  --btn-core:       radial-gradient(circle at 38% 30%, #3f1117 0%, #280e11 48%, #090909 100%);
-  --beam-core:      rgba(232, 232, 232, 0.96);
-  --crt-tint:       rgba(9, 9, 9, 0.65);
+  --noise-r:       172;
+  --noise-g:       172;
+  --noise-b:       172;
 }

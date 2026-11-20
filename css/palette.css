@@ -1,0 +1,24 @@
+/* =========================================================
+   THE SHOWRUNNER (1994) — BẢNG MÀU TỔNG HỢP
+   Trích xuất từ: "Red Color Palette" & "黒鍵の祈り (Silent Relic)"
+   ========================================================= */
+:root {
+  /* --- Bảng 1: Red Color Palette --- */
+  --red-signal:    #9C0412; /* Đỏ tươi: Đèn LED nguồn, REC, tia nhiễu sóng */
+  --red-scarlet:   #740107; /* Đỏ thẫm: Phát sáng CRT, viền hover, cảnh báo */
+  --red-blood:     #520102; /* Đỏ máu đậm: Bóng đổ nút bấm, viền sâu */
+  --red-oxblood:   #3D0606; /* Đỏ nâu sẫm: Nền chuyển sắc tối */
+  --red-abyss:     #340506; /* Đỏ đen: Lớp nền sâu góc màn hình */
+
+  /* --- Bảng 2: 黒鍵の祈り (Silent Relic) --- */
+  --abyss-black:   #090909; /* Đen tuyền: Nền chính màn hình CRT */
+  --dark-espresso: #280e11; /* Nâu đỏ tối: Vỏ công tắc & ánh nền trung tâm */
+  --blood-wine:    #3f1117; /* Đỏ rượu vang: Vạch chia, khung viền nhấn */
+  --fog-stone:     #353535; /* Xám đá: Vỏ nhựa/kim loại tivi, lưới căn chỉnh */
+  --faded-silver:  #acacac; /* Bạc phai: Chữ chính, icon nguồn, tia sáng CRT */
+
+  /* --- Typography hỗ trợ đầy đủ tiếng Việt --- */
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans:  "Be Vietnam Pro", system-ui, -apple-system, sans-serif;
+  --font-mono:  "IBM Plex Mono", "Courier New", monospace;
+}

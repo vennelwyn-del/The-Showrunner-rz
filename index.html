@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THE SHOWRUNNER // K-TV Kênh 08 (1994)</title>
+
+  <!-- Google Fonts hỗ trợ đầy đủ tiếng Việt -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/palette.css" />
+  <link rel="stylesheet" href="css/gate.css" />
+</head>
+<body class="is-standby">
+
+  <!-- LỚP 1: CANVAS HẠT NHIỄU ANALOG & SỌC TỪ 50Hz -->
+  <canvas id="analog-noise-canvas" aria-hidden="true"></canvas>
+
+  <!-- LỚP 2: SỌC QUÉT CRT, THANH TRACKING VHS & ĐỘ CONG MÀN HÌNH -->
+  <div class="crt-scanlines" aria-hidden="true"></div>
+  <div class="crt-tracking-bar" aria-hidden="true"></div>
+  <div class="crt-vignette" aria-hidden="true"></div>
+
+  <!-- =========================================================
+       GIAO DIỆN 1: MÀN HÌNH ANALOG CHỜ & NÚT MỞ TIVI
+       ========================================================= -->
+  <main id="analog-gate" class="analog-gate">
+    <!-- Khung ngắm kỹ thuật kiểu màn hình phát sóng 1994 -->
+    <div class="monitor-frame" aria-hidden="true">
+      <span class="corner tl"></span>
+      <span class="corner tr"></span>
+      <span class="corner bl"></span>
+      <span class="corner br"></span>
+      <span class="reticle-h"></span>
+      <span class="reticle-v"></span>
+    </div>
+
+    <!-- Thanh OSD Góc Trên -->
+    <header class="osd-bar osd-top">
+      <div class="osd-group">
+        <span class="rec-indicator">
+          <span class="rec-dot" aria-hidden="true"></span>
+          STANDBY // K-TV KÊNH 08
+        </span>
+        <span class="osd-sub">INPUT: VHS-C TAPE [03/04]</span>
+      </div>
+      <div class="osd-group osd-right">
+        <span id="osd-clock" class="osd-clock">30/11/1994 — 06:15:00</span>
+        <span class="osd-sub">SYNC: 50Hz PAL · SWEZAN (-3°C)</span>
+      </div>
+    </header>
+
+    <!-- Cụm Trung Tâm: Tiêu đề & Nút Nguồn Tivi CRT -->
+    <section class="gate-center" aria-label="Cổng phát sóng The Showrunner">
+      <p class="gate-kicker">REEL NOIR ENGINE · ANALOG HORROR 1994</p>
+
+      <h1 class="gate-title" data-text="THE SHOWRUNNER">THE SHOWRUNNER</h1>
+
+      <p class="gate-subtitle">
+        Đạo Diễn Vô Danh &mdash;
+        <em>“Vở kịch gồm bốn hồi. Xin mời ngồi xuống trước màn hình.”</em>
+      </p>
+
+      <div class="gate-divider" aria-hidden="true"></div>
+
+      <!-- Cụm Công Tắc Mở Tivi Cổ -->
+      <div class="tv-switch-deck">
+        <div class="tv-dial-plate">
+          <div class="tv-dial-ticks" aria-hidden="true"></div>
+
+          <button
+            id="tv-power-btn"
+            class="tv-power-btn"
+            type="button"
+            aria-label="Nhấn nút nguồn để bật tivi và vào trang chính"
+          >
+            <span class="btn-bezel">
+              <span class="btn-led" aria-hidden="true"></span>
+              <svg
+                class="power-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                aria-hidden="true"
+              >
+                <path d="M12 2.8v8.4" />
+                <path d="M17.66 6.34a8 8 0 1 1-11.32 0" />
+              </svg>
+            </span>
+          </button>
+        </div>
+
+        <div class="tv-switch-label">
+          <span class="switch-code">POWER // SWAN TEROF CH-08</span>
+          <span class="switch-hint">NHẤN NÚT MỞ TIVI</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Thanh OSD Góc Dưới -->
+    <footer class="osd-bar osd-bottom">
+      <div class="osd-group">
+        <span class="osd-sub">ARCHIVE: CASSIUS &amp; CO. · ALTSTADT</span>
+        <button
+          id="audio-toggle-btn"
+          class="audio-toggle-btn"
+          type="button"
+          aria-pressed="true"
+        >
+          [ÂM THANH TIVI: BẬT]
+        </button>
+      </div>
+      <div class="osd-group osd-right">
+        <span class="osd-sub">LENORMAND 01 — THE RIDER</span>
+        <span class="osd-alert">MASS HYSTERIA: 75%</span>
+      </div>
+    </footer>
+  </main>
+
+  <!-- =========================================================
+       LỚP CHUYỂN CẢNH: ANIMATION BẬT TIVI & LÀM NHIỄU SÓNG
+       ========================================================= -->
+  <div id="crt-glitch-overlay" class="crt-glitch-overlay" aria-hidden="true">
+    <div class="crt-beam"></div>
+    <div class="crt-flash"></div>
+    <div id="glitch-osd" class="glitch-osd">SIGNAL DETECTED // CH-08</div>
+  </div>
+
+  <!-- =========================================================
+       GIAO DIỆN CHÍNH (KHUNG CHỜ ĐỂ BUILD TIẾP Ở BƯỚC 2)
+       ========================================================= -->
+  <section id="main-app" class="main-app" hidden>
+    <div class="main-shell">
+      <div class="main-osd">
+        <span class="play-badge">&#9654; PLAY // K-TV KÊNH 08 ĐÃ BẮT SÓNG</span>
+        <button id="tv-off-btn" class="tv-off-btn" type="button">
+          &#x23FB; TẮT TIVI (XEM LẠI GIAO DIỆN 1)
+        </button>
+      </div>
+
+      <div class="main-placeholder">
+        <p class="gate-kicker">TÍN HIỆU ỔN ĐỊNH · HỒ SƠ SWEZAN 1994</p>
+        <h2 class="main-title">THE SHOWRUNNER</h2>
+        <div class="gate-divider" aria-hidden="true"></div>
+        <p class="main-desc">
+          Màn hình tivi đã bật thành công. Đây là khung sảnh chính (Giao diện 2) —
+          nơi chúng ta sẽ tiếp tục xây dựng các mục: Bối cảnh Swezan, Hồ sơ 4 Vụ án,
+          Hệ thống Nhân vật &amp; Lenormand, Trình tạo Hồ sơ User và Copy Prompt.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scripts (không dùng ES Module để chạy được cả bằng Live Server lẫn mở file trực tiếp) -->
+  <script src="js/static-noise.js" defer></script>
+  <script src="js/gate.js" defer></script>
+</body>
+</html>

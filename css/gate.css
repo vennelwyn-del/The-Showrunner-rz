@@ -1,0 +1,823 @@
+/* =========================================================
+   THE SHOWRUNNER — GIAO DIỆN 1: ANALOG CRT GATE & POWER SWITCH
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--abyss-black);
+  color: var(--faded-silver);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+/* Nền Analog đa tầng kết hợp 2 bảng màu Red & Silent Relic */
+body {
+  position: relative;
+  background-image:
+    radial-gradient(circle at 22% 28%, rgba(156, 4, 18, 0.16) 0%, transparent 45%),
+    radial-gradient(circle at 78% 72%, rgba(116, 1, 7, 0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, var(--dark-espresso) 0%, var(--red-oxblood) 30%, var(--red-abyss) 62%, var(--abyss-black) 100%);
+  background-color: var(--abyss-black);
+}
+
+/* =========================================================
+   LỚP HIỆU ỨNG ANALOG TOÀN MÀN HÌNH (CANVAS + CRT OVERLAYS)
+   ========================================================= */
+
+#analog-noise-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.24;
+  mix-blend-mode: screen;
+  transition: opacity 0.25s ease;
+}
+
+body.is-bursting #analog-noise-canvas {
+  opacity: 0.94;
+  mix-blend-mode: normal;
+}
+
+body.is-main-active #analog-noise-canvas {
+  opacity: 0.08;
+  mix-blend-mode: screen;
+}
+
+/* Dải sọc quét ngang CRT 50Hz */
+.crt-scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(9, 9, 9, 0) 0px,
+      rgba(9, 9, 9, 0) 2px,
+      rgba(9, 9, 9, 0.52) 3px,
+      rgba(53, 53, 53, 0.12) 4px
+    );
+  animation: scanlineFlicker 0.14s infinite;
+}
+
+/* Vệt nhiễu tracking cuộn từ trên xuống kiểu đầu máy VHS */
+.crt-tracking-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: -18%;
+  height: 14%;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(172, 172, 172, 0.04) 35%,
+    rgba(156, 4, 18, 0.08) 50%,
+    rgba(172, 172, 172, 0.03) 65%,
+    transparent 100%
+  );
+  backdrop-filter: contrast(1.18);
+  animation: vhsTrackingRoll 7.5s linear infinite;
+}
+
+/* Độ cong tối bốn góc ống thủy tinh CRT */
+.crt-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 130px rgba(9, 9, 9, 0.95),
+    inset 0 0 42px rgba(52, 5, 6, 0.75);
+  background: radial-gradient(
+    circle at center,
+    transparent 52%,
+    rgba(9, 9, 9, 0.55) 85%,
+    rgba(9, 9, 9, 0.92) 100%
+  );
+}
+
+/* =========================================================
+   GIAO DIỆN 1: ANALOG GATE LAYOUT
+   ========================================================= */
+
+.analog-gate {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  padding: clamp(18px, 3vw, 40px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: opacity 0.25s ease, transform 0.25s ease, filter 0.25s ease;
+}
+
+.analog-gate.is-powering-on {
+  animation: analogTearOut 0.42s steps(6) forwards;
+}
+
+.analog-gate.is-hover-charged .gate-title::before,
+.analog-gate.is-hover-charged .gate-title::after {
+  opacity: 0.85;
+  animation-duration: 0.28s;
+}
+
+/* Khung ngắm kỹ thuật và chữ thập căn chỉnh analog */
+.monitor-frame {
+  position: fixed;
+  inset: clamp(12px, 2vw, 24px);
+  border: 1px solid rgba(53, 53, 53, 0.45);
+  pointer-events: none;
+  z-index: 9;
+}
+
+.monitor-frame .corner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: var(--faded-silver);
+  opacity: 0.55;
+}
+
+.monitor-frame .tl { top: -1px; left: -1px; border-top: 2px solid; border-left: 2px solid; }
+.monitor-frame .tr { top: -1px; right: -1px; border-top: 2px solid; border-right: 2px solid; }
+.monitor-frame .bl { bottom: -1px; left: -1px; border-bottom: 2px solid; border-left: 2px solid; }
+.monitor-frame .br { bottom: -1px; right: -1px; border-bottom: 2px solid; border-right: 2px solid; }
+
+.monitor-frame .reticle-h,
+.monitor-frame .reticle-v {
+  position: absolute;
+  background: rgba(53, 53, 53, 0.28);
+}
+
+.monitor-frame .reticle-h {
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+}
+
+.monitor-frame .reticle-v {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+}
+
+/* Thanh thông số OSD (On-Screen Display) góc trên & góc dưới */
+.osd-bar {
+  position: relative;
+  z-index: 12;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  font-family: var(--font-mono);
+  font-size: clamp(10px, 1.1vw, 12px);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faded-silver);
+}
+
+.osd-bottom {
+  align-items: flex-end;
+}
+
+.osd-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.osd-right {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.rec-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--faded-silver);
+  font-weight: 500;
+}
+
+.rec-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--red-signal);
+  box-shadow: 0 0 10px var(--red-signal), 0 0 18px var(--red-scarlet);
+  animation: recBlink 1.3s steps(2, start) infinite;
+}
+
+.osd-sub {
+  color: rgba(172, 172, 172, 0.62);
+}
+
+.osd-clock {
+  color: var(--faded-silver);
+  text-shadow: 0 0 8px rgba(156, 4, 18, 0.45);
+}
+
+.osd-alert {
+  color: var(--red-signal);
+  text-shadow: 0 0 8px rgba(156, 4, 18, 0.55);
+  font-weight: 500;
+}
+
+.audio-toggle-btn {
+  background: transparent;
+  border: 1px solid var(--fog-stone);
+  color: var(--faded-silver);
+  font-family: var(--font-mono);
+  font-size: inherit;
+  letter-spacing: 0.12em;
+  padding: 4px 9px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+.audio-toggle-btn:hover {
+  border-color: var(--red-signal);
+  color: #ffffff;
+  background-color: rgba(63, 17, 23, 0.45);
+}
+
+/* =========================================================
+   CỤM TRUNG TÂM & NÚT MỞ TIVI CRT
+   ========================================================= */
+
+.gate-center {
+  position: relative;
+  z-index: 12;
+  margin: auto;
+  max-width: 760px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 12px;
+}
+
+.gate-kicker {
+  font-family: var(--font-mono);
+  font-size: clamp(10px, 1.15vw, 12px);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--faded-silver);
+  opacity: 0.78;
+  margin-bottom: 14px;
+}
+
+.gate-title {
+  position: relative;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: clamp(2.5rem, 6.8vw, 5.25rem);
+  line-height: 0.96;
+  letter-spacing: 0.12em;
+  color: var(--faded-silver);
+  text-shadow:
+    0 0 24px rgba(156, 4, 18, 0.35),
+    0 2px 12px rgba(9, 9, 9, 0.95);
+  animation: subtleCrtBreath 5s ease-in-out infinite;
+}
+
+/* Tách kênh màu đỏ - bạc khi nhiễu sóng */
+.gate-title::before,
+.gate-title::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.gate-title::before {
+  color: var(--red-signal);
+  transform: translate(-2px, 0);
+  animation: titleGlitchLeft 6.5s infinite;
+}
+
+.gate-title::after {
+  color: var(--faded-silver);
+  transform: translate(2px, 0);
+  animation: titleGlitchRight 6.5s infinite;
+}
+
+.gate-subtitle {
+  margin-top: 14px;
+  font-family: var(--font-serif);
+  font-size: clamp(1.05rem, 2vw, 1.4rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: rgba(172, 172, 172, 0.86);
+}
+
+.gate-subtitle em {
+  color: var(--faded-silver);
+  font-style: italic;
+}
+
+.gate-divider {
+  width: min(260px, 60vw);
+  height: 1px;
+  margin: 26px 0 30px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--blood-wine) 18%,
+    var(--faded-silver) 50%,
+    var(--blood-wine) 82%,
+    transparent 100%
+  );
+  opacity: 0.8;
+}
+
+/* Bộ công tắc nguồn Tivi CRT vật lý */
+.tv-switch-deck {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.tv-dial-plate {
+  position: relative;
+  width: 148px;
+  height: 148px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 35% 30%, #444444 0%, var(--fog-stone) 35%, #191919 85%, var(--abyss-black) 100%);
+  border: 1px solid rgba(172, 172, 172, 0.35);
+  box-shadow:
+    0 20px 50px rgba(9, 9, 9, 0.96),
+    0 0 36px rgba(63, 17, 23, 0.55),
+    inset 0 2px 4px rgba(172, 172, 172, 0.25),
+    inset 0 -8px 18px rgba(9, 9, 9, 0.9);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* Vạch chia núm xoay analog quanh công tắc */
+.tv-dial-ticks {
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    from -1deg,
+    rgba(172, 172, 172, 0.45) 0deg 2deg,
+    transparent 2deg 15deg
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 8px), #000 calc(100% - 7px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 8px), #000 calc(100% - 7px));
+  pointer-events: none;
+  opacity: 0.72;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+}
+
+.tv-dial-plate:hover {
+  border-color: rgba(156, 4, 18, 0.78);
+  box-shadow:
+    0 20px 55px rgba(9, 9, 9, 0.98),
+    0 0 46px rgba(156, 4, 18, 0.42),
+    inset 0 2px 4px rgba(172, 172, 172, 0.3),
+    inset 0 -8px 18px rgba(9, 9, 9, 0.9);
+}
+
+.tv-dial-plate:hover .tv-dial-ticks {
+  transform: rotate(22deg);
+  opacity: 1;
+}
+
+/* Nút bấm nguồn Tivi */
+.tv-power-btn {
+  position: relative;
+  width: 106px;
+  height: 106px;
+  border-radius: 50%;
+  border: 2px solid var(--abyss-black);
+  background: radial-gradient(
+    circle at 38% 30%,
+    var(--blood-wine) 0%,
+    var(--dark-espresso) 46%,
+    var(--abyss-black) 100%
+  );
+  color: var(--faded-silver);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  outline: none;
+  box-shadow:
+    0 8px 16px rgba(9, 9, 9, 0.95),
+    0 0 0 3px #1c1c1c,
+    inset 0 2px 6px rgba(172, 172, 172, 0.2),
+    inset 0 -6px 14px rgba(9, 9, 9, 0.92);
+  transition: transform 0.14s ease, box-shadow 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.tv-power-btn:focus-visible {
+  outline: 2px solid var(--red-signal);
+  outline-offset: 6px;
+}
+
+.btn-bezel {
+  position: relative;
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  border: 1px solid rgba(172, 172, 172, 0.22);
+  background: radial-gradient(circle at center, rgba(61, 6, 6, 0.55) 0%, rgba(9, 9, 9, 0.95) 85%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Đèn LED đỏ standby kiểu tivi 1994 */
+.btn-led {
+  position: absolute;
+  top: 10px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--red-signal);
+  box-shadow: 0 0 6px var(--red-signal), 0 0 12px var(--red-scarlet);
+  animation: ledStandbyPulse 2.2s ease-in-out infinite;
+}
+
+.power-icon {
+  width: 34px;
+  height: 34px;
+  margin-top: 6px;
+  color: var(--faded-silver);
+  filter: drop-shadow(0 0 6px rgba(172, 172, 172, 0.25));
+  transition: color 0.25s ease, filter 0.25s ease, transform 0.2s ease;
+}
+
+.tv-power-btn:hover .power-icon {
+  color: #ffffff;
+  filter: drop-shadow(0 0 10px var(--red-signal));
+  transform: scale(1.05);
+}
+
+.tv-power-btn:hover .btn-led {
+  background-color: #ff1e2d;
+  box-shadow: 0 0 12px var(--red-signal), 0 0 24px var(--red-signal);
+}
+
+/* Trạng thái lún phím cơ khi bấm vào */
+.tv-power-btn:active,
+.tv-power-btn.is-pressing {
+  transform: translateY(3px) scale(0.95);
+  box-shadow:
+    0 2px 6px rgba(9, 9, 9, 0.98),
+    0 0 0 3px var(--red-blood),
+    inset 0 4px 12px rgba(9, 9, 9, 0.98),
+    0 0 28px rgba(156, 4, 18, 0.65);
+}
+
+.tv-power-btn.is-pressing .power-icon {
+  color: #ffffff;
+  filter: drop-shadow(0 0 14px var(--red-signal));
+}
+
+/* Nhãn khắc dưới công tắc */
+.tv-switch-label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-family: var(--font-mono);
+}
+
+.switch-code {
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  color: var(--fog-stone);
+  text-transform: uppercase;
+}
+
+.switch-hint {
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  color: var(--faded-silver);
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(156, 4, 18, 0.45);
+  animation: hintPulse 2.4s ease-in-out infinite;
+}
+
+/* =========================================================
+   LỚP CHUYỂN CẢNH CRT: TIA SÁNG BẬT TIVI & NHIỄU SÓNG MẠNH
+   ========================================================= */
+
+.crt-glitch-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.crt-glitch-overlay.is-active {
+  display: flex;
+}
+
+/* Vệt tia điện tử CRT quét bung từ giữa màn hình */
+.crt-beam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 100%;
+  transform: translateY(-50%) scaleX(0) scaleY(0.004);
+  background: linear-gradient(
+    to bottom,
+    rgba(9, 9, 9, 0.15) 0%,
+    rgba(156, 4, 18, 0.45) 35%,
+    rgba(255, 255, 255, 0.96) 50%,
+    rgba(156, 4, 18, 0.45) 65%,
+    rgba(9, 9, 9, 0.15) 100%
+  );
+  box-shadow:
+    0 0 40px var(--faded-silver),
+    0 0 90px var(--red-signal);
+  opacity: 0;
+}
+
+.crt-glitch-overlay.is-powering-on .crt-beam {
+  animation: crtTubeExpand 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.crt-glitch-overlay.is-powering-off .crt-beam {
+  animation: crtTubeCollapse 0.55s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+}
+
+.crt-flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(172, 172, 172, 0.38) 0%, rgba(156, 4, 18, 0.25) 45%, rgba(9, 9, 9, 0.95) 100%);
+  opacity: 0;
+}
+
+.crt-glitch-overlay.is-powering-on .crt-flash {
+  animation: tubeFlashBurst 1.3s ease-out forwards;
+}
+
+.glitch-osd {
+  position: relative;
+  z-index: 52;
+  padding: 10px 20px;
+  border: 1px solid var(--red-signal);
+  background: rgba(9, 9, 9, 0.85);
+  color: var(--faded-silver);
+  font-family: var(--font-mono);
+  font-size: clamp(12px, 1.6vw, 15px);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-shadow:
+    -2px 0 var(--red-signal),
+    2px 0 rgba(172, 172, 172, 0.75);
+  box-shadow: 0 0 30px rgba(156, 4, 18, 0.55);
+  opacity: 0;
+}
+
+.crt-glitch-overlay.is-showing-osd .glitch-osd {
+  animation: glitchOsdJitter 0.18s steps(2) infinite;
+  opacity: 1;
+}
+
+/* =========================================================
+   GIAO DIỆN CHÍNH (KHUNG CHỜ BƯỚC 2)
+   ========================================================= */
+
+.main-app {
+  position: relative;
+  z-index: 20;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: clamp(20px, 4vw, 48px);
+  background:
+    radial-gradient(circle at 50% 18%, rgba(63, 17, 23, 0.28) 0%, transparent 55%),
+    rgba(9, 9, 9, 0.88);
+  opacity: 0;
+}
+
+.main-app.is-visible {
+  animation: verticalHoldSettle 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.main-shell {
+  max-width: 960px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-osd {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--fog-stone);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+}
+
+.play-badge {
+  color: var(--faded-silver);
+  text-shadow: 0 0 8px rgba(156, 4, 18, 0.5);
+}
+
+.tv-off-btn {
+  background: var(--dark-espresso);
+  border: 1px solid var(--blood-wine);
+  color: var(--faded-silver);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.tv-off-btn:hover {
+  background: var(--red-scarlet);
+  border-color: var(--red-signal);
+  color: #ffffff;
+}
+
+.main-placeholder {
+  margin: auto;
+  text-align: center;
+  max-width: 640px;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  letter-spacing: 0.12em;
+  color: var(--faded-silver);
+}
+
+.main-desc {
+  font-size: 15px;
+  line-height: 1.75;
+  color: rgba(172, 172, 172, 0.85);
+}
+
+/* =========================================================
+   KEYFRAMES ANIMATION
+   ========================================================= */
+
+@keyframes scanlineFlicker {
+  0%, 100% { opacity: 0.92; }
+  50%      { opacity: 0.98; }
+}
+
+@keyframes vhsTrackingRoll {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(820%); }
+}
+
+@keyframes recBlink {
+  0%, 49%  { opacity: 1; }
+  50%, 100%{ opacity: 0.18; }
+}
+
+@keyframes ledStandbyPulse {
+  0%, 100% { opacity: 0.55; transform: scale(0.95); }
+  50%      { opacity: 1;    transform: scale(1.1); }
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+
+@keyframes subtleCrtBreath {
+  0%, 100% { opacity: 0.94; }
+  50%      { opacity: 1; }
+}
+
+@keyframes titleGlitchLeft {
+  0%, 88%, 100% { opacity: 0; transform: translate(0, 0); }
+  90%           { opacity: 0.8; transform: translate(-3px, 1px); clip-path: inset(15% 0 45% 0); }
+  92%           { opacity: 0.8; transform: translate(2px, -1px); clip-path: inset(58% 0 12% 0); }
+  94%           { opacity: 0; }
+}
+
+@keyframes titleGlitchRight {
+  0%, 88%, 100% { opacity: 0; transform: translate(0, 0); }
+  91%           { opacity: 0.7; transform: translate(3px, -1px); clip-path: inset(30% 0 35% 0); }
+  93%           { opacity: 0.7; transform: translate(-2px, 2px); clip-path: inset(65% 0 5% 0); }
+  95%           { opacity: 0; }
+}
+
+@keyframes analogTearOut {
+  0%   { opacity: 1; transform: scaleY(1) skewX(0deg); filter: brightness(1); }
+  35%  { opacity: 0.9; transform: scaleY(0.96) skewX(6deg); filter: contrast(1.8) brightness(1.3); }
+  70%  { opacity: 0.5; transform: scaleY(0.15) skewX(-8deg); filter: contrast(2.2); }
+  100% { opacity: 0; transform: scaleY(0.01); }
+}
+
+@keyframes crtTubeExpand {
+  0%   { opacity: 1; transform: translateY(-50%) scaleX(0.04) scaleY(0.004); }
+  35%  { opacity: 1; transform: translateY(-50%) scaleX(1) scaleY(0.008); }
+  75%  { opacity: 0.95; transform: translateY(-50%) scaleX(1) scaleY(1); }
+  100% { opacity: 0; transform: translateY(-50%) scaleX(1.04) scaleY(1.04); }
+}
+
+@keyframes crtTubeCollapse {
+  0%   { opacity: 0.9; transform: translateY(-50%) scaleX(1) scaleY(1); }
+  55%  { opacity: 1; transform: translateY(-50%) scaleX(1) scaleY(0.008); }
+  85%  { opacity: 1; transform: translateY(-50%) scaleX(0.03) scaleY(0.005); }
+  100% { opacity: 0; transform: translateY(-50%) scaleX(0) scaleY(0); }
+}
+
+@keyframes tubeFlashBurst {
+  0%   { opacity: 0; }
+  18%  { opacity: 0.92; }
+  45%  { opacity: 0.48; }
+  100% { opacity: 0; }
+}
+
+@keyframes glitchOsdJitter {
+  0%   { transform: translate(-2px, 1px) skewX(-2deg); }
+  50%  { transform: translate(2px, -1px) skewX(2deg); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes verticalHoldSettle {
+  0%   { opacity: 0; transform: translateY(18px) scaleY(1.05); filter: brightness(1.4) contrast(1.3); }
+  45%  { opacity: 0.95; transform: translateY(-4px) scaleY(0.99); filter: brightness(1.08); }
+  100% { opacity: 1; transform: translateY(0) scaleY(1); filter: none; }
+}
+
+/* =========================================================
+   RESPONSIVE CHO ĐIỆN THOẠI & MÀN HÌNH NHỎ
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .osd-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 10px;
+  }
+
+  .osd-right {
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .tv-dial-plate {
+    width: 128px;
+    height: 128px;
+  }
+
+  .tv-power-btn {
+    width: 92px;
+    height: 92px;
+  }
+
+  .btn-bezel {
+    width: 72px;
+    height: 72px;
+  }
+}

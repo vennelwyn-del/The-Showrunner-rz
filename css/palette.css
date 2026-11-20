@@ -4,80 +4,73 @@
    Theme 2 [relic]: 黒鍵の祈り / Silent Relic (#090909 -> #acacac)
    ========================================================= */
 :root {
-  /* --- Bảng màu gốc 1: Red Color Palette --- */
   --red-signal:    #9C0412;
   --red-scarlet:   #740107;
   --red-blood:     #520102;
   --red-oxblood:   #3D0606;
   --red-abyss:     #340506;
 
-  /* --- Bảng màu gốc 2: 黒鍵の祈り (Silent Relic) --- */
   --abyss-black:   #090909;
   --dark-espresso: #280e11;
   --blood-wine:    #3f1117;
   --fog-stone:     #353535;
   --faded-silver:  #acacac;
 
-  /* --- Typography hỗ trợ đầy đủ tiếng Việt --- */
   --font-serif: "Cormorant Garamond", Georgia, serif;
   --font-sans:  "Be Vietnam Pro", system-ui, -apple-system, sans-serif;
   --font-mono:  "IBM Plex Mono", "Courier New", monospace;
 }
 
-/* =========================================================
-   GIAO DIỆN MÀU 1: RED COLOR PALETTE (ĐỎ HUYẾT DỤ)
-   ========================================================= */
+/* GIAO DIỆN MÀU 1: RED COLOR PALETTE */
 :root,
 [data-theme="red"] {
   --bg-deep:        var(--red-abyss);      /* #340506 */
   --bg-mid:         var(--red-oxblood);    /* #3D0606 */
-  --bg-surface:     var(--red-blood);      /* #520102 */
-  --bg-glow-1:      rgba(156, 4, 18, 0.34);
-  --bg-glow-2:      rgba(116, 1, 7, 0.36);
+  --bg-surface:     var(--red-scarlet);    /* #740107 */
+  --bg-glow-1:      rgba(156, 4, 18, 0.46);
+  --bg-glow-2:      rgba(116, 1, 7, 0.44);
 
   --accent-primary: var(--red-signal);     /* #9C0412 */
-  --accent-deep:    var(--red-scarlet);    /* #740107 */
+  --accent-deep:    var(--red-blood);      /* #520102 */
   --led-active:     #ff2638;
-  --glow-accent:    rgba(156, 4, 18, 0.58);
+  --glow-accent:    rgba(156, 4, 18, 0.65);
 
-  --pill-bg:        rgba(61, 6, 6, 0.72);
-  --pill-highlight: rgba(156, 4, 18, 0.30);
-  --pill-border:    rgba(242, 230, 228, 0.24);
+  --pill-bg:        rgba(82, 1, 2, 0.78);
+  --pill-highlight: rgba(156, 4, 18, 0.36);
+  --pill-border:    rgba(242, 230, 228, 0.28);
 
   --text-main:      #f2e6e4;
-  --text-muted:     rgba(242, 230, 228, 0.74);
-  --text-dim:       rgba(220, 178, 174, 0.56);
-  --border-subtle:  rgba(156, 4, 18, 0.48);
+  --text-muted:     rgba(242, 230, 228, 0.78);
+  --text-dim:       rgba(230, 188, 184, 0.62);
+  --border-subtle:  rgba(156, 4, 18, 0.56);
 
-  --dial-body:      radial-gradient(circle at 35% 30%, #740107 0%, #520102 42%, #340506 88%, #1d0203 100%);
+  --dial-body:      radial-gradient(circle at 35% 30%, #9C0412 0%, #740107 38%, #520102 72%, #340506 100%);
   --btn-core:       radial-gradient(circle at 38% 30%, #9C0412 0%, #520102 52%, #340506 100%);
   --beam-core:      rgba(255, 235, 235, 0.96);
-  --crt-tint:       rgba(52, 5, 6, 0.55);
+  --crt-tint:       rgba(52, 5, 6, 0.42);
 }
 
-/* =========================================================
-   GIAO DIỆN MÀU 2: 黒鍵の祈り — SILENT RELIC (ĐEN BẠC & RƯỢU VANG)
-   ========================================================= */
+/* GIAO DIỆN MÀU 2: 黒鍵の祈り — SILENT RELIC */
 [data-theme="relic"] {
   --bg-deep:        var(--abyss-black);    /* #090909 */
   --bg-mid:         #141414;
   --bg-surface:     var(--fog-stone);      /* #353535 */
   --bg-glow-1:      rgba(63, 17, 23, 0.30); /* #3f1117 */
-  --bg-glow-2:      rgba(53, 53, 53, 0.28); /* #353535 */
+  --bg-glow-2:      rgba(53, 53, 53, 0.32); /* #353535 */
 
   --accent-primary: var(--blood-wine);     /* #3f1117 */
   --accent-deep:    var(--dark-espresso);  /* #280e11 */
   --led-active:     #9e2d3b;
-  --glow-accent:    rgba(172, 172, 172, 0.34);
+  --glow-accent:    rgba(172, 172, 172, 0.36);
 
-  --pill-bg:        rgba(42, 42, 46, 0.72);
+  --pill-bg:        rgba(42, 42, 46, 0.76);
   --pill-highlight: rgba(172, 172, 172, 0.24);
-  --pill-border:    rgba(172, 172, 172, 0.26);
+  --pill-border:    rgba(172, 172, 172, 0.28);
 
   --text-main:      #dedede;
   --text-muted:     var(--faded-silver);   /* #acacac */
   --text-dim:       rgba(172, 172, 172, 0.58);
-  --border-subtle:  rgba(53, 53, 53, 0.85);
+  --border-subtle:  rgba(53, 53, 53, 0.88);
 
   --dial-body:      radial-gradient(circle at 35% 30%, #484848 0%, #353535 38%, #181818 85%, #090909 100%);
   --btn-core:       radial-gradient(circle at 38% 30%, #3f1117 0%, #280e11 48%, #090909 100%);

@@ -1,12 +1,11 @@
-/* =========================================================
+  /* =========================================================
    THE SHOWRUNNER — LOGIC CHUYỂN MÀU, RADIO & MỞ TIVI CRT
    ========================================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
+function initShowrunnerGate() {
   const htmlEl = document.documentElement;
   const body = document.body;
 
-  // Các thành phần Giao diện 1 & Giao diện 2
   const analogGate = document.getElementById("analog-gate");
   const tvPowerBtn = document.getElementById("tv-power-btn");
   const tvOffBtn = document.getElementById("tv-off-btn");
@@ -16,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const mainApp = document.getElementById("main-app");
   const osdClock = document.getElementById("osd-clock");
 
-  // Các thành phần Đổi 2 màu & Radio ở góc trên
   const themeToggleBtn = document.getElementById("theme-toggle-btn");
   const radioToggleBtn = document.getElementById("radio-toggle-btn");
   const radioPanel = document.getElementById("radio-panel");
@@ -47,6 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function applyTheme(themeName, withBlip = false) {
     const safeTheme = themeName === "relic" ? "relic" : "red";
     htmlEl.setAttribute("data-theme", safeTheme);
+    body.setAttribute("data-theme", safeTheme);
+
     try {
       localStorage.setItem(THEME_STORAGE_KEY, safeTheme);
     } catch (e) {}
@@ -62,7 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Khôi phục theme đã lưu trước đó (mặc định là "red")
   try {
     const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
     if (savedTheme === "relic" || savedTheme === "red") {
@@ -71,7 +70,8 @@ document.addEventListener("DOMContentLoaded", () => {
   } catch (e) {}
 
   if (themeToggleBtn) {
-    themeToggleBtn.addEventListener("click", () => {
+    themeToggleBtn.addEventListener("click", (e) => {
+      e.preventDefault();
       const current = htmlEl.getAttribute("data-theme") || "red";
       const next = current === "red" ? "relic" : "red";
       applyTheme(next, true);
@@ -102,7 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
       radioToggleBtn.setAttribute("aria-expanded", String(willOpen));
     });
 
-    // Bấm ra ngoài thì tự đóng bảng Radio gọn gàng
     document.addEventListener("click", (e) => {
       if (
         !radioPanel.hidden &&
@@ -133,7 +132,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const stationId = btn.getAttribute("data-station");
         if (window.AnalogRadio && stationId) {
           window.AnalogRadio.setStation(stationId);
-          // Tự động phát luôn khi chọn kênh mới nếu đang tắt
           if (!window.AnalogRadio.isPlaying()) {
             window.AnalogRadio.start();
             syncRadioUI(true);
@@ -152,7 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* -------------------------------------------------------
-     3. ĐỒNG HỒ SWEZAN 1994 CHẠY THỜI GIAN THỰC (30/11/1994 06:15)
+     3. ĐỒNG HỒ SWEZAN 1994 CHẠY THỜI GIAN THỰC
      ------------------------------------------------------- */
   let simSeconds = 6 * 3600 + 15 * 60;
 
@@ -202,7 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* -------------------------------------------------------
-     5. HÀNH ĐỘNG MỞ TIVI (ANIMATION NHIỄU SÓNG -> VÀO TRANG CHÍNH)
+     5. HÀNH ĐỘNG MỞ TIVI & TẮT TIVI
      ------------------------------------------------------- */
   function triggerTvPowerOn() {
     if (isTransitioning) return;
@@ -264,9 +262,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 1820);
   }
 
-  /* -------------------------------------------------------
-     6. HÀNH ĐỘNG TẮT TIVI (QUAY VỀ GIAO DIỆN 1)
-     ------------------------------------------------------- */
   function triggerTvPowerOff() {
     if (isTransitioning) return;
     isTransitioning = true;
@@ -279,37 +274,29 @@ document.addEventListener("DOMContentLoaded", () => {
     body.classList.remove("is-main-active");
     body.classList.add("is-bursting");
 
-    mainApp.classList.remove("is-visible");
-    mainApp.hidden = true;
-
     if (window.AnalogNoise) {
       window.AnalogNoise.setMode("burst");
     }
 
-    glitchOverlay.className =
-      "crt-glitch-overlay is-active is-powering-off is-showing-osd";
-    if (glitchOsd) glitchOsd.textContent = "NO SIGNAL // NGẮT GUỒNG";
+    glitchOverlay.className = "crt-glitch-overlay is-active is-powering-off";
 
     schedule(() => {
-      if (glitchOsd) glitchOsd.textContent = "STANDBY // CHỜ KHỞI ĐỘNG";
-    }, 650);
+      mainApp.classList.remove("is-visible");
+      mainApp.hidden = true;
+    }, 280);
 
     schedule(() => {
       glitchOverlay.className = "crt-glitch-overlay";
       body.classList.remove("is-bursting");
       body.classList.add("is-standby");
 
-      analogGate.hidden = false;
-      analogGate.classList.remove("is-powering-on", "is-hover-charged");
-
       if (window.AnalogNoise) {
-        window.AnalogNoise.setMode("calm");
+        window.AnalogNoise.setMode("standby");
       }
 
-      tvPowerBtn.disabled = false;
-      tvPowerBtn.classList.remove("is-pressing");
+      analogGate.hidden = false;
       isTransitioning = false;
-    }, 1200);
+    }, 680);
   }
 
   if (tvPowerBtn) {
@@ -319,4 +306,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (tvOffBtn) {
     tvOffBtn.addEventListener("click", triggerTvPowerOff);
   }
-});
+}
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initShowrunnerGate);
+} else {
+  initShowrunnerGate();
+}

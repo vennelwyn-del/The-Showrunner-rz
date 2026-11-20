@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>THE SHOWRUNNER // K-TV Kênh 08 (1994)</title>
 
-  <!-- Google Fonts hỗ trợ đầy đủ tiếng Việt -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -13,26 +12,23 @@
     rel="stylesheet"
   />
 
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/palette.css?v=2" />
-  <link rel="stylesheet" href="css/gate.css?v=2" />
+  <link rel="stylesheet" href="css/palette.css?v=3" />
+  <link rel="stylesheet" href="css/gate.css?v=3" />
 </head>
-<body class="is-standby">
+<body class="is-standby" data-theme="red">
 
-  <!-- LỚP 1: CANVAS HẠT NHIỄU ANALOG & SỌC TỪ 50Hz -->
+  <!-- LỚP HIỆU ỨNG ANALOG -->
   <canvas id="analog-noise-canvas" aria-hidden="true"></canvas>
-
-  <!-- LỚP 2: SỌC QUÉT CRT, THANH TRACKING VHS & ĐỘ CONG MÀN HÌNH -->
   <div class="crt-scanlines" aria-hidden="true"></div>
   <div class="crt-tracking-bar" aria-hidden="true"></div>
   <div class="crt-vignette" aria-hidden="true"></div>
 
   <!-- =========================================================
-       THANH PILL BAR TRÊN CÙNG (HIỆN XUYÊN SUỐT CẢ 2 GIAO DIỆN)
+       THANH PILL BAR TRÊN CÙNG
        Trái: Link về Web Chính | Phải: Đổi 2 màu + Radio
        ========================================================= -->
   <nav class="top-pill-bar" aria-label="Điều hướng nhanh và thiết lập giao diện">
-    <!-- BÊN TRÁI: CÁC NÚT NHỎ LINK VỀ WEB CHÍNH CỦA NHÓM -->
+    <!-- BÊN TRÁI: CHỈ CÒN NÚT NHỎ LINK VỀ WEB CHÍNH -->
     <div class="pill-group pill-group-left">
       <!-- THAY LINK WEB CHÍNH CỦA BẠN Ở ĐÂY -->
       <a
@@ -40,7 +36,7 @@
         href="https://vennelwyn-del.github.io/Baoungdoinhau/"
         target="_blank"
         rel="noopener noreferrer"
-        title="Quay về trang web chính của tụi mình"
+        title="Quay về trang web chính"
       >
         <span class="pill-badge-circle" aria-hidden="true">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -50,28 +46,15 @@
         </span>
         <span class="pill-text">Web Chính</span>
       </a>
-
-      <!-- NÚT PHỤ DẪN TỚI WEB THAM CHIẾU / CREATORS (CÓ THỂ XÓA HOẶC ĐỔI TÊN) -->
-      <a
-        class="pill-btn pill-glass pill-compact"
-        href="https://vennelwyn-del.github.io/-Nhat-Xuyen-/"
-        target="_blank"
-        rel="noopener noreferrer"
-        title="Xem dự án khác của Creators"
-      >
-        <span class="pill-star" aria-hidden="true">&#10022;</span>
-        <span class="pill-text">Creators</span>
-      </a>
     </div>
 
     <!-- BÊN PHẢI: NÚT ĐỔI 2 GIAO DIỆN MÀU + NÚT RADIO -->
     <div class="pill-group pill-group-right">
-      <!-- Nút bật tắt đổi 2 giao diện màu (Red vs Silent Relic) -->
       <button
         id="theme-toggle-btn"
         class="pill-btn pill-dark pill-theme-btn"
         type="button"
-        title="Chuyển đổi giữa 2 bảng màu: Red Palette & Silent Relic (黒鍵の祈り)"
+        title="Chuyển đổi giữa 2 bảng màu: Red Palette & Silent Relic"
         aria-label="Đổi màu giao diện"
       >
         <span class="theme-dual-dot" aria-hidden="true"></span>
@@ -82,7 +65,6 @@
         </span>
       </button>
 
-      <!-- Nút Radio (style đĩa CD bạc + chữ R A D I O) -->
       <button
         id="radio-toggle-btn"
         class="pill-btn pill-dark pill-radio-btn"
@@ -96,7 +78,7 @@
       </button>
     </div>
 
-    <!-- BẢNG ĐIỀU KHIỂN RADIO MINI (XỔ XUỐNG KHI BẤM NÚT RADIO) -->
+    <!-- BẢNG ĐIỀU KHIỂN RADIO MINI -->
     <aside id="radio-panel" class="radio-panel" hidden aria-label="Bộ phát Radio Swezan 1994">
       <div class="radio-panel-head">
         <span class="radio-freq-tag">TUNER // SWEZAN 1994</span>
@@ -134,7 +116,6 @@
        GIAO DIỆN 1: MÀN HÌNH ANALOG CHỜ & NÚT MỞ TIVI
        ========================================================= -->
   <main id="analog-gate" class="analog-gate">
-    <!-- Khung ngắm kỹ thuật kiểu màn hình phát sóng 1994 -->
     <div class="monitor-frame" aria-hidden="true">
       <span class="corner tl"></span>
       <span class="corner tr"></span>
@@ -144,7 +125,6 @@
       <span class="reticle-v"></span>
     </div>
 
-    <!-- Thanh OSD Góc Trên -->
     <header class="osd-bar osd-top">
       <div class="osd-group">
         <span class="rec-indicator">
@@ -159,7 +139,6 @@
       </div>
     </header>
 
-    <!-- Cụm Trung Tâm: Tiêu đề & Nút Nguồn Tivi CRT -->
     <section class="gate-center" aria-label="Cổng phát sóng The Showrunner">
       <p class="gate-kicker">REEL NOIR ENGINE · ANALOG HORROR 1994</p>
 
@@ -172,7 +151,6 @@
 
       <div class="gate-divider" aria-hidden="true"></div>
 
-      <!-- Cụm Công Tắc Mở Tivi Cổ -->
       <div class="tv-switch-deck">
         <div class="tv-dial-plate">
           <div class="tv-dial-ticks" aria-hidden="true"></div>
@@ -187,6 +165,8 @@
               <span class="btn-led" aria-hidden="true"></span>
               <svg
                 class="power-icon"
+                width="34"
+                height="34"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -208,7 +188,6 @@
       </div>
     </section>
 
-    <!-- Thanh OSD Góc Dưới -->
     <footer class="osd-bar osd-bottom">
       <div class="osd-group">
         <span class="osd-sub">ARCHIVE: CASSIUS &amp; CO. · ALTSTADT</span>
@@ -238,7 +217,7 @@
   </div>
 
   <!-- =========================================================
-       GIAO DIỆN CHÍNH (KHUNG CHỜ ĐỂ BUILD TIẾP Ở BƯỚC 2)
+       GIAO DIỆN CHÍNH (KHUNG CHỜ BƯỚC 2)
        ========================================================= -->
   <section id="main-app" class="main-app" hidden>
     <div class="main-shell">
@@ -255,15 +234,14 @@
         <div class="gate-divider" aria-hidden="true"></div>
         <p class="main-desc">
           Màn hình tivi đã bật thành công. Thanh chuyển 2 màu (Đỏ / Đen) và Radio ở góc trên
-          vẫn hoạt động xuyên suốt tại đây. Hãy gửi thêm ảnh/bố cục bạn muốn cho sảnh chính
-          để chúng ta tiếp tục build Bước 2 nhé!
+          vẫn hoạt động xuyên suốt tại đây. Hãy gửi thêm ảnh hoặc mô tả bố cục bạn muốn cho
+          sảnh chính để chúng ta tiếp tục build Bước 2 nhé!
         </p>
       </div>
     </div>
   </section>
 
-  <!-- Scripts -->
-  <script src="js/static-noise.js?v=2" defer></script>
-  <script src="js/gate.js?v=2" defer></script>
+  <script src="js/static-noise.js?v=3" defer></script>
+  <script src="js/gate.js?v=3" defer></script>
 </body>
 </html>

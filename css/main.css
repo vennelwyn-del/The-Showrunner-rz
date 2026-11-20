@@ -904,3 +904,218 @@ body[data-theme="relic"] .card-badge-row { color: var(--faded-silver); }
 
   .newspaper-sheet { transform: none; }
 }
+/* =========================================================
+   PHẦN END: TAB HẠ MÀN, FOOTER & MÀN HÌNH DỪNG BĂNG THE END
+   ========================================================= */
+
+.end-stage-card {
+  padding: clamp(22px, 4vw, 38px);
+  background: var(--surface-panel);
+  border: 1px solid var(--border-line);
+  border-top: 3px solid var(--red-signal);
+  box-shadow: 0 18px 42px rgba(9, 9, 9, 0.72), 0 0 28px var(--accent-glow);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.end-tape-head {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--text-sub);
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--border-frame);
+}
+
+.end-kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: #ff7a86;
+}
+
+html[data-theme="relic"] .end-kicker,
+body[data-theme="relic"] .end-kicker {
+  color: var(--faded-silver);
+}
+
+.end-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  letter-spacing: 0.1em;
+  color: #ffffff;
+  text-shadow: 0 0 22px var(--accent-glow);
+}
+
+.end-quote {
+  max-width: 640px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  line-height: 1.6;
+  color: var(--text-main);
+}
+
+.end-rules-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 8px 0;
+  text-align: left;
+}
+
+.end-rule-box {
+  padding: 12px 14px;
+  background: rgba(14, 11, 12, 0.65);
+  border: 1px solid var(--border-frame);
+}
+
+.end-rule-box strong {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #ff7a86;
+  margin-bottom: 6px;
+}
+
+html[data-theme="relic"] .end-rule-box strong,
+body[data-theme="relic"] .end-rule-box strong {
+  color: var(--faded-silver);
+}
+
+.end-rule-box p {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--text-sub);
+}
+
+.end-credits-line {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--text-sub);
+  padding: 8px 0;
+}
+
+.end-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.end-actions a.studio-btn {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Footer ở cuối Giao diện 2 */
+.desk-footer-end {
+  margin-top: 8px;
+  padding: 12px 16px;
+  background: var(--surface-panel);
+  border: 1px solid var(--border-frame);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-sub);
+}
+
+.footer-end-left {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-end-stamp {
+  padding: 2px 8px;
+  border: 1.5px solid var(--red-signal);
+  color: #ff6b78;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+/* Màn hình phủ khi bấm Dừng Băng / THE END */
+.end-curtain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: radial-gradient(circle at center, rgba(40, 10, 14, 0.92) 0%, #090909 85%);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  backdrop-filter: blur(6px);
+  animation: verticalHoldSettle 0.45s ease forwards;
+}
+
+.end-curtain-box {
+  max-width: 560px;
+  width: 100%;
+  padding: 32px 26px;
+  border: 1px solid var(--red-signal);
+  background: rgba(14, 10, 11, 0.94);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95), 0 0 40px rgba(156, 4, 18, 0.45);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.end-curtain-code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: #ff5b68;
+}
+
+.end-curtain-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  letter-spacing: 0.1em;
+  color: #ffffff;
+}
+
+.end-curtain-sub {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 17px;
+  color: var(--text-sub);
+}
+
+.end-curtain-btns {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.end-curtain-btns a.studio-btn {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+@media (max-width: 820px) {
+  .end-rules-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -638,4 +638,28 @@ document.addEventListener("DOMContentLoaded", () => {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch];
     });
   }
+  /* -------------------------------------------------------
+     7. PHẦN END: DỪNG BĂNG & MÀN HÌNH HẠ MÀN (THE END)
+     ------------------------------------------------------- */
+  const triggerEndBtn = document.getElementById("trigger-end-btn");
+  const footerEndBtn = document.getElementById("footer-end-btn");
+  const endCurtainOverlay = document.getElementById("end-curtain-overlay");
+  const replayTapeBtn = document.getElementById("replay-tape-btn");
+
+  function openEndCurtain() {
+    if (!endCurtainOverlay) return;
+    if (window.AnalogAudio) window.AnalogAudio.playPowerOffSound();
+    if (window.AnalogNoise) window.AnalogNoise.setMode("standby");
+    endCurtainOverlay.hidden = false;
+  }
+
+  function closeEndCurtain() {
+    if (!endCurtainOverlay) return;
+    if (window.AnalogNoise) window.AnalogNoise.setMode("calm");
+    endCurtainOverlay.hidden = true;
+  }
+
+  if (triggerEndBtn) triggerEndBtn.addEventListener("click", openEndCurtain);
+  if (footerEndBtn) footerEndBtn.addEventListener("click", openEndCurtain);
+  if (replayTapeBtn) replayTapeBtn.addEventListener("click", closeEndCurtain);
 });

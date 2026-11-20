@@ -1045,3 +1045,59 @@ body[data-theme="relic"] .opt-relic {
   .tv-power-btn  { width: 88px; height: 88px; }
   .btn-bezel     { width: 68px; height: 68px; }
 }
+/* =========================================================
+   HIỆU ỨNG CHẤM MÁU LAN KHI CLICK CHUỘT (TOÀN TRANG)
+   ========================================================= */
+.blood-click-splat {
+  position: fixed;
+  width: 92px;
+  height: 112px;
+  margin-left: -46px;
+  margin-top: -46px;
+  pointer-events: none;
+  z-index: 9999;
+  transform-origin: 50% 42%;
+  filter: drop-shadow(0 2px 6px rgba(9, 9, 9, 0.72));
+  animation: bloodSplatBloom 2.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.blood-click-splat svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.blood-click-splat .blood-drip-tail {
+  transform-origin: 50% 45%;
+  animation: bloodDripSlide 2.1s ease-in forwards;
+}
+
+@keyframes bloodSplatBloom {
+  0% {
+    opacity: 0.96;
+    transform: scale(0.16) rotate(var(--splat-rot, 0deg));
+  }
+  12% {
+    opacity: 0.94;
+    transform: scale(1.06) rotate(var(--splat-rot, 0deg));
+  }
+  65% {
+    opacity: 0.72;
+    transform: scale(1.16) translateY(6px) rotate(var(--splat-rot, 0deg));
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.22) translateY(18px) rotate(var(--splat-rot, 0deg));
+  }
+}
+
+@keyframes bloodDripSlide {
+  0%, 15% {
+    transform: scaleY(0.35);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scaleY(1.45) translateY(10px);
+    opacity: 0;
+  }
+}

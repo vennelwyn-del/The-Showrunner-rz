@@ -12,9 +12,9 @@
     rel="stylesheet"
   />
 
-  <link rel="stylesheet" href="css/palette.css?v=6" />
-  <link rel="stylesheet" href="css/gate.css?v=6" />
-  <link rel="stylesheet" href="css/main.css?v=6" />
+  <link rel="stylesheet" href="css/palette.css?v=7" />
+  <link rel="stylesheet" href="css/gate.css?v=7" />
+  <link rel="stylesheet" href="css/main.css?v=7" />
 </head>
 <body class="is-standby" data-theme="red">
 
@@ -210,14 +210,46 @@
   </div>
 
   <!-- =========================================================
-       GIAO DIỆN 2: WEB GIỚI THIỆU PHONG CÁCH BÀN TƯ LIỆU & LƯỚI ĐỎ
+       GIAO DIỆN 2: CRIME BOARD · DÂY DỰA · CAMERA CCTV · MÁU ME
        ========================================================= -->
   <section id="main-app" class="main-app" hidden>
     <!-- Lớp Ảnh Nền Tùy Chỉnh (Link đổi Background) -->
     <div id="main-bg-layer" class="main-bg-layer has-bw-filter" aria-hidden="true"></div>
     <div class="main-wood-vignette" aria-hidden="true"></div>
 
-    <!-- Lớp Khung Dây Tọa Độ Đỏ kiểu Ảnh 1 -->
+    <!-- Ánh Đèn Treo Lủng Lẳng & Vệt Máu Loang Nền -->
+    <div class="hanging-bulb-glow" aria-hidden="true"></div>
+    <div class="blood-stain-corner stain-tl" aria-hidden="true"></div>
+    <div class="blood-stain-corner stain-br" aria-hidden="true"></div>
+
+    <!-- Băng Cảnh Sát KEEP OUT (Vàng-Đen) & CRIME SCENE (Đỏ) -->
+    <div class="crime-tape-wrap" aria-hidden="true">
+      <div class="tape-yellow tape-top-left">
+        <span>KEEP OUT /// DON'T TOUCH /// CRIME SCENE /// KEEP OUT /// DON'T TOUCH ///</span>
+      </div>
+      <div class="tape-yellow tape-top-right">
+        <span>DON'T TOUCH /// KEEP OUT /// RESTRICTED ARCHIVE /// DON'T TOUCH ///</span>
+      </div>
+      <div class="tape-red-bottom">
+        <span>CRIME SCENE — DO NOT CROSS — PRIVATE COLLECTION — FOR DISPLAY ONLY —</span>
+      </div>
+    </div>
+
+    <!-- Khung Camera CCTV 1994 (CAM-04 REC + Lưới Ngắm) -->
+    <div class="cctv-hud-overlay" aria-hidden="true">
+      <span class="cctv-corner tl"></span>
+      <span class="cctv-corner tr"></span>
+      <span class="cctv-corner bl"></span>
+      <span class="cctv-corner br"></span>
+      <div class="cctv-rec-tag">
+        <span class="cctv-dot"></span>
+        <span>CAM-04 // REC · SWEZAN 50Hz</span>
+      </div>
+      <div class="cctv-cam-meta">LENS: 35MM ANALOG · TRACKING: AUTO</div>
+      <div class="cctv-crosshair">+</div>
+    </div>
+
+    <!-- Mạng Dây Dụa Đỏ Thắt Nút & Khung Tọa Độ (Mix Ảnh 1 + Ảnh B + Ảnh C) -->
     <svg
       id="forensic-wireframe"
       class="forensic-wireframe"
@@ -225,43 +257,45 @@
       preserveAspectRatio="none"
       aria-hidden="true"
     >
-      <rect x="65" y="18" width="230" height="70" class="wf-block" />
-      <rect x="260" y="390" width="90" height="55" class="wf-block" />
-      <rect x="920" y="340" width="42" height="120" class="wf-block" />
-      <rect x="1310" y="545" width="110" height="65" class="wf-block" />
-      <rect x="18" y="805" width="240" height="80" class="wf-block" />
+      <!-- Các mảng khối đỏ rách kiểu tư liệu -->
+      <rect x="42" y="16" width="210" height="58" class="wf-block" />
+      <rect x="1285" y="545" width="125" height="62" class="wf-block" />
+      <rect x="18" y="810" width="225" height="72" class="wf-block" />
 
+      <!-- Mạng dây dụa đỏ chùng cong nối các đinh ghim -->
+      <path d="M 730,24 Q 440,210 210,360" class="yarn-cord" />
+      <path d="M 730,24 Q 680,260 565,420" class="yarn-cord" />
+      <path d="M 730,24 Q 950,235 1190,345" class="yarn-cord" />
+      <path d="M 730,24 Q 1080,410 1325,650" class="yarn-cord" />
+      <path d="M 210,360 Q 430,590 790,695" class="yarn-cord" />
+      <path d="M 565,420 Q 750,515 1190,345" class="yarn-cord" />
+      <path d="M 320,760 Q 610,630 980,740" class="yarn-cord" />
+      <path d="M 1190,345 Q 1060,565 980,740" class="yarn-cord" />
+
+      <!-- Đường tia tọa độ đỏ mảnh -->
       <line x1="1380" y1="22" x2="360" y2="395" class="wf-line" />
-      <line x1="1380" y1="22" x2="610" y2="395" class="wf-line" />
       <line x1="1380" y1="22" x2="860" y2="510" class="wf-line" />
-      <line x1="1380" y1="22" x2="1050" y2="540" class="wf-line" />
-      <line x1="1380" y1="22" x2="940" y2="755" class="wf-line" />
-      <line x1="1380" y1="22" x2="1335" y2="660" class="wf-line" />
-      <line x1="1380" y1="22" x2="1380" y2="880" class="wf-line" />
+      <line x1="0" y1="465" x2="1440" y2="465" class="wf-dashed" />
+      <rect x="330" y="275" width="245" height="135" class="wf-box" />
+      <rect x="1150" y="16" width="165" height="24" class="wf-box" />
 
-      <line x1="0" y1="450" x2="1440" y2="450" class="wf-dashed" />
-      <rect x="330" y="270" width="265" height="145" class="wf-box" />
-      <rect x="945" y="105" width="110" height="175" class="wf-box" />
-      <rect x="132" y="535" width="460" height="235" class="wf-box" />
-      <rect x="1260" y="615" width="98" height="92" class="wf-box" />
+      <!-- Đinh ghim trên mạng dây dụa -->
+      <circle cx="730" cy="24" r="9" class="yarn-pin" />
+      <circle cx="210" cy="360" r="6" class="yarn-pin" />
+      <circle cx="565" cy="420" r="6" class="yarn-pin" />
+      <circle cx="1190" cy="345" r="7" class="yarn-pin" />
+      <circle cx="980" cy="740" r="6" class="yarn-pin" />
 
-      <rect x="1150" y="12" width="142" height="24" class="wf-box" />
-      <text x="1160" y="29" class="wf-label">SWEZAN // 1994</text>
-      <text x="336" y="286" class="wf-coord">VALLEY ARCHIVE · 50Hz</text>
-      <text x="1225" y="535" class="wf-coord">CH-08 BROADCAST</text>
-      <text x="415" y="395" class="wf-node-name">ALTSTADT</text>
-      <text x="820" y="535" class="wf-node-name">HARBOR</text>
-      <text x="1035" y="595" class="wf-node-name">SIGNAL</text>
-      <text x="1268" y="695" class="wf-node-name">LIGHT</text>
-      <text x="515" y="758" class="wf-node-name">HÜT IV</text>
+      <text x="1160" y="33" class="wf-label">PRIVATE COLLECTION</text>
+      <text x="338" y="292" class="wf-coord">FOR DISPLAY ONLY · CH-08</text>
     </svg>
 
     <div class="desk-shell">
-      <!-- THANH ĐIỀU HÀNH WEB GIỚI THIỆU -->
+      <!-- THANH ĐIỀU HÀNH -->
       <header class="desk-topbar">
         <div class="desk-brand">
           <span class="play-badge">&#9654; THE SHOWRUNNER // 1994</span>
-          <span class="desk-date">ANALOG NOIR INTERACTIVE STORY</span>
+          <span class="desk-date">PRIVATE COLLECTION · ANALOG NOIR</span>
         </div>
 
         <nav class="desk-tabs" aria-label="Mục giới thiệu tác phẩm">
@@ -276,6 +310,8 @@
           </button>
           <button class="desk-tab" type="button" data-tab="profile">
             04. NHẬP VAI
+          <button class="desk-tab" type="button" data-tab="end">
+            05. HẠ MÀN (END)
           </button>
         </nav>
 
@@ -296,7 +332,6 @@
 
       <!-- =====================================================
            NGĂN KÉO LINK ĐỔI ẢNH BACKGROUND & LINK THÊM NHẠC
-           (Bấm "⚙ ĐỔI NỀN & NHẠC" để mở/đóng)
            ===================================================== -->
       <section id="media-studio-drawer" class="media-studio-drawer" hidden aria-label="Cấu hình ảnh nền và nhạc">
         <div class="studio-box">
@@ -304,7 +339,7 @@
             <span class="studio-tag">01 // LINK ĐỔI ẢNH BACKGROUND</span>
             <label class="studio-check">
               <input id="bg-bw-toggle" type="checkbox" checked />
-              <span>Phủ Đen-Trắng + Lưới Đỏ (Ảnh 1)</span>
+              <span>Phủ Đen-Trắng + Dây Đỏ</span>
             </label>
           </div>
 
@@ -328,7 +363,7 @@
           </div>
 
           <div class="studio-sub-row">
-            <span id="bg-status-msg" class="studio-status">Đang dùng: Nền Tư Liệu Mặc Định</span>
+            <span id="bg-status-msg" class="studio-status">Đang dùng: Bảng Hồ Sơ Mặc Định</span>
             <label class="studio-slider-wrap">
               <span>Độ tối phủ</span>
               <input id="bg-dim-slider" type="range" min="5" max="80" value="22" />
@@ -377,11 +412,11 @@
       </section>
 
       <!-- =====================================================
-           TAB 1: TỔNG QUAN TÁC PHẨM (POLAROID + NHẬT BÁO SWEZAN)
+           TAB 1: TỔNG QUAN (POLAROID MÁU + TỜ BÁO + DÂY DỰA)
            ===================================================== -->
       <section id="tab-overview" class="desk-panel is-active">
         <div class="evidence-desk-grid">
-          <!-- CỘT TRÁI: 3 ẢNH POLAROID GIỚI THIỆU + ĐỒNG HỒ BỎ TÚI + LÁ BÀI -->
+          <!-- CỘT TRÁI: 3 ẢNH POLAROID GHIM ĐINH ĐỎ + VẾT MÁU -->
           <div class="polaroid-cluster">
             <div class="lenormand-peek" title="Biểu tượng Lenormand 01 — The Rider">
               <span class="card-num">01</span>
@@ -392,6 +427,7 @@
             <!-- Polaroid 1 -->
             <article class="polaroid-card tilt-left" data-open-tab="world">
               <span class="pushpin" aria-hidden="true"></span>
+              <span class="blood-handprint" aria-hidden="true"></span>
               <div class="polaroid-frame">
                 <div class="polaroid-art">
                   <svg class="polaroid-svg" viewBox="0 0 220 150" aria-hidden="true">
@@ -399,41 +435,42 @@
                     <rect x="36" y="34" width="122" height="82" rx="4" fill="rgba(255,255,255,0.06)" stroke="rgba(255,215,215,0.35)" />
                     <circle cx="176" cy="52" r="9" fill="none" stroke="rgba(255,215,215,0.6)" stroke-width="2" />
                     <circle cx="176" cy="78" r="9" fill="none" stroke="rgba(255,215,215,0.6)" stroke-width="2" />
-                    <line x1="46" y1="68" x2="148" y2="68" stroke="rgba(255,140,150,0.6)" stroke-dasharray="6 4" />
+                    <line x1="46" y1="68" x2="148" y2="68" stroke="rgba(255,90,100,0.75)" stroke-dasharray="6 4" />
                     <line x1="46" y1="84" x2="148" y2="84" stroke="rgba(255,255,255,0.35)" />
                   </svg>
-                  <span class="art-code">SWAN TEROF // CH-08</span>
-                  <span class="art-caption">KHI MÀN HÌNH TIVI TỰ BẬT LÚC NỬA ĐÊM</span>
+                  <span class="art-code">CAM-08 // VHS-C</span>
+                  <span class="art-caption">KHI MÀN HÌNH TIVI TỰ BẬT LÚC 00:00</span>
                 </div>
               </div>
               <div class="polaroid-meta">
-                <strong>I. VỞ KỊCH ANALOG 1994</strong>
-                <span>Bấm để xem bối cảnh thung lũng Swezan</span>
+                <strong>I. THUNG LŨNG SWEZAN 1994</strong>
+                <span>Bấm xem bối cảnh &amp; tin tức địa phương</span>
               </div>
             </article>
 
             <!-- Polaroid 2 -->
             <article class="polaroid-card tilt-right" data-open-tab="cast">
               <span class="pushpin" aria-hidden="true"></span>
+              <span class="rubber-stamp">CLASSIFIED</span>
               <div class="polaroid-frame">
                 <div class="polaroid-art art-alt">
                   <svg class="polaroid-svg" viewBox="0 0 220 150" aria-hidden="true">
-                    <circle cx="110" cy="56" r="24" fill="none" stroke="rgba(255,220,220,0.55)" stroke-width="2" />
-                    <path d="M62 126c8-26 28-38 48-38s40 12 48 38" fill="none" stroke="rgba(255,220,220,0.55)" stroke-width="2" />
-                    <line x1="25" y1="126" x2="195" y2="126" stroke="rgba(255,140,150,0.45)" />
+                    <circle cx="110" cy="56" r="24" fill="none" stroke="rgba(255,220,220,0.6)" stroke-width="2" />
+                    <path d="M62 126c8-26 28-38 48-38s40 12 48 38" fill="none" stroke="rgba(255,220,220,0.6)" stroke-width="2" />
+                    <text x="103" y="64" fill="rgba(255,140,150,0.8)" font-size="26" font-family="monospace">?</text>
                   </svg>
-                  <span class="art-code">DÂN CƯ &amp; NHÂN VẬT</span>
-                  <span class="art-caption">TỪ TÒA THỊ CHÍNH ĐẾN BẾN CẢNG ĐEN</span>
+                  <span class="art-code">15 NHÂN VẬT CÔNG KHAI</span>
+                  <span class="art-caption">AI ĐANG ĐỨNG SAU ỐNG KÍNH?</span>
                 </div>
               </div>
               <div class="polaroid-meta">
-                <strong>II. NHỮNG GƯƠNG MẶT SWEZAN</strong>
-                <span>Công tố viên, phòng trà, nhà xác &amp; phố cổ</span>
+                <strong>II. DÀN NHÂN VẬT SWEZAN</strong>
+                <span>Có sẵn link thay ảnh từng người</span>
               </div>
             </article>
 
             <div class="desk-props-row">
-              <div class="pocket-watch" title="7 ngày cho mỗi hồi kịch">
+              <div class="pocket-watch" title="Chu kỳ 7 ngày">
                 <div class="watch-ring">
                   <span class="watch-face-num">7D</span>
                   <span class="watch-face-sub">CHU KỲ</span>
@@ -442,8 +479,8 @@
               </div>
 
               <div class="torn-clipping">
-                <span class="clipping-head">THE END?</span>
-                <p>Mỗi quyết định đều phải trả giá bằng thời gian thực của thung lũng.</p>
+                <span class="clipping-head">DON'T TOUCH</span>
+                <p>Mỗi cú nhấp chuột hay quyết định sai đều để lại vết máu trên cuộn băng.</p>
               </div>
             </div>
 
@@ -459,7 +496,7 @@
                     <line x1="60" y1="96" x2="125" y2="96" stroke="rgba(255,220,220,0.4)" />
                   </svg>
                   <span class="art-code">5 THÂN PHẬN NHẬP VAI</span>
-                  <span class="art-caption">CHỌN VAI TRÒ &amp; BƯỚC VÀO THUNG LŨNG</span>
+                  <span class="art-caption">CHỌN VAI DIỄN CỦA RIÊNG BẠN</span>
                 </div>
               </div>
               <div class="polaroid-meta">
@@ -469,12 +506,13 @@
             </article>
           </div>
 
-          <!-- CỘT PHẢI: TỜ BÁO GIỚI THIỆU SWEZAN TAGBLATT -->
+          <!-- CỘT PHẢI: TỜ BÁO NHẬT BÁO SWEZAN TAGBLATT -->
           <article class="newspaper-sheet">
+            <span class="rubber-stamp stamp-news">FOR DISPLAY ONLY</span>
             <div class="news-top-meta">
               <span>THỨ HAI, 30-11-1994</span>
-              <span class="news-edition">SWEZAN EDITION · 1994</span>
-              <span>NOIR INTERACTIVE</span>
+              <span class="news-edition">SWEZAN ARCHIVE · CH-08</span>
+              <span>NOIR SHOWCASE</span>
             </div>
 
             <h2 class="news-masthead">SWEZAN TAGBLATT</h2>
@@ -482,7 +520,7 @@
             <div class="news-headline-block">
               <p class="news-sub-red">TRUYỀN HÌNH ĐÊM ĐÃ BỊ CHIẾM SÓNG</p>
               <div class="news-oval-wrap">
-                <h3 class="news-big-headline">THE SHOWRUNNER</h3>
+                <h3 class="news-big-headline glitch-hover" data-text="THE SHOWRUNNER">THE SHOWRUNNER</h3>
                 <span class="news-red-oval" aria-hidden="true"></span>
               </div>
             </div>
@@ -491,38 +529,38 @@
               <div class="news-col">
                 <p>
                   Năm <strong>1994</strong>, thung lũng công nghiệp <strong>Swezan</strong> chìm trong
-                  mưa phùn tro than, tiếng máy dệt rỉ sét và nỗi kinh hoàng mang tên
-                  <strong>“The Rider”</strong> — kẻ tự nhận mình là Đạo diễn của một vở bi kịch
+                  mưa phùn tro than, dây điện rỉ sét và cơn hoảng loạn mang tên
+                  <strong>“The Rider”</strong> — kẻ tự xưng mình là Đạo diễn của một vở bi kịch
                   trên những cuộn băng <strong>VHS-C đen trắng</strong>.
                 </p>
                 <p>
                   Rạng sáng Thứ Hai, tin tức về sự mất tích bí ẩn của Phó Cảnh sát trưởng
                   <strong>Matthäus August</strong> lan khắp phố cổ Altstadt đến bến cảng
-                  Schwarzhaven. Mọi máy thu hình trong thị trấn đang chờ hồi chuông tiếp theo.
+                  Schwarzhaven. Các ống kính camera an ninh đang rà soát mọi ngả đường.
                 </p>
               </div>
 
               <div class="news-photo-box">
                 <svg class="news-svg-art" viewBox="0 0 200 140" aria-hidden="true">
                   <polygon points="10,130 40,60 65,95 95,40 135,105 160,72 190,130" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.35)" />
-                  <rect x="75" y="22" width="6" height="45" fill="rgba(200,16,32,0.55)" />
-                  <rect x="120" y="34" width="8" height="60" fill="rgba(200,16,32,0.45)" />
+                  <rect x="75" y="22" width="6" height="45" fill="rgba(200,16,32,0.72)" />
+                  <rect x="120" y="34" width="8" height="60" fill="rgba(200,16,32,0.55)" />
                 </svg>
                 <div class="news-photo-overlay">
-                  <span>CH-08 // 50Hz PAL</span>
+                  <span>CAM-04 // ● REC</span>
                   <span>THUNG LŨNG SWEZAN · -3°C</span>
                 </div>
               </div>
             </div>
 
             <div class="news-red-banner">
-              KHÔNG CÓ LỐI ĐI ĐỊNH SẴN &mdash; THẾ GIỚI MỞ &amp; THỜI GIAN THỰC
+              PRIVATE COLLECTION &mdash; THẾ GIỚI MỞ &amp; THỜI GIAN THỰC
             </div>
 
             <div class="tape-transcript-box">
               <div class="tape-box-head">
-                <span>&#127902; LỜI MỞ ĐẦU TỪ MÀN ẢNH NHỎ</span>
-                <span>4:3 ANALOG NOIR</span>
+                <span>&#127902; TRÍCH ĐOẠN BĂNG MỞ MÀN</span>
+                <span>4:3 ANALOG HORROR</span>
               </div>
               <p class="tape-quote">
                 “Chào buổi tối, Swezan. Hãy ngồi xuống trước màn hình, sưởi ấm đôi bàn tay...
@@ -530,7 +568,7 @@
               </p>
               <div class="tape-clues">
                 <span><strong>Thể loại:</strong> Trinh thám Hard-boiled · Analog Horror · Tâm lý 1994</span>
-                <span><strong>Trải nghiệm:</strong> Tự do điều tra, giao tiếp hay đứng ngoài dòng xoáy</span>
+                <span><strong>Trải nghiệm:</strong> Tự do điều tra, đối thoại hay đứng ngoài cuộc chơi</span>
               </div>
             </div>
           </article>
@@ -538,7 +576,7 @@
       </section>
 
       <!-- =====================================================
-           TAB 2: THẾ GIỚI SWEZAN (CHỈ THÔNG TIN CÔNG KHAI)
+           TAB 2: THẾ GIỚI SWEZAN
            ===================================================== -->
       <section id="tab-world" class="desk-panel" hidden>
         <div class="panel-header-strip">
@@ -565,22 +603,22 @@
       </section>
 
       <!-- =====================================================
-           TAB 3: GIỚI THIỆU NHÂN VẬT (CHỈ THÔNG TIN CÔNG KHAI)
+           TAB 3: DÀN NHÂN VẬT (MỖI NGƯỜI CÓ THẺ POLAROID & LINK ẢNH RIÊNG)
            ===================================================== -->
       <section id="tab-cast" class="desk-panel" hidden>
         <div class="panel-header-strip">
           <div>
-            <p class="panel-kicker">DRAMATIS PERSONAE // GIỚI THIỆU DÀN NHÂN VẬT</p>
-            <h2 class="panel-title">NHỮNG GƯƠNG MẶT TẠI SWEZAN</h2>
+            <p class="panel-kicker">WANTED / ARCHIVE BOARD // NHÂN VẬT CÔNG KHAI</p>
+            <h2 class="panel-title">BẢNG HỒ SƠ NHÂN VẬT (BẤM ĐỔI ẢNH TỪNG NGƯỜI)</h2>
           </div>
           <div class="cast-filter-group">
-            <button class="studio-btn is-active" type="button" data-cast-filter="all">TẤT CẢ</button>
+            <button class="studio-btn is-active" type="button" data-cast-filter="all">TẤT CẢ (15)</button>
             <button class="studio-btn" type="button" data-cast-filter="official">CHÍNH QUYỀN &amp; BÁO CHÍ</button>
             <button class="studio-btn" type="button" data-cast-filter="town">PHỐ CỔ &amp; BẾN CẢNG</button>
           </div>
         </div>
 
-        <div id="cast-grid" class="cast-grid"></div>
+        <div id="cast-grid" class="cast-board-grid"></div>
       </section>
 
       <!-- =====================================================
@@ -659,9 +697,1836 @@
       </section>
     </div>
   </section>
+  <!-- =====================================================
+           TAB 5: PHẦN KẾT / HẠ MÀN (THE END & CREDITS)
+           ===================================================== -->
+      <section id="tab-end" class="desk-panel" hidden>
+        <div class="end-stage-card">
+          <div class="end-tape-head">
+            <span>&#127902; K-TV KÊNH 08 // END OF REEL</span>
+            <span>VHS-C · 50Hz PAL</span>
+          </div>
 
-  <script src="js/static-noise.js?v=6" defer></script>
-  <script src="js/gate.js?v=6" defer></script>
-  <script src="js/main.js?v=6" defer></script>
+          <p class="end-kicker">EPILOGUE // LỜI BẠT CỦA BUỔI CHIẾU</p>
+          <h2 class="end-title glitch-hover" data-text="CUT! — THE END">CUT! — THE END</h2>
+
+          <p class="end-quote">
+            “Mỗi cuộn băng đều có điểm dừng, mỗi vở kịch đều phải hạ màn.
+            Trong thung lũng Swezan này, tự do của bạn là tuyệt đối — và cái giá phải trả
+            cho từng giờ trôi qua cũng vậy.”
+          </p>
+
+          <div class="end-rules-grid">
+            <div class="end-rule-box">
+              <strong>01 // THỜI GIAN KHÔNG CHỜ ĐỢI</strong>
+              <p>Đồng hồ luôn tích tắc hướng về 23:59 đêm Chủ Nhật. Mọi hành động đều tiêu tốn thời gian thực.</p>
+            </div>
+            <div class="end-rule-box">
+              <strong>02 // KHÔNG CÓ LỐI ĐI ĐỊNH SẴN</strong>
+              <p>Bạn có thể phá án, giao dịch chợ đen, uống rượu tại phòng trà hay đứng ngoài mọi cuộc chơi.</p>
+            </div>
+            <div class="end-rule-box">
+              <strong>03 // HỒ SƠ CHỈ MỞ TRONG CUỘC CHƠI</strong>
+              <p>Mọi chân tướng đằng sau màn sương tro than chỉ hé lộ khi bạn tự tay bóc tách từng manh mối.</p>
+            </div>
+          </div>
+
+          <div class="end-credits-line">
+            <span>THE SHOWRUNNER (1994)</span>
+            <span>&middot;</span>
+            <span>SWEZAN INDUSTRIAL NOIR</span>
+            <span>&middot;</span>
+            <span>ANALOG ARCHIVE</span>
+          </div>
+
+          <div class="end-actions">
+            <button id="trigger-end-btn" class="studio-btn studio-btn-red" type="button">
+              &#9209; DỪNG BĂNG &amp; HẠ MÀN (THE END)
+            </button>
+            <a
+              class="studio-btn"
+              href="https://vennelwyn-del.github.io/Baoungdoinhau/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              &#8617; QUAY VỀ WEB CHÍNH
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER CHỐT CUỐI GIAO DIỆN 2 -->
+      <footer class="desk-footer-end">
+        <div class="footer-end-left">
+          <span class="footer-end-stamp">THE END</span>
+          <span>SWEZAN ARCHIVE 1994 // K-TV KÊNH 08 — FOR DISPLAY ONLY</span>
+        </div>
+        <div class="footer-end-right">
+          <button id="footer-end-btn" class="studio-btn" type="button">
+            &#9209; KẾT THÚC BUỔI CHIẾU
+          </button>
+        </div>
+      </footer>
+  <!-- =========================================================
+       MÀN HÌNH HẠ MÀN KHI BẤM KẾT THÚC BĂNG (THE END)
+       ========================================================= -->
+  <div id="end-curtain-overlay" class="end-curtain-overlay" hidden>
+    <div class="end-curtain-box">
+      <p class="end-curtain-code">STOP &#9632; // TAPE EJECTED — NO SIGNAL</p>
+      <h2 class="end-curtain-title">BUỔI CHIẾU ĐÃ HẠ MÀN</h2>
+      <p class="end-curtain-sub">
+        “Cảm ơn đã ngồi lại cho tới khi cuộn băng ngừng quay.”
+      </p>
+      <div class="end-curtain-btns">
+        <button id="replay-tape-btn" class="studio-btn studio-btn-red" type="button">
+          &#8634; TUA LẠI BĂNG (QUAY LẠI TRANG)
+        </button>
+        <a
+          class="studio-btn"
+          href="https://vennelwyn-del.github.io/Baoungdoinhau/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          VỀ WEB CHÍNH
+        </a>
+      </div>
+    </div>
+  </div>
+  <script src="js/static-noise.js?v=7" defer></script>
+  <script src="js/gate.js?v=7" defer></script>
+  <script src="js/characters.js?v=7" defer></script>
+  <script src="js/main.js?v=7" defer></script>
 </body>
 </html>
+```
+
+---
+
+### 5. Cập nhật `css/main.css`
+
+Bổ sung style cho băng **`KEEP OUT`**, băng **`CRIME SCENE`**, **CCTV Viewfinder**, **dây dụa đỏ chùng cong**, **vết máu / dấu tay máu / con dấu đỏ**, **nhiễu glitch định kỳ**, và thẻ **Polaroid Nhân vật có chỗ tự dán link ảnh**.
+
+```css
+/* =========================================================
+   THE SHOWRUNNER — GIAO DIỆN 2: CRIME BOARD · DÂY DỰA · CCTV
+   ========================================================= */
+
+.main-app {
+  position: relative;
+  z-index: 20;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: clamp(62px, 7vw, 76px) clamp(14px, 3vw, 34px) 62px;
+  background-color: var(--bg-edge);
+  opacity: 0;
+}
+
+.main-app.is-visible {
+  animation: verticalHoldSettle 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Nền sáng vừa kiểu bảng hồ sơ xám-đỏ + có thể đổi bằng link */
+.main-bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-color: #362c2d;
+  background-image:
+    radial-gradient(circle at 48% 35%, rgba(255, 240, 240, 0.14) 0%, transparent 50%),
+    radial-gradient(circle at 18% 22%, rgba(184, 16, 32, 0.30) 0%, transparent 45%),
+    radial-gradient(circle at 82% 78%, rgba(120, 4, 12, 0.34) 0%, transparent 52%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.025) 0px,
+      rgba(255, 255, 255, 0.025) 2px,
+      rgba(0, 0, 0, 0.08) 3px,
+      rgba(0, 0, 0, 0.08) 22px
+    );
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: filter 0.35s ease, background-image 0.35s ease;
+}
+
+.main-bg-layer.has-bw-filter {
+  filter: grayscale(100%) contrast(1.16) brightness(0.90);
+}
+
+.main-wood-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 42%, rgba(9, 9, 9, 0.06) 0%, rgba(9, 9, 9, 0.72) 100%);
+  opacity: var(--bg-dim, 0.22);
+}
+
+/* Ánh đèn treo & vết máu loang nền */
+.hanging-bulb-glow {
+  position: fixed;
+  top: -40px;
+  left: 52%;
+  width: 440px;
+  height: 440px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 246, 224, 0.16) 0%, rgba(200, 16, 32, 0.08) 40%, transparent 72%);
+  pointer-events: none;
+  z-index: 1;
+  animation: bulbSway 6.5s ease-in-out infinite;
+}
+
+.blood-stain-corner {
+  position: fixed;
+  width: 380px;
+  height: 380px;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.42;
+}
+
+.blood-stain-corner.stain-tl {
+  top: -70px;
+  left: -60px;
+  background: radial-gradient(circle at 30% 35%, rgba(168, 8, 22, 0.78) 0%, rgba(92, 2, 10, 0.45) 45%, transparent 72%);
+}
+
+.blood-stain-corner.stain-br {
+  bottom: -80px;
+  right: -60px;
+  background: radial-gradient(circle at 65% 65%, rgba(156, 4, 18, 0.8) 0%, rgba(82, 1, 2, 0.42) 48%, transparent 74%);
+}
+
+/* Băng cảnh sát KEEP OUT (vàng đen) & CRIME SCENE (đỏ) */
+.crime-tape-wrap {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 15;
+  overflow: hidden;
+}
+
+.tape-yellow {
+  position: absolute;
+  padding: 5px 40px;
+  background: repeating-linear-gradient(
+    -45deg,
+    #d6a318 0px 14px,
+    #181512 14px 24px
+  );
+  color: #14110f;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  white-space: nowrap;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.65);
+  opacity: 0.84;
+}
+
+.tape-yellow span {
+  background: #e1b122;
+  padding: 1px 6px;
+}
+
+.tape-top-left {
+  top: 26px;
+  left: -70px;
+  transform: rotate(-18deg);
+}
+
+.tape-top-right {
+  top: 34px;
+  right: -90px;
+  transform: rotate(15deg);
+}
+
+.tape-red-bottom {
+  position: absolute;
+  bottom: 8px;
+  left: -20px;
+  right: -20px;
+  padding: 4px 0;
+  background: rgba(156, 4, 18, 0.86);
+  border-top: 1px solid rgba(255, 160, 165, 0.35);
+  border-bottom: 1px solid rgba(255, 160, 165, 0.35);
+  color: #fbeaea;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  transform: rotate(-0.6deg);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
+}
+
+/* Khung Camera CCTV 1994 */
+.cctv-hud-overlay {
+  position: fixed;
+  inset: 14px;
+  pointer-events: none;
+  z-index: 16;
+  font-family: var(--font-mono);
+}
+
+.cctv-corner {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: rgba(242, 235, 235, 0.55);
+}
+
+.cctv-corner.tl { top: 0; left: 0; border-top: 2px solid; border-left: 2px solid; }
+.cctv-corner.tr { top: 0; right: 0; border-top: 2px solid; border-right: 2px solid; }
+.cctv-corner.bl { bottom: 0; left: 0; border-bottom: 2px solid; border-left: 2px solid; }
+.cctv-corner.br { bottom: 0; right: 0; border-bottom: 2px solid; border-right: 2px solid; }
+
+.cctv-rec-tag {
+  position: absolute;
+  bottom: 24px;
+  left: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 9px;
+  background: rgba(16, 12, 13, 0.72);
+  border: 1px solid rgba(200, 16, 32, 0.55);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: #f6eaea;
+  animation: periodicCamGlitch 7s infinite;
+}
+
+.cctv-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff1e2d;
+  box-shadow: 0 0 8px #ff1e2d;
+  animation: recBlink 1.1s steps(2, start) infinite;
+}
+
+.cctv-cam-meta {
+  position: absolute;
+  bottom: 24px;
+  right: 16px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: rgba(235, 224, 224, 0.68);
+  background: rgba(16, 12, 13, 0.65);
+  padding: 3px 8px;
+}
+
+.cctv-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 22px;
+  color: rgba(255, 255, 255, 0.18);
+}
+
+/* Mạng Dây Dụa Đỏ & Tọa Độ */
+.forensic-wireframe {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+}
+
+.forensic-wireframe.is-hidden { opacity: 0; }
+
+.wf-block { fill: #c81020; opacity: 0.45; }
+.wf-line  { stroke: #d61828; stroke-width: 1.3; opacity: 0.55; }
+.wf-dashed { stroke: #d61828; stroke-width: 1.1; stroke-dasharray: 8 6; opacity: 0.55; }
+.wf-box   { fill: none; stroke: #d61828; stroke-width: 1.4; opacity: 0.7; }
+
+.yarn-cord {
+  fill: none;
+  stroke: #d41122;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 0.72));
+  opacity: 0.88;
+}
+
+.yarn-pin {
+  fill: #e42333;
+  stroke: #340506;
+  stroke-width: 2;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.85));
+}
+
+.wf-label,
+.wf-coord {
+  font-family: var(--font-mono);
+  fill: #e83242;
+  letter-spacing: 0.1em;
+}
+
+.wf-label { font-size: 11px; font-weight: 600; }
+.wf-coord { font-size: 10px; opacity: 0.85; }
+
+html[data-theme="relic"] .yarn-cord,
+body[data-theme="relic"] .yarn-cord { stroke: #8c1723; }
+html[data-theme="relic"] .wf-block,
+body[data-theme="relic"] .wf-block { fill: #5e1922; }
+html[data-theme="relic"] .wf-line,
+html[data-theme="relic"] .wf-dashed,
+html[data-theme="relic"] .wf-box,
+body[data-theme="relic"] .wf-line,
+body[data-theme="relic"] .wf-dashed,
+body[data-theme="relic"] .wf-box { stroke: rgba(216, 214, 212, 0.42); }
+html[data-theme="relic"] .wf-label,
+html[data-theme="relic"] .wf-coord,
+body[data-theme="relic"] .wf-label,
+body[data-theme="relic"] .wf-coord { fill: rgba(232, 230, 228, 0.72); }
+
+.desk-shell {
+  position: relative;
+  z-index: 8;
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* =========================================================
+   THANH ĐIỀU HÀNH & TABS
+   ========================================================= */
+
+.desk-topbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--surface-panel);
+  border: 1px solid var(--border-line);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 12px 30px rgba(9, 9, 9, 0.48);
+}
+
+.desk-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+}
+
+.desk-date { color: var(--text-sub); font-size: 10px; }
+.desk-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.desk-tab {
+  padding: 7px 12px;
+  background: rgba(24, 18, 20, 0.68);
+  border: 1px solid var(--border-frame);
+  color: var(--text-sub);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.desk-tab:hover { border-color: var(--text-main); color: #ffffff; }
+
+.desk-tab.is-active {
+  background: var(--accent-main);
+  border-color: #ffffff;
+  color: #ffffff;
+  box-shadow: 0 0 14px var(--accent-glow);
+}
+
+.desk-actions { display: flex; gap: 8px; }
+
+.desk-action-btn {
+  padding: 7px 12px;
+  background: var(--surface-btn);
+  border: 1px solid var(--border-line);
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.desk-action-btn.btn-accent { background: rgba(184, 15, 30, 0.42); }
+.desk-action-btn:hover,
+.desk-action-btn.is-open { background: var(--surface-hover); border-color: #ffffff; color: #ffffff; }
+.desk-action-btn.btn-danger:hover { background: var(--red-signal); border-color: #ffffff; }
+
+/* =========================================================
+   NGĂN KÉO ĐỔI LINK BACKGROUND & LINK THÊM NHẠC
+   ========================================================= */
+
+.media-studio-drawer {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--surface-panel);
+  border: 1px solid var(--accent-main);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 14px 36px rgba(9, 9, 9, 0.58), 0 0 22px var(--accent-glow);
+}
+
+.studio-box {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 10px 12px;
+  background: rgba(18, 14, 15, 0.58);
+  border: 1px solid var(--border-frame);
+}
+
+.studio-box-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+
+.studio-tag { color: #ff6b78; font-weight: 600; }
+html[data-theme="relic"] .studio-tag,
+body[data-theme="relic"] .studio-tag { color: var(--faded-silver); }
+
+.studio-check { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-sub); cursor: pointer; }
+.studio-check input { accent-color: var(--red-signal); }
+.studio-input-row { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.studio-input {
+  flex: 1;
+  min-width: 140px;
+  padding: 7px 10px;
+  background: rgba(15, 13, 14, 0.88);
+  border: 1px solid var(--border-line);
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  outline: none;
+}
+
+.studio-input:focus { border-color: #ffffff; box-shadow: 0 0 8px var(--accent-glow); }
+.studio-input-short { flex: 0.55; min-width: 110px; }
+
+.studio-btn {
+  padding: 7px 11px;
+  background: rgba(48, 38, 40, 0.9);
+  border: 1px solid var(--border-line);
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.studio-btn:hover,
+.studio-btn.is-active { background: var(--surface-hover); border-color: #ffffff; color: #ffffff; }
+.studio-btn-red { background: var(--accent-main); border-color: #ff6b78; color: #ffffff; }
+.studio-btn-red:hover { background: var(--red-signal); }
+.studio-file-label { display: inline-flex; align-items: center; }
+
+.studio-sub-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-sub);
+}
+
+.studio-slider-wrap { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 10px; color: var(--text-sub); }
+.studio-slider-wrap input { width: 70px; accent-color: var(--red-signal); }
+.studio-playing-name { color: var(--text-main); max-width: 210px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.music-player-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+.music-seek { flex: 1; min-width: 90px; accent-color: var(--red-signal); cursor: pointer; }
+.music-time { font-family: var(--font-mono); font-size: 10px; color: var(--text-sub); min-width: 36px; }
+.music-playlist { display: flex; flex-direction: column; gap: 5px; max-height: 110px; overflow-y: auto; }
+
+.playlist-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 5px 8px;
+  background: rgba(28, 24, 25, 0.88);
+  border: 1px solid var(--border-frame);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.playlist-item.is-current { border-color: #ff6b78; background: rgba(156, 4, 18, 0.36); }
+
+.playlist-play-pick {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  text-align: left;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playlist-del-btn { background: transparent; border: 1px solid var(--border-frame); color: var(--text-sub); font-size: 10px; padding: 2px 6px; cursor: pointer; }
+.playlist-del-btn:hover { border-color: #ffffff; color: #ffffff; }
+
+/* =========================================================
+   TAB 1: TỔNG QUAN (POLAROID MÁU + TỜ BÁO)
+   ========================================================= */
+
+.desk-panel { display: none; }
+.desk-panel.is-active { display: block; }
+
+.evidence-desk-grid {
+  display: grid;
+  grid-template-columns: minmax(290px, 0.92fr) minmax(320px, 1.25fr);
+  gap: 26px;
+  align-items: start;
+  padding: 6px 4px;
+}
+
+.polaroid-cluster {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 10px;
+}
+
+.lenormand-peek {
+  position: absolute;
+  top: 76px;
+  left: -6px;
+  width: 82px;
+  height: 122px;
+  background: #1c191a;
+  border: 1px solid var(--faded-silver);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.65);
+  transform: rotate(-16deg);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 8px;
+  font-family: var(--font-mono);
+  color: var(--faded-silver);
+}
+
+.lenormand-peek .card-num { font-size: 10px; }
+.lenormand-peek .card-sym { font-size: 28px; text-align: center; color: #df2434; }
+.lenormand-peek .card-name { font-size: 8px; letter-spacing: 0.1em; text-align: center; }
+
+.polaroid-card {
+  position: relative;
+  z-index: 3;
+  max-width: 310px;
+  padding: 12px 12px 16px;
+  background: #ded6c8;
+  color: #161212;
+  box-shadow:
+    0 18px 34px rgba(0, 0, 0, 0.58),
+    inset 0 0 24px rgba(80, 50, 26, 0.22);
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.polaroid-card.tilt-left { transform: rotate(-3deg); margin-left: 24px; }
+.polaroid-card.tilt-right { transform: rotate(2.5deg); margin-left: 44px; }
+.polaroid-card.tilt-slight { transform: rotate(-1.5deg); margin-left: 16px; }
+
+.polaroid-card:hover {
+  transform: rotate(0deg) scale(1.03);
+  z-index: 8;
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.72), 0 0 22px var(--accent-glow);
+}
+
+.pushpin {
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f04856 0%, #9c0412 65%, #300205 100%);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.65);
+  z-index: 5;
+}
+
+/* Vết tay máu & Con dấu đỏ kiểu Ảnh A */
+.blood-handprint {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50% 40% 55% 45%;
+  background: radial-gradient(circle, rgba(168, 8, 22, 0.78) 25%, rgba(120, 4, 12, 0.4) 65%, transparent 72%);
+  transform: rotate(-18deg);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.rubber-stamp {
+  position: absolute;
+  bottom: 14px;
+  right: 12px;
+  padding: 2px 8px;
+  border: 2px solid #a80816;
+  color: #a80816;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  transform: rotate(-11deg);
+  opacity: 0.88;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.stamp-news {
+  top: 18px;
+  right: 20px;
+  bottom: auto;
+  transform: rotate(8deg);
+}
+
+.tape-strip {
+  position: absolute;
+  top: -10px;
+  right: 22px;
+  width: 64px;
+  height: 20px;
+  background: rgba(230, 220, 195, 0.78);
+  transform: rotate(12deg);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.28);
+}
+
+.polaroid-frame {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #22060a;
+  border: 1px solid #483834;
+  overflow: hidden;
+}
+
+.polaroid-art {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  color: #fbe8e8;
+  background: radial-gradient(circle at 45% 38%, rgba(200, 16, 32, 0.76) 0%, rgba(82, 1, 2, 0.92) 72%, #1d0608 100%);
+}
+
+.polaroid-art.art-alt {
+  background: radial-gradient(circle at 52% 40%, rgba(172, 172, 172, 0.28) 0%, rgba(116, 1, 7, 0.85) 68%, #1d080b 100%);
+}
+
+.polaroid-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+.polaroid-art .art-code { position: relative; z-index: 2; font-size: 10px; letter-spacing: 0.14em; color: #ffc8ce; }
+.polaroid-art .art-caption { position: relative; z-index: 2; font-size: 12.5px; font-weight: 600; letter-spacing: 0.06em; line-height: 1.35; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85); }
+
+.polaroid-meta { margin-top: 10px; display: flex; flex-direction: column; gap: 2px; font-family: var(--font-mono); }
+.polaroid-meta strong { font-size: 12.5px; color: #161212; }
+.polaroid-meta span   { font-size: 11px; color: #4a3f3a; }
+
+.desk-props-row { display: flex; align-items: center; gap: 16px; margin-left: 18px; }
+.pocket-watch { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+
+.watch-ring {
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  border: 4px solid #a2a09c;
+  background: radial-gradient(circle, #efeae0 0%, #bdb7ad 78%, #68635e 100%);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(0, 0, 0, 0.28);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #141212;
+  font-family: var(--font-mono);
+}
+
+.watch-face-num { font-size: 22px; font-weight: 700; line-height: 1; }
+.watch-face-sub { font-size: 8px; letter-spacing: 0.08em; }
+.watch-note { font-family: var(--font-mono); font-size: 10px; color: var(--text-main); }
+
+.torn-clipping {
+  max-width: 190px;
+  padding: 10px 12px;
+  background: #cfc6b7;
+  color: #161212;
+  transform: rotate(3deg);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.55);
+  font-family: var(--font-serif);
+}
+
+.clipping-head { display: block; font-size: 18px; font-weight: 700; letter-spacing: 0.06em; border-bottom: 2px solid #9C0412; color: #9C0412; margin-bottom: 4px; }
+.torn-clipping p { font-family: var(--font-sans); font-size: 11px; line-height: 1.45; }
+
+/* Tờ báo SWEZAN TAGBLATT */
+.newspaper-sheet {
+  position: relative;
+  padding: clamp(18px, 3vw, 28px);
+  background: #ddd3c3;
+  color: #161212;
+  transform: rotate(1deg);
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.62), inset 0 0 50px rgba(80, 54, 28, 0.18);
+}
+
+.news-top-meta { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; padding-bottom: 6px; border-bottom: 2px solid #161212; }
+
+.news-masthead {
+  margin: 10px 0 8px;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4.4vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  border-bottom: 3px double #161212;
+  padding-bottom: 10px;
+}
+
+.news-headline-block { position: relative; margin: 12px 0 14px; }
+.news-sub-red { font-family: var(--font-mono); font-size: 12.5px; font-weight: 700; color: #b80f1e; letter-spacing: 0.14em; }
+.news-oval-wrap { position: relative; display: inline-block; margin-top: 2px; }
+.news-big-headline { font-family: var(--font-sans); font-size: clamp(1.75rem, 3.6vw, 2.65rem); font-weight: 700; letter-spacing: 0.04em; line-height: 1.08; color: #161212; }
+.news-red-oval { position: absolute; inset: -6px -14px; border: 3px solid #b80f1e; border-radius: 50%; transform: rotate(-1.5deg); pointer-events: none; }
+
+.glitch-hover:hover {
+  animation: periodicCamGlitch 0.35s steps(2) infinite;
+}
+
+.news-columns { display: grid; grid-template-columns: 1.25fr 0.9fr; gap: 14px; margin-bottom: 14px; }
+.news-col p { font-size: 13.5px; line-height: 1.62; margin-bottom: 8px; text-align: justify; }
+
+.news-photo-box {
+  position: relative;
+  min-height: 145px;
+  background: linear-gradient(145deg, rgba(156, 4, 18, 0.45), rgba(26, 20, 22, 0.92));
+  border: 1px solid #161212;
+  display: flex;
+  align-items: flex-end;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.news-svg-art { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.news-photo-overlay { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 3px; font-family: var(--font-mono); font-size: 10px; color: #f6eaea; }
+
+.news-red-banner {
+  padding: 8px 12px;
+  background: #a40d1a;
+  color: #faf2ee;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin-bottom: 14px;
+}
+
+.tape-transcript-box { padding: 12px 14px; background: rgba(22, 18, 18, 0.08); border-left: 4px solid #b80f1e; font-size: 12.5px; }
+.tape-box-head { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #8c0612; margin-bottom: 6px; }
+.tape-quote { font-family: var(--font-serif); font-style: italic; font-size: 15.5px; line-height: 1.5; margin-bottom: 8px; }
+.tape-clues { display: flex; flex-direction: column; gap: 3px; font-family: var(--font-mono); font-size: 11px; color: #362c28; }
+
+/* =========================================================
+   TAB 3: BẢNG POLAROID 15 NHÂN VẬT (CHỖ ĐỔI LINK ẢNH RIÊNG)
+   ========================================================= */
+
+.cast-board-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+  gap: 24px 18px;
+  padding: 10px 4px;
+}
+
+.char-polaroid-card {
+  position: relative;
+  padding: 12px 12px 14px;
+  background: #d8cfc0;
+  color: #161212;
+  box-shadow:
+    0 18px 34px rgba(0, 0, 0, 0.65),
+    inset 0 0 28px rgba(70, 42, 22, 0.22);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transform: rotate(var(--card-tilt, -1deg));
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.char-polaroid-card:hover {
+  transform: rotate(0deg) translateY(-3px);
+  box-shadow: 0 24px 44px rgba(0, 0, 0, 0.8), 0 0 20px var(--accent-glow);
+  z-index: 6;
+}
+
+/* Dây đỏ chăng ngang nối thẻ nhân vật */
+.char-polaroid-card::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: -22px;
+  right: -22px;
+  height: 2px;
+  background: rgba(200, 16, 32, 0.55);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.char-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: #544640;
+  border-bottom: 1px solid rgba(22, 18, 18, 0.25);
+  padding-bottom: 4px;
+}
+
+.char-stamp {
+  padding: 1px 6px;
+  border: 1.5px solid #9C0412;
+  color: #9C0412;
+  font-weight: 700;
+  font-size: 9px;
+  transform: rotate(-4deg);
+}
+
+.char-photo-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #1a0709;
+  border: 1px solid #352a26;
+  overflow: hidden;
+}
+
+.char-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: contrast(1.12) sepia(0.18);
+}
+
+.char-photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: radial-gradient(circle at 50% 35%, rgba(168, 12, 24, 0.55) 0%, #140507 85%);
+  color: rgba(255, 210, 210, 0.72);
+  font-family: var(--font-mono);
+}
+
+.char-photo-placeholder .q-mark {
+  font-size: 38px;
+  font-weight: 700;
+  color: #ff4554;
+  text-shadow: 0 0 12px rgba(200, 16, 32, 0.75);
+}
+
+.char-photo-placeholder .q-hint {
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  opacity: 0.8;
+}
+
+.char-cam-tag {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  padding: 2px 5px;
+  background: rgba(9, 9, 9, 0.72);
+  color: #f4dcdc;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.1em;
+}
+
+.char-name {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #161212;
+}
+
+.char-role {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #8c0612;
+  font-weight: 600;
+}
+
+.char-desc {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #292220;
+}
+
+.char-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 13.5px;
+  color: #463a36;
+  border-top: 1px dashed rgba(22, 18, 18, 0.25);
+  padding-top: 6px;
+}
+
+/* Thanh tự đổi link ảnh ngay trên từng thẻ nhân vật */
+.char-img-toolbar {
+  margin-top: auto;
+  padding-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.char-img-btn-row {
+  display: flex;
+  gap: 5px;
+}
+
+.char-mini-btn {
+  flex: 1;
+  padding: 5px 8px;
+  background: #231d1e;
+  border: 1px solid #483834;
+  color: #efe6e6;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}
+
+.char-mini-btn:hover {
+  background: #9C0412;
+  border-color: #9C0412;
+  color: #ffffff;
+}
+
+.char-mini-reset {
+  flex: 0 0 auto;
+  padding: 5px 8px;
+}
+
+.char-img-editor {
+  display: flex;
+  gap: 4px;
+}
+
+.char-img-input {
+  flex: 1;
+  min-width: 0;
+  padding: 5px 7px;
+  background: #141112;
+  border: 1px solid #9C0412;
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+/* =========================================================
+   TABS 2 & 4: BỐI CẢNH & NHẬP VAI
+   ========================================================= */
+
+.panel-header-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  background: var(--surface-panel);
+  border: 1px solid var(--border-line);
+}
+
+.panel-kicker { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; color: var(--text-sub); }
+.panel-title { font-family: var(--font-serif); font-size: clamp(1.45rem, 2.8vw, 2.1rem); color: #ffffff; }
+.world-section-block { margin-bottom: 22px; }
+
+.world-sub-title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: #ff7a86;
+  margin-bottom: 10px;
+  padding-left: 10px;
+  border-left: 3px solid var(--accent-main);
+}
+
+html[data-theme="relic"] .world-sub-title,
+body[data-theme="relic"] .world-sub-title { color: var(--faded-silver); }
+
+.cast-filter-group { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.dossier-grid,
+.map-zones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 14px;
+}
+
+.dossier-card,
+.map-card {
+  padding: 16px;
+  background: var(--surface-panel);
+  border: 1px solid var(--border-line);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 10px 24px rgba(9, 9, 9, 0.45);
+}
+
+.card-badge-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: #ff7d88;
+}
+
+html[data-theme="relic"] .card-badge-row,
+body[data-theme="relic"] .card-badge-row { color: var(--faded-silver); }
+
+.card-h3 { font-family: var(--font-serif); font-size: 21px; color: #ffffff; }
+.card-body { font-size: 13.5px; line-height: 1.6; color: var(--text-main); }
+
+.profile-builder-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 16px; }
+
+.citizen-form,
+.profile-preview-card {
+  padding: 16px;
+  background: var(--surface-panel);
+  border: 1px solid var(--border-line);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-row-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.field-box { display: flex; flex-direction: column; gap: 5px; }
+.field-box span { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-sub); }
+
+.field-box input,
+.field-box select,
+.field-box textarea {
+  width: 100%;
+  padding: 8px 10px;
+  background: rgba(16, 13, 14, 0.85);
+  border: 1px solid var(--border-line);
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  outline: none;
+}
+
+.field-box input:focus,
+.field-box select:focus,
+.field-box textarea:focus { border-color: #ffffff; }
+
+.preview-head { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 11px; color: var(--text-sub); padding-bottom: 8px; border-bottom: 1px solid var(--border-frame); }
+.copy-feedback { color: #ff7d88; font-weight: 600; }
+
+.profile-output {
+  flex: 1;
+  min-height: 310px;
+  padding: 12px;
+  background: rgba(16, 13, 14, 0.88);
+  border: 1px solid var(--border-frame);
+  color: #ebe6e4;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-y: auto;
+}
+
+@keyframes bulbSway {
+  0%, 100% { transform: translateX(-50%) translateY(0) scale(1); opacity: 0.85; }
+  50%      { transform: translateX(-48%) translateY(6px) scale(1.06); opacity: 1; }
+}
+
+@keyframes periodicCamGlitch {
+  0%, 92%, 100% { transform: translate(0, 0); filter: none; }
+  94%           { transform: translate(-2px, 1px) skewX(-3deg); filter: brightness(1.3); }
+  96%           { transform: translate(2px, -1px) skewX(3deg); }
+  98%           { transform: translate(0, 0); }
+}
+
+@media (max-width: 920px) {
+  .media-studio-drawer,
+  .evidence-desk-grid,
+  .profile-builder-grid,
+  .news-columns,
+  .form-row-2 { grid-template-columns: 1fr; }
+
+  .polaroid-card.tilt-left,
+  .polaroid-card.tilt-right,
+  .polaroid-card.tilt-slight { margin-left: 0; }
+  .newspaper-sheet { transform: none; }
+  .tape-yellow { display: none; }
+}
+```
+
+---
+
+### 6. Cập nhật `js/main.js`
+
+Đọc dữ liệu từ `js/characters.js`, thêm khả năng **bấm `[🖼 ĐỔI ẢNH]` trực tiếp trên từng nhân vật** (hoặc chọn file từ máy, lưu vào `localStorage`, nút reset về ảnh trong `characters.js`), kết hợp cùng đổi ảnh Background & thêm nhạc:
+
+```javascript
+/* =========================================================
+   THE SHOWRUNNER — GIAO DIỆN 2: ĐỔI NỀN, NHẠC & ẢNH NHÂN VẬT
+   ========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+  /* -------------------------------------------------------
+     1. HỆ THỐNG ĐỔI ẢNH BACKGROUND BẰNG LINK URL / TỆP MÁY
+     ------------------------------------------------------- */
+  const bgLayer = document.getElementById("main-bg-layer");
+  const bgUrlInput = document.getElementById("bg-url-input");
+  const bgApplyBtn = document.getElementById("bg-apply-btn");
+  const bgFileInput = document.getElementById("bg-file-input");
+  const bgResetBtn = document.getElementById("bg-reset-btn");
+  const bgBwToggle = document.getElementById("bg-bw-toggle");
+  const bgDimSlider = document.getElementById("bg-dim-slider");
+  const bgStatusMsg = document.getElementById("bg-status-msg");
+  const wireframeSvg = document.getElementById("forensic-wireframe");
+
+  const toggleMediaBtn = document.getElementById("toggle-media-drawer-btn");
+  const mediaDrawer = document.getElementById("media-studio-drawer");
+
+  if (toggleMediaBtn && mediaDrawer) {
+    toggleMediaBtn.addEventListener("click", () => {
+      const willShow = mediaDrawer.hidden;
+      mediaDrawer.hidden = !willShow;
+      toggleMediaBtn.classList.toggle("is-open", willShow);
+      toggleMediaBtn.setAttribute("aria-expanded", String(willShow));
+    });
+  }
+
+  function applyBackgroundUrl(url, save = true) {
+    if (!bgLayer) return;
+    const cleanUrl = (url || "").trim();
+
+    if (!cleanUrl) {
+      bgLayer.style.backgroundImage = "";
+      if (bgStatusMsg) bgStatusMsg.textContent = "Đang dùng: Bảng Hồ Sơ Mặc Định";
+      if (save) localStorage.removeItem("showrunner_bg_url");
+      return;
+    }
+
+    bgLayer.style.backgroundImage = `url("${cleanUrl.replace(/"/g, '\\"')}")`;
+    if (bgUrlInput && !cleanUrl.startsWith("data:")) bgUrlInput.value = cleanUrl;
+    if (bgStatusMsg) {
+      bgStatusMsg.textContent = cleanUrl.startsWith("data:")
+        ? "Đã áp dụng ảnh từ máy của bạn"
+        : "Đã áp dụng ảnh từ link URL";
+    }
+    if (save) {
+      try { localStorage.setItem("showrunner_bg_url", cleanUrl); } catch (e) {}
+    }
+  }
+
+  function syncBwAndWireframe() {
+    const enabled = bgBwToggle ? bgBwToggle.checked : true;
+    if (bgLayer) bgLayer.classList.toggle("has-bw-filter", enabled);
+    if (wireframeSvg) wireframeSvg.classList.toggle("is-hidden", !enabled);
+    try { localStorage.setItem("showrunner_bg_bw", enabled ? "1" : "0"); } catch (e) {}
+  }
+
+  function applyDim(val) {
+    const opacity = Math.max(0.05, Math.min(0.8, Number(val) / 100));
+    document.documentElement.style.setProperty("--bg-dim", String(opacity));
+    try { localStorage.setItem("showrunner_bg_dim", String(val)); } catch (e) {}
+  }
+
+  try {
+    const savedBg = localStorage.getItem("showrunner_bg_url");
+    if (savedBg) applyBackgroundUrl(savedBg, false);
+    const savedBw = localStorage.getItem("showrunner_bg_bw");
+    if (bgBwToggle && savedBw !== null) bgBwToggle.checked = savedBw === "1";
+    const savedDim = localStorage.getItem("showrunner_bg_dim");
+    if (bgDimSlider && savedDim !== null) {
+      bgDimSlider.value = savedDim;
+      applyDim(savedDim);
+    }
+  } catch (e) {}
+  syncBwAndWireframe();
+
+  if (bgApplyBtn && bgUrlInput) {
+    bgApplyBtn.addEventListener("click", () => applyBackgroundUrl(bgUrlInput.value));
+    bgUrlInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") { e.preventDefault(); applyBackgroundUrl(bgUrlInput.value); }
+    });
+  }
+
+  if (bgFileInput) {
+    bgFileInput.addEventListener("change", () => {
+      const file = bgFileInput.files && bgFileInput.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => applyBackgroundUrl(String(reader.result || ""));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  if (bgResetBtn) {
+    bgResetBtn.addEventListener("click", () => {
+      if (bgUrlInput) bgUrlInput.value = "";
+      applyBackgroundUrl("", true);
+    });
+  }
+
+  if (bgBwToggle) bgBwToggle.addEventListener("change", syncBwAndWireframe);
+  if (bgDimSlider) bgDimSlider.addEventListener("input", () => applyDim(bgDimSlider.value));
+
+  /* -------------------------------------------------------
+     2. HỆ THỐNG THÊM LINK NHẠC & TRÌNH PHÁT
+     ------------------------------------------------------- */
+  const musicTitleInput = document.getElementById("music-title-input");
+  const musicUrlInput = document.getElementById("music-url-input");
+  const musicAddBtn = document.getElementById("music-add-btn");
+  const musicPlayBtn = document.getElementById("music-play-btn");
+  const musicLoopBtn = document.getElementById("music-loop-btn");
+  const musicSeek = document.getElementById("music-seek");
+  const musicTime = document.getElementById("music-time");
+  const musicVol = document.getElementById("music-vol");
+  const musicPlaylistEl = document.getElementById("music-playlist");
+  const musicNowPlaying = document.getElementById("music-now-playing");
+  const audioPlayer = document.getElementById("custom-audio-player");
+
+  let tracks = [];
+  let currentTrackIndex = -1;
+  let isLooping = true;
+
+  function saveTracks() {
+    try { localStorage.setItem("showrunner_tracks", JSON.stringify(tracks)); } catch (e) {}
+  }
+
+  function formatSec(sec) {
+    if (!Number.isFinite(sec) || sec < 0) return "00:00";
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  }
+
+  function renderPlaylist() {
+    if (!musicPlaylistEl) return;
+    if (tracks.length === 0) {
+      musicPlaylistEl.innerHTML =
+        `<div class="studio-status">Chưa có link nhạc nào. Dán link .mp3 / .ogg / .wav ở trên rồi bấm + THÊM NHẠC.</div>`;
+      return;
+    }
+
+    musicPlaylistEl.innerHTML = tracks
+      .map(
+        (t, idx) => `
+        <div class="playlist-item ${idx === currentTrackIndex ? "is-current" : ""}">
+          <button class="playlist-play-pick" type="button" data-idx="${idx}">
+            ${idx === currentTrackIndex ? "&#9654; " : ""}${escapeHtml(t.title)}
+          </button>
+          <button class="playlist-del-btn" type="button" data-del="${idx}" title="Xóa bài này">&times;</button>
+        </div>`
+      )
+      .join("");
+  }
+
+  function loadAndPlayTrack(index) {
+    if (!audioPlayer || !tracks[index]) return;
+    currentTrackIndex = index;
+    const track = tracks[index];
+
+    if (window.AnalogRadio && window.AnalogRadio.isPlaying()) {
+      window.AnalogRadio.togglePlay();
+    }
+
+    audioPlayer.src = track.url;
+    audioPlayer.loop = isLooping;
+    audioPlayer.volume = musicVol ? Number(musicVol.value) / 100 : 0.7;
+
+    if (musicNowPlaying) musicNowPlaying.textContent = `Đang phát: ${track.title}`;
+    renderPlaylist();
+
+    audioPlayer
+      .play()
+      .then(() => { if (musicPlayBtn) musicPlayBtn.innerHTML = "&#10074;&#10074; TẠM DỪNG"; })
+      .catch(() => {
+        if (musicNowPlaying) {
+          musicNowPlaying.textContent = "Lỗi phát link (cần link file âm thanh trực tiếp .mp3/.ogg/.wav)";
+        }
+      });
+  }
+
+  function addTrackFromInputs() {
+    if (!musicUrlInput) return;
+    const url = musicUrlInput.value.trim();
+    if (!url) return;
+
+    if (/youtube\.com|youtu\.be|spotify\.com/i.test(url)) {
+      if (musicNowPlaying) {
+        musicNowPlaying.textContent = "Lưu ý: Cần dán link file âm thanh trực tiếp (.mp3/.ogg/.wav)";
+      }
+      return;
+    }
+
+    let title = musicTitleInput ? musicTitleInput.value.trim() : "";
+    if (!title) {
+      try {
+        const parts = new URL(url).pathname.split("/").filter(Boolean);
+        title = decodeURIComponent(parts[parts.length - 1] || "Băng Nhạc Swezan");
+      } catch (e) {
+        title = `Bản nhạc #${tracks.length + 1}`;
+      }
+    }
+
+    tracks.push({ title, url });
+    saveTracks();
+    if (musicTitleInput) musicTitleInput.value = "";
+    musicUrlInput.value = "";
+    loadAndPlayTrack(tracks.length - 1);
+  }
+
+  try {
+    const savedTracks = JSON.parse(localStorage.getItem("showrunner_tracks") || "[]");
+    if (Array.isArray(savedTracks)) tracks = savedTracks;
+  } catch (e) {}
+  renderPlaylist();
+
+  if (musicAddBtn) musicAddBtn.addEventListener("click", addTrackFromInputs);
+  if (musicUrlInput) {
+    musicUrlInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") { e.preventDefault(); addTrackFromInputs(); }
+    });
+  }
+
+  if (musicPlaylistEl) {
+    musicPlaylistEl.addEventListener("click", (e) => {
+      const pickBtn = e.target.closest("[data-idx]");
+      const delBtn = e.target.closest("[data-del]");
+      if (pickBtn) {
+        loadAndPlayTrack(Number(pickBtn.dataset.idx));
+      } else if (delBtn) {
+        const delIdx = Number(delBtn.dataset.del);
+        tracks.splice(delIdx, 1);
+        if (delIdx === currentTrackIndex && audioPlayer) {
+          audioPlayer.pause();
+          audioPlayer.src = "";
+          currentTrackIndex = -1;
+          if (musicNowPlaying) musicNowPlaying.textContent = "Chưa phát nhạc";
+          if (musicPlayBtn) musicPlayBtn.innerHTML = "&#9654; PHÁT";
+        } else if (delIdx < currentTrackIndex) {
+          currentTrackIndex -= 1;
+        }
+        saveTracks();
+        renderPlaylist();
+      }
+    });
+  }
+
+  if (musicPlayBtn && audioPlayer) {
+    musicPlayBtn.addEventListener("click", () => {
+      if (tracks.length === 0) return;
+      if (currentTrackIndex === -1) { loadAndPlayTrack(0); return; }
+      if (audioPlayer.paused) {
+        audioPlayer.play().catch(() => {});
+        musicPlayBtn.innerHTML = "&#10074;&#10074; TẠM DỪNG";
+      } else {
+        audioPlayer.pause();
+        musicPlayBtn.innerHTML = "&#9654; PHÁT";
+      }
+    });
+  }
+
+  if (musicLoopBtn && audioPlayer) {
+    musicLoopBtn.addEventListener("click", () => {
+      isLooping = !isLooping;
+      audioPlayer.loop = isLooping;
+      musicLoopBtn.textContent = isLooping ? "LẶP: BẬT" : "LẶP: TẮT";
+      musicLoopBtn.classList.toggle("is-active", isLooping);
+    });
+  }
+
+  if (musicVol && audioPlayer) {
+    musicVol.addEventListener("input", () => { audioPlayer.volume = Number(musicVol.value) / 100; });
+  }
+
+  if (audioPlayer) {
+    audioPlayer.addEventListener("timeupdate", () => {
+      if (musicTime) musicTime.textContent = formatSec(audioPlayer.currentTime);
+      if (musicSeek && audioPlayer.duration) {
+        musicSeek.value = String((audioPlayer.currentTime / audioPlayer.duration) * 100);
+      }
+    });
+    audioPlayer.addEventListener("ended", () => {
+      if (!isLooping && tracks.length > 0) loadAndPlayTrack((currentTrackIndex + 1) % tracks.length);
+    });
+  }
+
+  if (musicSeek && audioPlayer) {
+    musicSeek.addEventListener("input", () => {
+      if (audioPlayer.duration) audioPlayer.currentTime = (Number(musicSeek.value) / 100) * audioPlayer.duration;
+    });
+  }
+
+  /* -------------------------------------------------------
+     3. CHUYỂN TAB GIỚI THIỆU
+     ------------------------------------------------------- */
+  const tabBtns = document.querySelectorAll(".desk-tab");
+  const deskPanels = document.querySelectorAll(".desk-panel");
+
+  function switchTab(tabKey) {
+    tabBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.tab === tabKey));
+    deskPanels.forEach((p) => {
+      const match = p.id === `tab-${tabKey}`;
+      p.hidden = !match;
+      p.classList.toggle("is-active", match);
+    });
+  }
+
+  tabBtns.forEach((btn) => btn.addEventListener("click", () => switchTab(btn.dataset.tab)));
+  document.querySelectorAll("[data-open-tab]").forEach((card) => {
+    card.addEventListener("click", () => switchTab(card.dataset.openTab));
+  });
+
+  /* -------------------------------------------------------
+     4. THẾ GIỚI SWEZAN (CHỈ THÔNG TIN CÔNG KHAI)
+     ------------------------------------------------------- */
+  const WORLD_EVENTS = [
+    {
+      tag: "BỐI CẢNH THỜI ĐẠI · 1994",
+      title: "Thung Lũng Công Nghiệp & Màn Ảnh CRT",
+      body: "Swezan nằm lọt thỏm giữa khói than, mưa axit và các xưởng dệt suy thoái cuối thời hậu Chiến tranh Lạnh — nơi hạ tầng cũ va chạm với băng từ VHS và màn hình CRT.",
+    },
+    {
+      tag: "TIN ĐỒN & DƯ LUẬN",
+      title: "Hội Chứng Sợ Màn Hình",
+      body: "Sau sự cố cướp sóng đài K-TV Kênh 8 đêm Chủ nhật tuần trước, nhiều hộ dân tại Altstadt dùng khăn dạ trùm kín tivi vào ban đêm vì sợ tiếng rè 50Hz lúc 0 giờ.",
+    },
+    {
+      tag: "KHỞI ĐIỂM · 30/11/1994",
+      title: "Biến Cố Tại Đồn Cảnh Sát Altstadt",
+      body: "Phó Cảnh sát trưởng Matthäus August mất tích 12 tiếng. Sáng 30/11, cuộn băng thách thức đầu tiên xuất hiện đẩy thị trấn vào cơn bất ổn.",
+    },
+  ];
+
+  const WORLD_ROLES = [
+    {
+      tag: "THÂN PHẬN 01 · 1.200 MARK",
+      title: "Thanh Tra Cấp Cao / Đặc Phái Viên",
+      body: "Mang lệnh trưng dụng từ thủ đô và vũ khí công vụ. Tiếp cận hiện trường phong tỏa nhưng dễ bị cảnh sát địa phương dè chừng.",
+    },
+    {
+      tag: "THÂN PHẬN 02 · 300 MARK",
+      title: "Thám Tử Tư / Cựu Sĩ Quan",
+      body: "Không có quyền lực pháp lý, nhưng hoàn toàn tự do lặn ngụp dưới bến cảng đêm, giao dịch chợ đen và lần theo những ngõ tối.",
+    },
+    {
+      tag: "THÂN PHẬN 03 · 1.500 MARK",
+      title: "Bác Sĩ Pháp Y Độc Lập",
+      body: "Làm chủ phòng giải phẫu dưới hầm Tòa án Cũ. Tiếng nói khoa học mang tính quyết định, nhưng thiếu quyền cưỡng chế.",
+    },
+    {
+      tag: "THÂN PHẬN 04 · 600 MARK",
+      title: "Phóng Viên Điều Tra",
+      body: "Sở hữu thẻ nhà báo, máy ảnh 35mm và mạng lưới tin đồn khắp thung lũng. Ngòi bút xoay chuyển dư luận nhưng dễ bị cả hai phía cảnh giác.",
+    },
+    {
+     tag: "THÂN PHẬN 05 · 60 MARK",
+      title: "Dân Thường / Thợ Thuyền Bản Địa",
+      body: "Sở hữu lớp vỏ bọc vô hình để hòa vào dòng người biểu tình và khu chung cư lao động, dùng trực giác và quan hệ xóm giềng để sinh tồn.",
+    },
+  ];
+
+  const WORLD_DISTRICTS = [
+    {
+      zone: "ĐÔNG · TRUNG TÂM CỔ",
+      title: "Phố Cổ Altstadt",
+      items: "Kiến trúc đá sa thạch thế kỷ 19, Đồn Cảnh sát, Tòa Thị chính, Tòa soạn Tagblatt, phòng trà Thiên Nga Đen và các hiệu sách yên tĩnh bên bờ kênh.",
+    },
+    {
+      zone: "TÂY · ĐƯỜNG THỦY",
+      title: "Bến Cảng Sông Đen (Schwarzhaven)",
+      items: "Bãi than ướt, sà lan chở hàng đêm, tiệm cầm đồ Tổ Quạ và quán rượu ngầm Mỏ Neo Mù nồng mùi rượu gin và thuốc lá sợi.",
+    },
+    {
+      zone: "NAM · VÀNH ĐAI RỈ SÉT",
+      title: "Tổ Hợp Công Nghiệp Hüt IV & Ga Güterof",
+      items: "Những ống khói lò luyện kim sừng sững, phân xưởng dệt cũ và bãi toa xe lửa bỏ không giữa rừng thông ẩm ướt.",
+    },
+    {
+      zone: "BẮC · VÙNG ĐỒI",
+      title: "Đồi Kranzhügel & Đồi Gió Hú Wigel",
+      items: "Một bên là những biệt thự quý tộc sau cổng sắt rèn; bên kia là tháp tiếp sóng truyền hình K-TV Kênh 8 giữa sương mù.",
+    },
+    {
+      zone: "NGOẠI Ô · KHU LAO ĐỘNG",
+      title: "Chung Cư Khối 7–12",
+      items: "Những dãy nhà bê tông xám xịt giăng đầy dây phơi và ăng-ten râu thỏ, nơi công nhân tụ tập quanh thùng phuy đốt lửa.",
+    },
+  ];
+
+  const worldEventsGrid = document.getElementById("world-events-grid");
+  const worldRolesGrid = document.getElementById("world-roles-grid");
+  const worldDistrictsGrid = document.getElementById("world-districts-grid");
+
+  if (worldEventsGrid) {
+    worldEventsGrid.innerHTML = WORLD_EVENTS.map(
+      (e) => `<article class="dossier-card"><div class="card-badge-row"><span>${e.tag}</span></div><h3 class="card-h3">${e.title}</h3><p class="card-body">${e.body}</p></article>`
+    ).join("");
+  }
+  if (worldRolesGrid) {
+    worldRolesGrid.innerHTML = WORLD_ROLES.map(
+      (r) => `<article class="dossier-card"><div class="card-badge-row"><span>${r.tag}</span></div><h3 class="card-h3">${r.title}</h3><p class="card-body">${r.body}</p></article>`
+    ).join("");
+  }
+  if (worldDistrictsGrid) {
+    worldDistrictsGrid.innerHTML = WORLD_DISTRICTS.map(
+      (d) => `<article class="map-card"><div class="card-badge-row"><span>${d.zone}</span></div><h3 class="card-h3">${d.title}</h3><p class="card-body">${d.items}</p></article>`
+    ).join("");
+  }
+
+  /* -------------------------------------------------------
+     5. BẢNG POLAROID NHÂN VẬT (ĐỌC TỪ characters.js & CHO TỰ ĐỔI ẢNH)
+     ------------------------------------------------------- */
+  const characters = Array.isArray(window.SHOWRUNNER_CHARACTERS) ? window.SHOWRUNNER_CHARACTERS : [];
+  let charImageOverrides = {};
+  try {
+    charImageOverrides = JSON.parse(localStorage.getItem("showrunner_char_images") || "{}");
+  } catch (e) {}
+
+  let castFilter = "all";
+  const castGrid = document.getElementById("cast-grid");
+  const castFilterBtns = document.querySelectorAll("[data-cast-filter]");
+
+  function saveCharOverrides() {
+    try {
+      localStorage.setItem("showrunner_char_images", JSON.stringify(charImageOverrides));
+    } catch (e) {}
+  }
+
+  function renderCast() {
+    if (!castGrid) return;
+    const list =
+      castFilter === "all" ? characters : characters.filter((c) => c.group === castFilter);
+
+    castGrid.innerHTML = list
+      .map((c, i) => {
+        const tilt = ((i % 5) - 2) * 1.1; // Nghiêng nhẹ ngẫu nhiên như ảnh ghim trên bảng
+        const activeUrl = (charImageOverrides[c.id] !== undefined ? charImageOverrides[c.id] : c.imageUrl) || "";
+        const photoHtml = activeUrl
+          ? `<img class="char-photo-img" src="${escapeHtml(activeUrl)}" alt="${escapeHtml(c.name)}" />`
+          : `<div class="char-photo-placeholder">
+               <span class="q-mark">?</span>
+               <span class="q-hint">CHƯA CÓ ẢNH</span>
+             </div>`;
+
+        return `
+        <article class="char-polaroid-card" style="--card-tilt: ${tilt}deg" data-char-id="${escapeHtml(c.id)}">
+          <span class="pushpin" aria-hidden="true"></span>
+          <div class="char-card-head">
+            <span>${escapeHtml(c.code)}</span>
+            <span class="char-stamp">${escapeHtml(c.stamp)}</span>
+          </div>
+
+          <div class="char-photo-box">
+            ${photoHtml}
+            <span class="char-cam-tag">CAM // ● REC</span>
+          </div>
+
+          <h3 class="char-name">${escapeHtml(c.name)}</h3>
+          <div class="char-role">${escapeHtml(c.role)}</div>
+          <p class="char-desc">${escapeHtml(c.desc)}</p>
+          <p class="char-quote">${escapeHtml(c.quote)}</p>
+
+          <div class="char-img-toolbar">
+            <div class="char-img-btn-row">
+              <button class="char-mini-btn js-toggle-char-img" type="button">
+                &#128444; ĐỔI LINK ẢNH
+              </button>
+              ${
+                charImageOverrides[c.id] !== undefined
+                  ? `<button class="char-mini-btn char-mini-reset js-reset-char-img" type="button" title="Khôi phục ảnh trong characters.js">&#8634;</button>`
+                  : ""
+              }
+            </div>
+            <div class="char-img-editor" hidden>
+              <input class="char-img-input" type="url" placeholder="Dán link ảnh nhân vật..." value="${escapeHtml(activeUrl)}" />
+              <button class="char-mini-btn char-mini-reset js-save-char-img" type="button">LƯU</button>
+            </div>
+          </div>
+        </article>`;
+      })
+      .join("");
+  }
+
+  if (castGrid) {
+    castGrid.addEventListener("click", (e) => {
+      const card = e.target.closest(".char-polaroid-card");
+      if (!card) return;
+      const charId = card.dataset.charId;
+
+      if (e.target.closest(".js-toggle-char-img")) {
+        const editor = card.querySelector(".char-img-editor");
+        if (editor) {
+          editor.hidden = !editor.hidden;
+          if (!editor.hidden) {
+            const inp = editor.querySelector(".char-img-input");
+            if (inp) inp.focus();
+          }
+        }
+      } else if (e.target.closest(".js-save-char-img")) {
+        const inp = card.querySelector(".char-img-input");
+        const val = inp ? inp.value.trim() : "";
+        if (val) {
+          charImageOverrides[charId] = val;
+        } else {
+          delete charImageOverrides[charId];
+        }
+        saveCharOverrides();
+        renderCast();
+      } else if (e.target.closest(".js-reset-char-img")) {
+        delete charImageOverrides[charId];
+        saveCharOverrides();
+        renderCast();
+      }
+    });
+
+    castGrid.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && e.target.classList.contains("char-img-input")) {
+        e.preventDefault();
+        const card = e.target.closest(".char-polaroid-card");
+        if (!card) return;
+        const val = e.target.value.trim();
+        if (val) charImageOverrides[card.dataset.charId] = val;
+        else delete charImageOverrides[card.dataset.charId];
+        saveCharOverrides();
+        renderCast();
+      }
+    });
+  }
+
+  castFilterBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      castFilter = btn.dataset.castFilter;
+      castFilterBtns.forEach((b) => b.classList.toggle("is-active", b === btn));
+      renderCast();
+    });
+  });
+
+  renderCast();
+
+  /* -------------------------------------------------------
+     6. TRÌNH TẠO HỒ SƠ NHẬP VAI & COPY PROMPT
+     ------------------------------------------------------- */
+  const pfFields = [
+    "pf-name",
+    "pf-age-gender",
+    "pf-archetype",
+    "pf-district",
+    "pf-look",
+    "pf-gear",
+    "pf-secret",
+    "pf-quote",
+  ].map((id) => document.getElementById(id));
+
+  const profileOutput = document.getElementById("profile-output");
+  const copyProfileBtn = document.getElementById("copy-profile-btn");
+  const copyFeedback = document.getElementById("copy-feedback");
+
+  function buildProfileText() {
+    const val = (id, fallback) => {
+      const el = document.getElementById(id);
+      return el && el.value.trim() ? el.value.trim() : fallback;
+    };
+
+    const text = `║ HỒ SƠ NHẬP TỊCH SWEZAN (1994) ║
+
+**Họ và tên:** ${val("pf-name", "[Chưa điền tên]")}
+**Tuổi & Giới tính / Xưng hô:** ${val("pf-age-gender", "28 tuổi | Nam (Anh / Tôi)")}
+**Thân phận khởi điểm:** ${val("pf-archetype", "Thanh Tra Cấp Cao (1.200 M)")}
+**Địa bàn cư trú & Kỷ vật:** ${val("pf-district", "Phố cổ Altstadt | Chiếc bật lửa bạc")}
+**Ngoại hình & Mùi hương (1994 Noir):** ${val("pf-look", "Áo măng tô dạ tối màu, mùi cà phê đen và khói than Swezan.")}
+**Trang bị mang theo:** ${val("pf-gear", "Đèn pin kim loại, sổ tay da, bộ dụng cụ chuyên môn.")}
+**Động cơ & Mục tiêu tại Swezan:** ${val("pf-secret", "Tìm hiểu sự thật sau những cuộn băng cướp sóng trên K-TV Kênh 8.")}
+**Câu thoại mẫu:**
+> ${val("pf-quote", "“Mọi cuộn băng đều có điểm dừng, chỉ có sự thật là ở lại.”")}`;
+
+    if (profileOutput) profileOutput.textContent = text;
+    return text;
+  }
+
+  pfFields.forEach((el) => {
+    if (el) el.addEventListener("input", buildProfileText);
+  });
+  buildProfileText();
+
+  if (copyProfileBtn) {
+    copyProfileBtn.addEventListener("click", () => {
+      const text = buildProfileText();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          if (copyFeedback) copyFeedback.textContent = "ĐÃ COPY!";
+          setTimeout(() => {
+            if (copyFeedback) copyFeedback.textContent = "";
+          }, 2200);
+        });
+      }
+    });
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, (ch) => {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch];
+    });
+  }
+});

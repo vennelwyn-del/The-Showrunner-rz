@@ -1,328 +1,32 @@
 /* =========================================================
-   THE SHOWRUNNER — GIAO DIỆN 2: WEB GIỚI THIỆU, ĐỔI NỀN & NHẠC
+   THE SHOWRUNNER — GIAO DIỆN 2 (ĐỌC CẤU HÌNH TỪ config.js)
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
+  const cfg = window.SHOWRUNNER_CONFIG || {};
+
   /* -------------------------------------------------------
-     1. HỆ THỐNG ĐỔI ẢNH BACKGROUND BẰNG LINK URL / TỆP MÁY
+     1. ÁP DỤNG ẢNH NỀN TỪ config.js (KHÔNG HIỆN TRÊN WEB)
      ------------------------------------------------------- */
   const bgLayer = document.getElementById("main-bg-layer");
-  const bgUrlInput = document.getElementById("bg-url-input");
-  const bgApplyBtn = document.getElementById("bg-apply-btn");
-  const bgFileInput = document.getElementById("bg-file-input");
-  const bgResetBtn = document.getElementById("bg-reset-btn");
-  const bgBwToggle = document.getElementById("bg-bw-toggle");
-  const bgDimSlider = document.getElementById("bg-dim-slider");
-  const bgStatusMsg = document.getElementById("bg-status-msg");
   const wireframeSvg = document.getElementById("forensic-wireframe");
+  const bgCfg = cfg.background || {};
 
-  const toggleMediaBtn = document.getElementById("toggle-media-drawer-btn");
-  const mediaDrawer = document.getElementById("media-studio-drawer");
-
-  if (toggleMediaBtn && mediaDrawer) {
-    toggleMediaBtn.addEventListener("click", () => {
-      const willShow = mediaDrawer.hidden;
-      mediaDrawer.hidden = !willShow;
-      toggleMediaBtn.classList.toggle("is-open", willShow);
-      toggleMediaBtn.setAttribute("aria-expanded", String(willShow));
-    });
-  }
-
-  function applyBackgroundUrl(url, save = true) {
-    if (!bgLayer) return;
-    const cleanUrl = (url || "").trim();
-
-    if (!cleanUrl) {
-      bgLayer.style.backgroundImage = "";
-      if (bgStatusMsg) bgStatusMsg.textContent = "Đang dùng: Nền Tư Liệu Mặc Định";
-      if (save) localStorage.removeItem("showrunner_bg_url");
-      return;
+  if (bgLayer) {
+    if (bgCfg.imageUrl) {
+      bgLayer.style.backgroundImage = `url("${String(bgCfg.imageUrl).replace(/"/g, '\\"')}")`;
     }
-
-    bgLayer.style.backgroundImage = `url("${cleanUrl.replace(/"/g, '\\"')}")`;
-    if (bgUrlInput && !cleanUrl.startsWith("data:")) {
-      bgUrlInput.value = cleanUrl;
-    }
-    if (bgStatusMsg) {
-      bgStatusMsg.textContent = cleanUrl.startsWith("data:")
-        ? "Đã áp dụng ảnh từ máy của bạn"
-        : "Đã áp dụng ảnh từ link URL";
-    }
-    if (save) {
-      try {
-        localStorage.setItem("showrunner_bg_url", cleanUrl);
-      } catch (e) {}
-    }
+    const useBw = bgCfg.bwAndWireframe !== false;
+    bgLayer.classList.toggle("has-bw-filter", useBw);
+    if (wireframeSvg) wireframeSvg.classList.toggle("is-hidden", !useBw);
   }
 
-  function syncBwAndWireframe() {
-    const enabled = bgBwToggle ? bgBwToggle.checked : true;
-    if (bgLayer) bgLayer.classList.toggle("has-bw-filter", enabled);
-    if (wireframeSvg) wireframeSvg.classList.toggle("is-hidden", !enabled);
-    try {
-      localStorage.setItem("showrunner_bg_bw", enabled ? "1" : "0");
-    } catch (e) {}
-  }
-
-  function applyDim(val) {
-    const opacity = Math.max(0.05, Math.min(0.8, Number(val) / 100));
-    document.documentElement.style.setProperty("--bg-dim", String(opacity));
-    try {
-      localStorage.setItem("showrunner_bg_dim", String(val));
-    } catch (e) {}
-  }
-
-  try {
-    const savedBg = localStorage.getItem("showrunner_bg_url");
-    if (savedBg) applyBackgroundUrl(savedBg, false);
-
-    const savedBw = localStorage.getItem("showrunner_bg_bw");
-    if (bgBwToggle && savedBw !== null) bgBwToggle.checked = savedBw === "1";
-
-    const savedDim = localStorage.getItem("showrunner_bg_dim");
-    if (bgDimSlider && savedDim !== null) {
-      bgDimSlider.value = savedDim;
-      applyDim(savedDim);
-    }
-  } catch (e) {}
-  syncBwAndWireframe();
-
-  if (bgApplyBtn && bgUrlInput) {
-    bgApplyBtn.addEventListener("click", () => applyBackgroundUrl(bgUrlInput.value));
-    bgUrlInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        applyBackgroundUrl(bgUrlInput.value);
-      }
-    });
-  }
-
-  if (bgFileInput) {
-    bgFileInput.addEventListener("change", () => {
-      const file = bgFileInput.files && bgFileInput.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = () => applyBackgroundUrl(String(reader.result || ""));
-      reader.readAsDataURL(file);
-    });
-  }
-
-  if (bgResetBtn) {
-    bgResetBtn.addEventListener("click", () => {
-      if (bgUrlInput) bgUrlInput.value = "";
-      applyBackgroundUrl("", true);
-    });
-  }
-
-  if (bgBwToggle) bgBwToggle.addEventListener("change", syncBwAndWireframe);
-  if (bgDimSlider) bgDimSlider.addEventListener("input", () => applyDim(bgDimSlider.value));
-
-  /* -------------------------------------------------------
-     2. HỆ THỐNG THÊM LINK NHẠC & TRÌNH PHÁT
-     ------------------------------------------------------- */
-  const musicTitleInput = document.getElementById("music-title-input");
-  const musicUrlInput = document.getElementById("music-url-input");
-  const musicAddBtn = document.getElementById("music-add-btn");
-  const musicPlayBtn = document.getElementById("music-play-btn");
-  const musicLoopBtn = document.getElementById("music-loop-btn");
-  const musicSeek = document.getElementById("music-seek");
-  const musicTime = document.getElementById("music-time");
-  const musicVol = document.getElementById("music-vol");
-  const musicPlaylistEl = document.getElementById("music-playlist");
-  const musicNowPlaying = document.getElementById("music-now-playing");
-  const audioPlayer = document.getElementById("custom-audio-player");
-
-  let tracks = [];
-  let currentTrackIndex = -1;
-  let isLooping = true;
-
-  function saveTracks() {
-    try {
-      localStorage.setItem("showrunner_tracks", JSON.stringify(tracks));
-    } catch (e) {}
-  }
-
-  function formatSec(sec) {
-    if (!Number.isFinite(sec) || sec < 0) return "00:00";
-    const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60);
-    return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
-  }
-
-  function renderPlaylist() {
-    if (!musicPlaylistEl) return;
-    if (tracks.length === 0) {
-      musicPlaylistEl.innerHTML =
-        `<div class="studio-status">Chưa có link nhạc nào. Dán link .mp3 / .ogg / .wav ở trên rồi bấm + THÊM NHẠC.</div>`;
-      return;
-    }
-
-    musicPlaylistEl.innerHTML = tracks
-      .map(
-        (t, idx) => `
-        <div class="playlist-item ${idx === currentTrackIndex ? "is-current" : ""}">
-          <button class="playlist-play-pick" type="button" data-idx="${idx}">
-            ${idx === currentTrackIndex ? "&#9654; " : ""}${escapeHtml(t.title)}
-          </button>
-          <button class="playlist-del-btn" type="button" data-del="${idx}" title="Xóa bài này">&times;</button>
-        </div>`
-      )
-      .join("");
-  }
-
-  function loadAndPlayTrack(index) {
-    if (!audioPlayer || !tracks[index]) return;
-    currentTrackIndex = index;
-    const track = tracks[index];
-
-    if (window.AnalogRadio && window.AnalogRadio.isPlaying()) {
-      window.AnalogRadio.togglePlay();
-    }
-
-    audioPlayer.src = track.url;
-    audioPlayer.loop = isLooping;
-    audioPlayer.volume = musicVol ? Number(musicVol.value) / 100 : 0.7;
-
-    if (musicNowPlaying) musicNowPlaying.textContent = `Đang phát: ${track.title}`;
-    renderPlaylist();
-
-    audioPlayer
-      .play()
-      .then(() => {
-        if (musicPlayBtn) musicPlayBtn.innerHTML = "&#10074;&#10074; TẠM DỪNG";
-      })
-      .catch(() => {
-        if (musicNowPlaying) {
-          musicNowPlaying.textContent = "Lỗi phát link (cần link file âm thanh trực tiếp .mp3/.ogg/.wav)";
-        }
-      });
-  }
-
-  function addTrackFromInputs() {
-    if (!musicUrlInput) return;
-    const url = musicUrlInput.value.trim();
-    if (!url) return;
-
-    if (/youtube\.com|youtu\.be|spotify\.com/i.test(url)) {
-      if (musicNowPlaying) {
-        musicNowPlaying.textContent = "Lưu ý: Cần dán link file âm thanh trực tiếp (.mp3/.ogg/.wav)";
-      }
-      return;
-    }
-
-    let title = musicTitleInput ? musicTitleInput.value.trim() : "";
-    if (!title) {
-      try {
-        const parts = new URL(url).pathname.split("/").filter(Boolean);
-        title = decodeURIComponent(parts[parts.length - 1] || "Băng Nhạc Swezan");
-      } catch (e) {
-        title = `Bản nhạc #${tracks.length + 1}`;
-      }
-    }
-
-    tracks.push({ title, url });
-    saveTracks();
-    if (musicTitleInput) musicTitleInput.value = "";
-    musicUrlInput.value = "";
-    loadAndPlayTrack(tracks.length - 1);
-  }
-
-  try {
-    const savedTracks = JSON.parse(localStorage.getItem("showrunner_tracks") || "[]");
-    if (Array.isArray(savedTracks)) tracks = savedTracks;
-  } catch (e) {}
-  renderPlaylist();
-
-  if (musicAddBtn) musicAddBtn.addEventListener("click", addTrackFromInputs);
-  if (musicUrlInput) {
-    musicUrlInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        addTrackFromInputs();
-      }
-    });
-  }
-
-  if (musicPlaylistEl) {
-    musicPlaylistEl.addEventListener("click", (e) => {
-      const pickBtn = e.target.closest("[data-idx]");
-      const delBtn = e.target.closest("[data-del]");
-      if (pickBtn) {
-        loadAndPlayTrack(Number(pickBtn.dataset.idx));
-      } else if (delBtn) {
-        const delIdx = Number(delBtn.dataset.del);
-        tracks.splice(delIdx, 1);
-        if (delIdx === currentTrackIndex && audioPlayer) {
-          audioPlayer.pause();
-          audioPlayer.src = "";
-          currentTrackIndex = -1;
-          if (musicNowPlaying) musicNowPlaying.textContent = "Chưa phát nhạc";
-          if (musicPlayBtn) musicPlayBtn.innerHTML = "&#9654; PHÁT";
-        } else if (delIdx < currentTrackIndex) {
-          currentTrackIndex -= 1;
-        }
-        saveTracks();
-        renderPlaylist();
-      }
-    });
-  }
-
-  if (musicPlayBtn && audioPlayer) {
-    musicPlayBtn.addEventListener("click", () => {
-      if (tracks.length === 0) return;
-      if (currentTrackIndex === -1) {
-        loadAndPlayTrack(0);
-        return;
-      }
-      if (audioPlayer.paused) {
-        audioPlayer.play().catch(() => {});
-        musicPlayBtn.innerHTML = "&#10074;&#10074; TẠM DỪNG";
-      } else {
-        audioPlayer.pause();
-        musicPlayBtn.innerHTML = "&#9654; PHÁT";
-      }
-    });
-  }
-
-  if (musicLoopBtn && audioPlayer) {
-    musicLoopBtn.addEventListener("click", () => {
-      isLooping = !isLooping;
-      audioPlayer.loop = isLooping;
-      musicLoopBtn.textContent = isLooping ? "LẶP: BẬT" : "LẶP: TẮT";
-      musicLoopBtn.classList.toggle("is-active", isLooping);
-    });
-  }
-
-  if (musicVol && audioPlayer) {
-    musicVol.addEventListener("input", () => {
-      audioPlayer.volume = Number(musicVol.value) / 100;
-    });
-  }
-
-  if (audioPlayer) {
-    audioPlayer.addEventListener("timeupdate", () => {
-      if (musicTime) musicTime.textContent = formatSec(audioPlayer.currentTime);
-      if (musicSeek && audioPlayer.duration) {
-        musicSeek.value = String((audioPlayer.currentTime / audioPlayer.duration) * 100);
-      }
-    });
-    audioPlayer.addEventListener("ended", () => {
-      if (!isLooping && tracks.length > 0) {
-        loadAndPlayTrack((currentTrackIndex + 1) % tracks.length);
-      }
-    });
-  }
-
-  if (musicSeek && audioPlayer) {
-    musicSeek.addEventListener("input", () => {
-      if (audioPlayer.duration) {
-        audioPlayer.currentTime = (Number(musicSeek.value) / 100) * audioPlayer.duration;
-      }
-    });
+  if (typeof bgCfg.dimOpacity === "number") {
+    document.documentElement.style.setProperty("--bg-dim", String(bgCfg.dimOpacity));
   }
 
   /* -------------------------------------------------------
-     3. CHUYỂN TAB GIỚI THIỆU
+     2. CHUYỂN TAB GIAO DIỆN 2
      ------------------------------------------------------- */
   const tabBtns = document.querySelectorAll(".desk-tab");
   const deskPanels = document.querySelectorAll(".desk-panel");
@@ -336,16 +40,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  tabBtns.forEach((btn) => {
-    btn.addEventListener("click", () => switchTab(btn.dataset.tab));
-  });
-
+  tabBtns.forEach((btn) => btn.addEventListener("click", () => switchTab(btn.dataset.tab)));
   document.querySelectorAll("[data-open-tab]").forEach((card) => {
     card.addEventListener("click", () => switchTab(card.dataset.openTab));
   });
 
   /* -------------------------------------------------------
-     4. THẾ GIỚI SWEZAN: TIMELINE, DIỄN BIẾN, NGUYÊN TẮC (CÔNG KHAI)
+     3. THẾ GIỚI SWEZAN: TIMELINE, DIỄN BIẾN, KHU VỰC & NGUYÊN TẮC
      ------------------------------------------------------- */
   const WORLD_TIMELINE = [
     {
@@ -389,12 +90,12 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       tag: "👁️ NGƯỜI DÂN ĐANG NHƯ THẾ NÀO?",
       title: "Hội Chứng Sợ Màn Hình CRT (Hoảng Loạn 75%)",
-      body: "Nhiều hộ dân dùng chăn dạ hoặc báo cũ trùm kín tivi vào ban đêm, trẻ em bật khóc khi thấy đèn LED đầu máy VCR. Tại Bến cảng và Khối 7, công nhân đốt lửa trong thùng phuy bãi công, thậm chí hò reo trước tin Phó cảnh sát trưởng mất tích; còn giới thượng lưu trên Đồi Kranzhügel đóng chặt cổng thuê vệ sĩ gác đêm.",
+      body: "Nhiều hộ dân dùng chăn dạ hoặc báo cũ trùm kín tivi vào ban đêm, trẻ em bật khóc khi thấy đèn LED đầu máy VCR. Tại Bến cảng và Khối 7, công nhân đốt lửa trong thùng phuy bãi công; còn giới thượng lưu trên Đồi Kranzhügel đóng chặt cổng thuê vệ sĩ gác đêm.",
     },
     {
       tag: "⚖️ ĐỒN CẢNH SÁT & TÒA THỊ CHÍNH",
       title: "Bộ Máy Công Quyền Hỗn Loạn",
-      body: "Cảnh sát trưởng Heckler giam mình trong phòng cùng mùi rượu gin và thuốc lá Chesterfield trước nguy cơ bị Tòa thị chính cách chức. Tuần tra địa phương tăng cường vây ráp, bắt bớ người vô gia cư để tra khảo, trong khi Công tố viên Julian von Brandt trực tiếp siết chặt giám sát hồ sơ.",
+      body: "Cảnh sát trưởng Heckler giam mình trong phòng cùng mùi rượu gin và thuốc lá Chesterfield trước nguy cơ bị Tòa thị chính cách chức. Tuần tra địa phương tăng cường vây ráp ngoài phố, trong khi Công tố viên Julian von Brandt trực tiếp siết chặt giám sát hồ sơ.",
     },
   ];
 
@@ -407,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       tag: "NGUYÊN TẮC 02 · ĐỒNG HỒ 2 TẦNG",
       title: "Hạn Chót 7 Ngày & Giới Hạn Sinh Học",
-      body: "Mỗi hành động đều tiêu tốn thời gian thực: khám nghiệm (+4 giờ), thẩm vấn (+2–3 giờ), di chuyển giữa các khu (+30–60 phút). Thức quá 24–30 giờ liên tục sẽ gây run tay, giảm phán đoán và ảo giác. Đến 23:59 Chủ Nhật, kết cục sẽ tự động chốt.",
+      body: "Mỗi hành động đều tiêu tốn thời gian thực: khám nghiệm (+4 giờ), thẩm vấn (+2–3 giờ), di chuyển giữa các khu (+30–60 phút). Thức quá 24–30 giờ liên tục sẽ gây run tay và ảo giác. Đến 23:59 Chủ Nhật, kết cục sẽ tự động chốt.",
     },
     {
       tag: "NGUYÊN TẮC 03 · TỰ SUY LUẬN",
@@ -459,34 +160,6 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   ];
 
-  const WORLD_DISTRICTS = [
-    {
-      zone: "ĐÔNG · TRUNG TÂM CỔ",
-      title: "Phố Cổ Altstadt",
-      items: "Kiến trúc đá sa thạch thế kỷ 19, Đồn Cảnh sát, Tòa Thị chính, Tòa soạn Tagblatt, phòng trà Thiên Nga Đen và các hiệu sách yên tĩnh bên bờ kênh.",
-    },
-    {
-      zone: "TÂY · ĐƯỜNG THỦY",
-      title: "Bến Cảng Sông Đen (Schwarzhaven)",
-      items: "Bãi than ướt, sà lan chở hàng đêm, tiệm cầm đồ Tổ Quạ và quán rượu ngầm Mỏ Neo Mù nồng mùi rượu gin và thuốc lá sợi.",
-    },
-    {
-      zone: "NAM · VÀNH ĐAI RỈ SÉT",
-      title: "Tổ Hợp Công Nghiệp Hüt IV & Ga Güterof",
-      items: "Những ống khói lò luyện kim sừng sững, phân xưởng dệt cũ và bãi toa xe lửa bỏ không giữa rừng thông ẩm ướt.",
-    },
-    {
-      zone: "BẮC · VÙNG ĐỒI",
-      title: "Đồi Kranzhügel & Đồi Gió Hú Wigel",
-      items: "Một bên là những biệt thự quý tộc sau cổng sắt rèn; bên kia là tháp tiếp sóng truyền hình K-TV Kênh 8 giữa sương mù.",
-    },
-    {
-      zone: "NGOẠI Ô · KHU LAO ĐỘNG",
-      title: "Chung Cư Khối 7–12",
-      items: "Những dãy nhà bê tông xám xịt giăng đầy dây phơi và ăng-ten râu thỏ, nơi công nhân tụ tập quanh thùng phuy đốt lửa.",
-    },
-  ];
-
   const worldTimelineEl = document.getElementById("world-timeline");
   const worldLiveGrid = document.getElementById("world-live-grid");
   const worldRulesGrid = document.getElementById("world-rules-grid");
@@ -527,12 +200,104 @@ document.addEventListener("DOMContentLoaded", () => {
     ).join("");
   }
 
+  const locations = Array.isArray(cfg.locations) ? cfg.locations : [];
   if (worldDistrictsGrid) {
-    worldDistrictsGrid.innerHTML = WORLD_DISTRICTS.map(
-      (d) => `<article class="map-card"><div class="card-badge-row"><span>${d.zone}</span></div><h3 class="card-h3">${d.title}</h3><p class="card-body">${d.items}</p></article>`
-    ).join("");
+    worldDistrictsGrid.innerHTML = locations
+      .map((loc) => {
+        const photoHtml = loc.imageUrl
+          ? `<img class="location-photo-img" src="${escapeHtml(loc.imageUrl)}" alt="${escapeHtml(loc.title)}" />`
+          : `<div class="location-photo-empty">
+               <span>CAM // ARCHIVE PHOTO</span>
+               <strong>${escapeHtml(loc.title)}</strong>
+             </div>`;
+        return `
+        <article class="location-card">
+          <div class="location-photo-box">${photoHtml}</div>
+          <div class="location-body">
+            <div class="card-badge-row"><span>${escapeHtml(loc.zone)}</span></div>
+            <h3 class="card-h3">${escapeHtml(loc.title)}</h3>
+            <p class="card-body">${escapeHtml(loc.desc)}</p>
+          </div>
+        </article>`;
+      })
+      .join("");
   }
 
+  /* -------------------------------------------------------
+     4. TAB 3: CÁC BĂNG VIDEO ĐÃ ĐƯỢC CÔNG BỐ
+     ------------------------------------------------------- */
+  const videos = Array.isArray(cfg.videos) ? cfg.videos : [];
+  const tapesListGrid = document.getElementById("tapes-list-grid");
+  const tapeCrtMedia = document.getElementById("tape-crt-media");
+  const tapeCrtCode = document.getElementById("tape-crt-code");
+  const tapeCrtDate = document.getElementById("tape-crt-date");
+  const tapeCrtStatus = document.getElementById("tape-crt-status");
+  const tapeCrtTitle = document.getElementById("tape-crt-title");
+  const tapeCrtSummary = document.getElementById("tape-crt-summary");
+  const tapeCrtQuote = document.getElementById("tape-crt-quote");
+
+  let activeTapeId = videos[0] ? videos[0].id : "";
+
+  function selectTape(tapeId) {
+    const tape = videos.find((v) => v.id === tapeId) || videos[0];
+    if (!tape) return;
+    activeTapeId = tape.id;
+
+    if (tapeCrtCode) tapeCrtCode.textContent = tape.code;
+    if (tapeCrtDate) tapeCrtDate.textContent = tape.date;
+    if (tapeCrtStatus) tapeCrtStatus.textContent = `${tape.status} · ${tape.duration}`;
+    if (tapeCrtTitle) tapeCrtTitle.textContent = tape.title;
+    if (tapeCrtSummary) tapeCrtSummary.textContent = tape.summary;
+    if (tapeCrtQuote) tapeCrtQuote.textContent = tape.transcript;
+
+    if (tapeCrtMedia) {
+      if (tape.videoUrl) {
+        tapeCrtMedia.innerHTML = `<video src="${escapeHtml(tape.videoUrl)}" ${tape.thumbnailUrl ? `poster="${escapeHtml(tape.thumbnailUrl)}"` : ""} controls playsinline></video>`;
+      } else if (tape.thumbnailUrl) {
+        tapeCrtMedia.innerHTML = `<img src="${escapeHtml(tape.thumbnailUrl)}" alt="${escapeHtml(tape.title)}" />`;
+      } else {
+        tapeCrtMedia.innerHTML = `
+          <div class="tape-crt-fallback">
+            <strong>${escapeHtml(tape.status)}</strong>
+            <span>${escapeHtml(tape.duration)}</span>
+          </div>`;
+      }
+    }
+
+    if (tapesListGrid) {
+      tapesListGrid.querySelectorAll(".tape-card-btn").forEach((b) => {
+        b.classList.toggle("is-active", b.dataset.tapeId === activeTapeId);
+      });
+    }
+  }
+
+  if (tapesListGrid && videos.length > 0) {
+    tapesListGrid.innerHTML = videos
+      .map(
+        (v) => `
+      <button class="tape-card-btn ${v.id === activeTapeId ? "is-active" : ""}" type="button" data-tape-id="${escapeHtml(v.id)}">
+        <div class="tape-card-top">
+          <span>${escapeHtml(v.code)}</span>
+          <span>${escapeHtml(v.duration)}</span>
+        </div>
+        <h4>${escapeHtml(v.title)}</h4>
+        <div class="tape-card-meta">${escapeHtml(v.status)} · ${escapeHtml(v.date)}</div>
+      </button>`
+      )
+      .join("");
+
+    tapesListGrid.addEventListener("click", (e) => {
+      const btn = e.target.closest(".tape-card-btn");
+      if (btn) selectTape(btn.dataset.tapeId);
+    });
+
+    selectTape(activeTapeId);
+  }
+
+  /* -------------------------------------------------------
+     5. TAB 4: NHÂN VẬT (ĐỌC TỪ characters.js, KHÔNG CÓ NÚT SỬA)
+     ------------------------------------------------------- */
+  const characters = Array.isArray(window.SHOWRUNNER_CHARACTERS) ? window.SHOWRUNNER_CHARACTERS : [];
   let castFilter = "all";
   const castGrid = document.getElementById("cast-grid");
   const castFilterBtns = document.querySelectorAll("[data-cast-filter]");
@@ -540,18 +305,38 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderCast() {
     if (!castGrid) return;
     const list =
-      castFilter === "all" ? PUBLIC_CAST : PUBLIC_CAST.filter((c) => c.group === castFilter);
+      castFilter === "all" ? characters : characters.filter((c) => c.group === castFilter);
+
     castGrid.innerHTML = list
-      .map(
-        (c) => `
-      <article class="cast-card">
-        <div class="card-badge-row"><span>${c.badge}</span></div>
-        <h3 class="card-h3">${c.name}</h3>
-        <div class="card-sub">${c.role}</div>
-        <p class="card-body">${c.desc}</p>
-        <p class="card-quote">${c.quote}</p>
-      </article>`
-      )
+      .map((c, i) => {
+        const tilt = ((i % 5) - 2) * 1.1;
+        const isClassified = Boolean(c.classified);
+        const photoHtml = c.imageUrl
+          ? `<img class="char-photo-img" src="${escapeHtml(c.imageUrl)}" alt="${escapeHtml(c.name)}" />`
+          : `<div class="char-photo-placeholder">
+               <span class="q-mark">?</span>
+               <span class="q-hint">${isClassified ? "CLASSIFIED" : "SWEZAN 1994"}</span>
+             </div>`;
+
+        return `
+        <article class="char-polaroid-card ${isClassified ? "is-classified" : ""}" style="--card-tilt: ${tilt}deg">
+          <span class="pushpin" aria-hidden="true"></span>
+          <div class="char-card-head">
+            <span>${escapeHtml(c.code)}</span>
+            <span class="char-stamp">${isClassified ? "REDACTED" : escapeHtml(c.stamp)}</span>
+          </div>
+
+          <div class="char-photo-box">
+            ${photoHtml}
+            <span class="char-cam-tag">CAM // ● REC</span>
+          </div>
+
+          <h3 class="char-name">${isClassified ? "[HỒ SƠ BỊ NIÊM PHONG]" : escapeHtml(c.name)}</h3>
+          <div class="char-role">${escapeHtml(c.role)}</div>
+          <p class="char-desc">${escapeHtml(c.desc)}</p>
+          <p class="char-quote">${escapeHtml(c.quote)}</p>
+        </article>`;
+      })
       .join("");
   }
 
@@ -566,7 +351,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCast();
 
   /* -------------------------------------------------------
-     5. TRÌNH TẠO HỒ SƠ NHẬP VAI & COPY PROMPT
+     6. TAB 5: TẠO HỒ SƠ NHẬP VAI & COPY
      ------------------------------------------------------- */
   const pfFields = [
     "pf-name",
@@ -624,13 +409,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function escapeHtml(str) {
-    return String(str).replace(/[&<>"']/g, (ch) => {
-      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch];
-    });
-  }
   /* -------------------------------------------------------
-     7. PHẦN END: DỪNG BĂNG & MÀN HÌNH HẠ MÀN (THE END)
+     7. TAB 6 & FOOTER: DỪNG BĂNG & MÀN HÌNH HẠ MÀN (THE END)
      ------------------------------------------------------- */
   const triggerEndBtn = document.getElementById("trigger-end-btn");
   const footerEndBtn = document.getElementById("footer-end-btn");
@@ -653,4 +433,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (triggerEndBtn) triggerEndBtn.addEventListener("click", openEndCurtain);
   if (footerEndBtn) footerEndBtn.addEventListener("click", openEndCurtain);
   if (replayTapeBtn) replayTapeBtn.addEventListener("click", closeEndCurtain);
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, (ch) => {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch];
+    });
+  }
 });

@@ -1252,3 +1252,253 @@ html[data-theme="relic"] .economy-strip strong,
 body[data-theme="relic"] .economy-strip strong {
   color: #ffffff;
 }
+/* =========================================================
+   BỔ SUNG: KHU VỰC CÓ ẢNH, TAB BĂNG VIDEO & HỒ SƠ NIÊM PHONG
+   ========================================================= */
+
+.locations-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.location-card {
+  background: var(--surface-panel);
+  border: 1px solid var(--border-line);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 26px rgba(9, 9, 9, 0.55);
+}
+
+.location-photo-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #1a0b0d;
+  border-bottom: 1px solid var(--border-line);
+  overflow: hidden;
+}
+
+.location-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(70%) contrast(1.15);
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.location-card:hover .location-photo-img {
+  transform: scale(1.04);
+  filter: grayscale(20%) contrast(1.1);
+}
+
+.location-photo-empty {
+  width: 100%;
+  height: 100%;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  background: radial-gradient(circle at 35% 35%, rgba(184, 16, 32, 0.42), rgba(20, 14, 15, 0.94));
+  color: rgba(255, 220, 220, 0.72);
+}
+
+.location-photo-empty span { font-size: 10px; letter-spacing: 0.14em; }
+.location-photo-empty strong { font-size: 13px; color: #ffffff; }
+
+.location-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Tab Băng Video Đã Công Bố */
+.tapes-workspace {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.tape-monitor-shell {
+  padding: 16px;
+  background: var(--surface-panel);
+  border: 1px solid var(--border-line);
+  box-shadow: 0 16px 38px rgba(9, 9, 9, 0.65);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tape-monitor-bezel {
+  padding: 12px;
+  background: #171415;
+  border: 2px solid #42383a;
+  box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.9);
+}
+
+.tape-crt-screen {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #0d0708;
+  overflow: hidden;
+  border: 1px solid rgba(200, 16, 32, 0.4);
+}
+
+.tape-crt-static {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0 2px,
+    rgba(0, 0, 0, 0.35) 2px 4px
+  );
+}
+
+.tape-crt-media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+}
+
+.tape-crt-media video,
+.tape-crt-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tape-crt-fallback {
+  text-align: center;
+  padding: 20px;
+  font-family: var(--font-mono);
+  color: rgba(255, 210, 210, 0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tape-crt-fallback strong { font-size: 16px; color: #ff5b68; letter-spacing: 0.16em; }
+
+.tape-crt-osd {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  right: 12px;
+  z-index: 4;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #f4e6e6;
+  text-shadow: 0 2px 4px #000000;
+  pointer-events: none;
+}
+
+.tape-monitor-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tape-status-tag {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  color: #ff6b78;
+}
+
+.tape-crt-title {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  color: #ffffff;
+}
+
+.tape-crt-summary {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-main);
+}
+
+.tape-crt-quote {
+  padding: 10px 12px;
+  border-left: 3px solid var(--red-signal);
+  background: rgba(156, 4, 18, 0.14);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 15px;
+  color: #f4dede;
+}
+
+.tapes-list-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tape-card-btn {
+  text-align: left;
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--surface-panel);
+  border: 1px solid var(--border-line);
+  color: var(--text-main);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  transition: border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.tape-card-btn:hover,
+.tape-card-btn.is-active {
+  border-color: #ffffff;
+  background: var(--surface-hover);
+  box-shadow: 0 0 18px var(--accent-glow);
+  transform: translateX(3px);
+}
+
+.tape-card-top {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #ff8c96;
+}
+
+.tape-card-btn h4 {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  color: #ffffff;
+}
+
+.tape-card-meta {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-sub);
+}
+
+/* Hồ sơ nhân vật bị niêm phong (nếu classified: true trong characters.js) */
+.char-polaroid-card.is-classified .char-photo-box,
+.char-polaroid-card.is-classified .char-desc,
+.char-polaroid-card.is-classified .char-quote {
+  filter: blur(4px);
+  opacity: 0.45;
+  user-select: none;
+}
+
+@media (max-width: 920px) {
+  .tapes-workspace {
+    grid-template-columns: 1fr;
+  }
+}

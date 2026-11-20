@@ -1,24 +1,27 @@
 /* =========================================================
-   THE SHOWRUNNER — HỒ SƠ CÔNG KHAI & LINK ẢNH TỪNG NHÂN VẬT
-   Hướng dẫn: Dán link ảnh trực tiếp vào ô imageUrl: "..."
-   (VD: "assets/julian.jpg" hoặc "https://i.imgur.com/xxx.png")
+   THE SHOWRUNNER — DANH SÁCH NHÂN VẬT CÔNG KHAI
+   Chỉ người tạo sửa trực tiếp trong file này:
+   - imageUrl: Dán link ảnh nhân vật ("assets/..." hoặc "https://...")
+   - classified: Đặt true nếu muốn ẩn mặt/niêm phong hồ sơ nhân vật đó
    ========================================================= */
 
 window.SHOWRUNNER_CHARACTERS = [
   {
     id: "rider",
     group: "official",
+    classified: false,
     code: "CASE 00 // UNKNOWN",
     stamp: "WANTED",
     name: "The Rider",
     role: "Kẻ tự xưng “Biên Kịch” trên sóng K-TV Kênh 08",
     imageUrl: "", // <-- Dán link ảnh The Rider tại đây
     desc: "Chưa từng lộ mặt. Chỉ xuất hiện qua băng VHS 4:3 đen trắng cùng đôi găng tay da đen và giọng nói biến âm tần số thấp.",
-    quote: "“Hãy ngồi xuống trước màn hình và cùng xem vở kịch của nơi này.”",
+    quote: "“Hãy ngồi xuống trước màn hình và cùng xem vở kịch của thung lũng này.”",
   },
   {
     id: "august",
     group: "official",
+    classified: false,
     code: "CASE 03 // 30-11-1994",
     stamp: "MISSING",
     name: "Matthäus August (52t)",
@@ -30,6 +33,7 @@ window.SHOWRUNNER_CHARACTERS = [
   {
     id: "julian",
     group: "official",
+    classified: false,
     code: "ARCHIVE 11 // CITY HALL",
     stamp: "PROSECUTOR",
     name: "Julian Viktor von Brandt (31t)",
@@ -41,6 +45,7 @@ window.SHOWRUNNER_CHARACTERS = [
   {
     id: "heckler",
     group: "official",
+    classified: false,
     code: "ARCHIVE 19 // PRECINCT",
     stamp: "CHIEF",
     name: "Jaxson Heckler (58t)",
@@ -52,6 +57,7 @@ window.SHOWRUNNER_CHARACTERS = [
   {
     id: "ian",
     group: "official",
+    classified: false,
     code: "ARCHIVE 13 // PRECINCT",
     stamp: "ROOKIE",
     name: "Ian Alix (22t)",
@@ -63,6 +69,7 @@ window.SHOWRUNNER_CHARACTERS = [
   {
     id: "eva",
     group: "official",
+    classified: false,
     code: "ARCHIVE 08 // MORGUE",
     stamp: "CORONER",
     name: "Bác sĩ Eva Livingston (34t)",
@@ -74,6 +81,7 @@ window.SHOWRUNNER_CHARACTERS = [
   {
     id: "isabel",
     group: "official",
+    classified: false,
     code: "ARCHIVE 14 // PRESS",
     stamp: "TAGBLATT",
     name: "Isabel Werner (29t)",
@@ -85,6 +93,7 @@ window.SHOWRUNNER_CHARACTERS = [
   {
     id: "lukas",
     group: "town",
+    classified: false,
     code: "ARCHIVE 03 // HARBOR",
     stamp: "BLACK MARKET",
     name: "Lukas “Raven” Kováč (29t)",
@@ -96,6 +105,7 @@ window.SHOWRUNNER_CHARACTERS = [
   {
     id: "clara",
     group: "town",
+    classified: false,
     code: "ARCHIVE 32 // LOUNGE",
     stamp: "NIGHTLIFE",
     name: "Clara Evelyne Moreau (26t)",
@@ -107,6 +117,7 @@ window.SHOWRUNNER_CHARACTERS = [
   {
     id: "alistair",
     group: "town",
+    classified: false,
     code: "ARCHIVE // ALTSTADT",
     stamp: "BOOKSHOP",
     name: "Alistair Cassius (28t)",
@@ -118,6 +129,7 @@ window.SHOWRUNNER_CHARACTERS = [
   {
     id: "kurt",
     group: "town",
+    classified: false,
     code: "ARCHIVE 15 // HÜT IV",
     stamp: "INDUSTRY",
     name: "Kurt Denholm (52t)",
@@ -129,6 +141,7 @@ window.SHOWRUNNER_CHARACTERS = [
   {
     id: "lotte",
     group: "town",
+    classified: false,
     code: "ARCHIVE 36 // GÜTEROF",
     stamp: "UNION",
     name: "Lotte Loris (45t)",
@@ -140,6 +153,7 @@ window.SHOWRUNNER_CHARACTERS = [
   {
     id: "ena",
     group: "town",
+    classified: false,
     code: "ARCHIVE 25 // WIGEL",
     stamp: "BROADCAST",
     name: "Ena Sherley (27t)",
@@ -151,6 +165,7 @@ window.SHOWRUNNER_CHARACTERS = [
   {
     id: "alis",
     group: "town",
+    classified: false,
     code: "ARCHIVE 06 // ST. NAZET",
     stamp: "CLINICAL",
     name: "Dr. Alis Zola (33t)",
@@ -162,6 +177,7 @@ window.SHOWRUNNER_CHARACTERS = [
   {
     id: "traudl",
     group: "town",
+    classified: false,
     code: "ARCHIVE 24 // KRANZHÜGEL",
     stamp: "HIGH SOCIETY",
     name: "Traudl Vanessa (45t)",

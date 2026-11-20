@@ -394,4 +394,60 @@
       return radioPlaying;
     },
   };
+  let customAudioEl = null;
+  let customTrackUrl = "";
+
+  function ensureCustomAudio() {
+    if (!customAudioEl) {
+      customAudioEl = new Audio();
+      customAudioEl.loop = true;
+    }
+    return customAudioEl;
+  }
+
+  window.AnalogRadio = {
+    isPlaying() {
+      return radioPlaying;
+    },
+    setStation(st, customUrl) {
+      radioStation = st || "cassius";
+      customTrackUrl = customUrl || "";
+      if (radioPlaying) {
+        this.stop();
+        this.play();
+      }
+    },
+    setVolume(val) {
+      radioVolume = Math.max(0, Math.min(1, Number(val) / 100));
+      if (radioMasterGain && audioCtx) {
+        radioMasterGain.gain.setValueAtTime(radioVolume * 0.45, audioCtx.currentTime);
+      }
+      if (customAudioEl) {
+        customAudioEl.volume = radioVolume;
+      }
+    },
+    play() {
+      radioPlaying = true;
+      if (customTrackUrl) {
+        stopRadioNodes();
+        const el = ensureCustomAudio();
+        el.src = customTrackUrl;
+        el.volume = radioVolume;
+        el.play().catch(() => {});
+      } else {
+        if (customAudioEl) customAudioEl.pause();
+        startRadioStation();
+      }
+      return true;
+    },
+    stop() {
+      radioPlaying = false;
+      stopRadioNodes();
+      if (customAudioEl) customAudioEl.pause();
+      return false;
+    },
+    togglePlay() {
+      return radioPlaying ? this.stop() : this.play();
+    },
+  };
 })();

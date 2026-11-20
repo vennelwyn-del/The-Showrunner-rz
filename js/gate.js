@@ -109,6 +109,29 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (radioStationList) {
+    const cfgMusic =
+    window.SHOWRUNNER_CONFIG && Array.isArray(window.SHOWRUNNER_CONFIG.music)
+      ? window.SHOWRUNNER_CONFIG.music
+      : [];
+
+  if (radioStationList && cfgMusic.length > 0) {
+    const customHtml = cfgMusic
+      .map(
+        (m, idx) => `
+      <button class="radio-station-btn ${idx === 0 ? "is-selected" : ""}" type="button"
+        data-station="${m.id || `track-${idx}`}"
+        data-url="${m.url || ""}">
+        <span class="st-freq">${m.freq || `TAPE 0${idx + 1}`}</span>
+        <span class="st-name">${m.title || "Băng Nhạc Swezan"}</span>
+      </button>`
+      )
+      .join("");
+    radioStationList.querySelectorAll(".radio-station-btn").forEach((b) => b.classList.remove("is-selected"));
+    radioStationList.insertAdjacentHTML("afterbegin", customHtml);
+    if (window.AnalogRadio && cfgMusic[0].url) {
+      window.AnalogRadio.setStation(cfgMusic[0].id || "track-0", cfgMusic[0].url);
+    }
+  }
     radioStationList.addEventListener("click", (e) => {
       const btn = e.target.closest(".radio-station-btn");
       if (!btn) return;
@@ -118,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.classList.add("is-selected");
 
       if (window.AnalogRadio) {
-        window.AnalogRadio.setStation(btn.dataset.station);
+        window.AnalogRadio.setStation(btn.dataset.station, btn.dataset.url || "");
       }
     });
   }

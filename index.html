@@ -12,9 +12,9 @@
     rel="stylesheet"
   />
 
-  <link rel="stylesheet" href="css/palette.css?v=5" />
-  <link rel="stylesheet" href="css/gate.css?v=5" />
-  <link rel="stylesheet" href="css/main.css?v=5" />
+  <link rel="stylesheet" href="css/palette.css?v=6" />
+  <link rel="stylesheet" href="css/gate.css?v=6" />
+  <link rel="stylesheet" href="css/main.css?v=6" />
 </head>
 <body class="is-standby" data-theme="red">
 
@@ -51,7 +51,7 @@
         id="theme-toggle-btn"
         class="pill-btn pill-dark pill-theme-btn"
         type="button"
-        title="Chuyển đổi giữa 2 bảng màu: Red Palette & Silent Relic"
+        title="Chuyển đổi giữa 2 bảng màu: Đỏ & Đen"
         aria-label="Đổi màu giao diện"
       >
         <span class="theme-dual-dot" aria-hidden="true"></span>
@@ -128,7 +128,7 @@
           <span class="rec-dot" aria-hidden="true"></span>
           STANDBY // K-TV KÊNH 08
         </span>
-        <span class="osd-sub">INPUT: VHS-C TAPE [03/04]</span>
+        <span class="osd-sub">INPUT: VHS-C TAPE [1994]</span>
       </div>
       <div class="osd-group osd-right">
         <span id="osd-clock" class="osd-clock">30/11/1994 — 06:15:00</span>
@@ -152,7 +152,7 @@
             id="tv-power-btn"
             class="tv-power-btn"
             type="button"
-            aria-label="Nhấn nút nguồn để bật tivi và vào trang chính"
+            aria-label="Nhấn nút nguồn để bật tivi và vào trang giới thiệu"
           >
             <span class="btn-bezel">
               <span class="btn-led" aria-hidden="true"></span>
@@ -183,7 +183,7 @@
 
     <footer class="osd-bar osd-bottom">
       <div class="osd-group">
-        <span class="osd-sub">ARCHIVE: CASSIUS &amp; CO. · ALTSTADT</span>
+        <span class="osd-sub">ARCHIVE: SWEZAN VALLEY · ALTSTADT</span>
         <button
           id="audio-toggle-btn"
           class="audio-toggle-btn"
@@ -194,8 +194,8 @@
         </button>
       </div>
       <div class="osd-group osd-right">
-        <span class="osd-sub">LENORMAND 01 — THE RIDER</span>
-        <span class="osd-alert">MASS HYSTERIA: 75%</span>
+        <span class="osd-sub">ANALOG NOIR SHOWCASE</span>
+        <span class="osd-alert">BROADCAST: CH-08</span>
       </div>
     </footer>
   </main>
@@ -210,7 +210,7 @@
   </div>
 
   <!-- =========================================================
-       GIAO DIỆN 2: BÀN ĐIỀU TRA & BẢN ĐỒ DÂY ĐỎ (SWEZAN 1994)
+       GIAO DIỆN 2: WEB GIỚI THIỆU PHONG CÁCH BÀN TƯ LIỆU & LƯỚI ĐỎ
        ========================================================= -->
   <section id="main-app" class="main-app" hidden>
     <!-- Lớp Ảnh Nền Tùy Chỉnh (Link đổi Background) -->
@@ -225,14 +225,12 @@
       preserveAspectRatio="none"
       aria-hidden="true"
     >
-      <!-- Các khối mảng đỏ đặc -->
       <rect x="65" y="18" width="230" height="70" class="wf-block" />
       <rect x="260" y="390" width="90" height="55" class="wf-block" />
       <rect x="920" y="340" width="42" height="120" class="wf-block" />
       <rect x="1310" y="545" width="110" height="65" class="wf-block" />
       <rect x="18" y="805" width="240" height="80" class="wf-block" />
 
-      <!-- Các đường tia đỏ nối từ nút gốc góc trên phải -->
       <line x1="1380" y1="22" x2="360" y2="395" class="wf-line" />
       <line x1="1380" y1="22" x2="610" y2="395" class="wf-line" />
       <line x1="1380" y1="22" x2="860" y2="510" class="wf-line" />
@@ -241,59 +239,54 @@
       <line x1="1380" y1="22" x2="1335" y2="660" class="wf-line" />
       <line x1="1380" y1="22" x2="1380" y2="880" class="wf-line" />
 
-      <!-- Khung tọa độ & đường dẫn ngang -->
       <line x1="0" y1="450" x2="1440" y2="450" class="wf-dashed" />
       <rect x="330" y="270" width="265" height="145" class="wf-box" />
       <rect x="945" y="105" width="110" height="175" class="wf-box" />
       <rect x="132" y="535" width="460" height="235" class="wf-box" />
       <rect x="1260" y="615" width="98" height="92" class="wf-box" />
 
-      <!-- Nhãn tọa độ góc trên phải -->
-      <rect x="1150" y="12" width="128" height="24" class="wf-box" />
-      <text x="1160" y="29" class="wf-label">THE RIDER // 01</text>
-      <text x="336" y="286" class="wf-coord">51.43705, 14.09246</text>
-      <text x="1225" y="535" class="wf-coord">53.07965, 8.83412</text>
-      <text x="415" y="395" class="wf-node-name">VAULT-03</text>
-      <text x="820" y="535" class="wf-node-name">CLOUD</text>
-      <text x="1035" y="595" class="wf-node-name">BREATHING</text>
+      <rect x="1150" y="12" width="142" height="24" class="wf-box" />
+      <text x="1160" y="29" class="wf-label">SWEZAN // 1994</text>
+      <text x="336" y="286" class="wf-coord">VALLEY ARCHIVE · 50Hz</text>
+      <text x="1225" y="535" class="wf-coord">CH-08 BROADCAST</text>
+      <text x="415" y="395" class="wf-node-name">ALTSTADT</text>
+      <text x="820" y="535" class="wf-node-name">HARBOR</text>
+      <text x="1035" y="595" class="wf-node-name">SIGNAL</text>
       <text x="1268" y="695" class="wf-node-name">LIGHT</text>
-      <text x="515" y="758" class="wf-node-name">CRYPT</text>
+      <text x="515" y="758" class="wf-node-name">HÜT IV</text>
     </svg>
 
     <div class="desk-shell">
-      <!-- THANH ĐIỀU HÀNH BÀN ĐIỀU TRA -->
+      <!-- THANH ĐIỀU HÀNH WEB GIỚI THIỆU -->
       <header class="desk-topbar">
         <div class="desk-brand">
-          <span class="play-badge">&#9654; PLAY // K-TV KÊNH 08</span>
-          <span class="desk-date">THỨ HAI 30/11/1994 · 06:15</span>
+          <span class="play-badge">&#9654; THE SHOWRUNNER // 1994</span>
+          <span class="desk-date">ANALOG NOIR INTERACTIVE STORY</span>
         </div>
 
-        <nav class="desk-tabs" aria-label="Hồ sơ vụ án Swezan">
-          <button class="desk-tab is-active" type="button" data-tab="board">
-            01. BÀN CHỨNG CỨ
+        <nav class="desk-tabs" aria-label="Mục giới thiệu tác phẩm">
+          <button class="desk-tab is-active" type="button" data-tab="overview">
+            01. TỔNG QUAN
           </button>
-          <button class="desk-tab" type="button" data-tab="cases">
-            02. HỒ SƠ 4 VỤ ÁN
+          <button class="desk-tab" type="button" data-tab="world">
+            02. THẾ GIỚI SWEZAN
           </button>
           <button class="desk-tab" type="button" data-tab="cast">
-            03. NHÂN VẬT &amp; NGHI PHẠM
-          </button>
-          <button class="desk-tab" type="button" data-tab="map">
-            04. BẢN ĐỒ SWEZAN
+            03. NHÂN VẬT
           </button>
           <button class="desk-tab" type="button" data-tab="profile">
-            05. NHẬP TỊCH &amp; PROMPT
+            04. NHẬP VAI
           </button>
         </nav>
 
         <div class="desk-actions">
           <button
             id="toggle-media-drawer-btn"
-            class="desk-action-btn is-open"
+            class="desk-action-btn btn-accent"
             type="button"
-            aria-expanded="true"
+            aria-expanded="false"
           >
-            &#9881; NỀN &amp; NHẠC
+            &#9881; ĐỔI NỀN &amp; NHẠC
           </button>
           <button id="tv-off-btn" class="desk-action-btn btn-danger" type="button">
             &#x23FB; TẮT TIVI
@@ -302,16 +295,16 @@
       </header>
 
       <!-- =====================================================
-           KHU VỰC LINK ĐỔI ẢNH BACKGROUND & LINK THÊM NHẠC
+           NGĂN KÉO LINK ĐỔI ẢNH BACKGROUND & LINK THÊM NHẠC
+           (Bấm "⚙ ĐỔI NỀN & NHẠC" để mở/đóng)
            ===================================================== -->
-      <section id="media-studio-drawer" class="media-studio-drawer" aria-label="Cấu hình ảnh nền và nhạc">
-        <!-- Cột Trái: Link đổi ảnh Background -->
+      <section id="media-studio-drawer" class="media-studio-drawer" hidden aria-label="Cấu hình ảnh nền và nhạc">
         <div class="studio-box">
           <div class="studio-box-head">
             <span class="studio-tag">01 // LINK ĐỔI ẢNH BACKGROUND</span>
             <label class="studio-check">
               <input id="bg-bw-toggle" type="checkbox" checked />
-              <span>Phủ Đen-Trắng + Khung Đỏ (Ảnh 1)</span>
+              <span>Phủ Đen-Trắng + Lưới Đỏ (Ảnh 1)</span>
             </label>
           </div>
 
@@ -325,25 +318,24 @@
             <button id="bg-apply-btn" class="studio-btn studio-btn-red" type="button">
               ĐỔI NỀN
             </button>
-            <label class="studio-btn studio-file-label" title="Hoặc chọn ảnh trực tiếp từ máy">
+            <label class="studio-btn studio-file-label" title="Hoặc chọn ảnh từ máy">
               TỆP
               <input id="bg-file-input" type="file" accept="image/*" hidden />
             </label>
-            <button id="bg-reset-btn" class="studio-btn" type="button" title="Khôi phục nền mặc định">
+            <button id="bg-reset-btn" class="studio-btn" type="button">
               MẶC ĐỊNH
             </button>
           </div>
 
           <div class="studio-sub-row">
-            <span id="bg-status-msg" class="studio-status">Đang dùng: Bàn Gỗ &amp; Tư Liệu Mặc Định</span>
+            <span id="bg-status-msg" class="studio-status">Đang dùng: Nền Tư Liệu Mặc Định</span>
             <label class="studio-slider-wrap">
-              <span>Độ tối nền</span>
-              <input id="bg-dim-slider" type="range" min="15" max="90" value="48" />
+              <span>Độ tối phủ</span>
+              <input id="bg-dim-slider" type="range" min="5" max="80" value="22" />
             </label>
           </div>
         </div>
 
-        <!-- Cột Phải: Link thêm nhạc & Máy phát Cassette -->
         <div class="studio-box">
           <div class="studio-box-head">
             <span class="studio-tag">02 // LINK THÊM NHẠC (.MP3 / .OGG / .WAV)</span>
@@ -370,7 +362,7 @@
 
           <div class="music-player-bar">
             <button id="music-play-btn" class="studio-btn studio-btn-red" type="button">&#9654; PHÁT</button>
-            <button id="music-loop-btn" class="studio-btn is-active" type="button" title="Lặp lại">LẶP: BẬT</button>
+            <button id="music-loop-btn" class="studio-btn is-active" type="button">LẶP: BẬT</button>
             <input id="music-seek" class="music-seek" type="range" min="0" max="100" value="0" />
             <span id="music-time" class="music-time">00:00</span>
             <label class="studio-slider-wrap">
@@ -385,31 +377,38 @@
       </section>
 
       <!-- =====================================================
-           TAB 1: BÀN CHỨNG CỨ (POLAROID ĐỎ + BÁO SWEZAN TAGBLATT)
+           TAB 1: TỔNG QUAN TÁC PHẨM (POLAROID + NHẬT BÁO SWEZAN)
            ===================================================== -->
-      <section id="tab-board" class="desk-panel is-active">
+      <section id="tab-overview" class="desk-panel is-active">
         <div class="evidence-desk-grid">
-          <!-- CỘT TRÁI: 3 ẢNH POLAROID GHIM ĐINH + ĐỒNG HỒ BỎ TÚI + LÁ BÀI -->
+          <!-- CỘT TRÁI: 3 ẢNH POLAROID GIỚI THIỆU + ĐỒNG HỒ BỎ TÚI + LÁ BÀI -->
           <div class="polaroid-cluster">
-            <!-- Thẻ bài Lenormand 01 thò ra dưới Polaroid -->
-            <div class="lenormand-peek" title="Lá bài Lenormand 01 — The Rider">
+            <div class="lenormand-peek" title="Biểu tượng Lenormand 01 — The Rider">
               <span class="card-num">01</span>
               <span class="card-sym">&#9820;</span>
               <span class="card-name">THE RIDER</span>
             </div>
 
             <!-- Polaroid 1 -->
-            <article class="polaroid-card tilt-left" data-open-tab="cases">
+            <article class="polaroid-card tilt-left" data-open-tab="world">
               <span class="pushpin" aria-hidden="true"></span>
               <div class="polaroid-frame">
-                <div class="polaroid-art art-vault">
-                  <span class="art-code">REC // BĂNG A [03/04]</span>
-                  <span class="art-caption">MẤT TÍCH: MATTHÄUS AUGUST</span>
+                <div class="polaroid-art">
+                  <svg class="polaroid-svg" viewBox="0 0 220 150" aria-hidden="true">
+                    <rect x="24" y="22" width="172" height="106" rx="8" fill="none" stroke="rgba(255,215,215,0.55)" stroke-width="2" />
+                    <rect x="36" y="34" width="122" height="82" rx="4" fill="rgba(255,255,255,0.06)" stroke="rgba(255,215,215,0.35)" />
+                    <circle cx="176" cy="52" r="9" fill="none" stroke="rgba(255,215,215,0.6)" stroke-width="2" />
+                    <circle cx="176" cy="78" r="9" fill="none" stroke="rgba(255,215,215,0.6)" stroke-width="2" />
+                    <line x1="46" y1="68" x2="148" y2="68" stroke="rgba(255,140,150,0.6)" stroke-dasharray="6 4" />
+                    <line x1="46" y1="84" x2="148" y2="84" stroke="rgba(255,255,255,0.35)" />
+                  </svg>
+                  <span class="art-code">SWAN TEROF // CH-08</span>
+                  <span class="art-caption">KHI MÀN HÌNH TIVI TỰ BẬT LÚC NỬA ĐÊM</span>
                 </div>
               </div>
               <div class="polaroid-meta">
-                <strong>TẬP 3: PHÁ KÉN</strong>
-                <span>52 tuổi · Phó Cảnh Sát Trưởng</span>
+                <strong>I. VỞ KỊCH ANALOG 1994</strong>
+                <span>Bấm để xem bối cảnh thung lũng Swezan</span>
               </div>
             </article>
 
@@ -417,243 +416,79 @@
             <article class="polaroid-card tilt-right" data-open-tab="cast">
               <span class="pushpin" aria-hidden="true"></span>
               <div class="polaroid-frame">
-                <div class="polaroid-art art-suspects">
-                  <span class="art-code">4 ĐỐI TƯỢNG // RED HERRING</span>
-                  <span class="art-caption">KURT · ENA · LOTTE · ALIS</span>
+                <div class="polaroid-art art-alt">
+                  <svg class="polaroid-svg" viewBox="0 0 220 150" aria-hidden="true">
+                    <circle cx="110" cy="56" r="24" fill="none" stroke="rgba(255,220,220,0.55)" stroke-width="2" />
+                    <path d="M62 126c8-26 28-38 48-38s40 12 48 38" fill="none" stroke="rgba(255,220,220,0.55)" stroke-width="2" />
+                    <line x1="25" y1="126" x2="195" y2="126" stroke="rgba(255,140,150,0.45)" />
+                  </svg>
+                  <span class="art-code">DÂN CƯ &amp; NHÂN VẬT</span>
+                  <span class="art-caption">TỪ TÒA THỊ CHÍNH ĐẾN BẾN CẢNG ĐEN</span>
                 </div>
               </div>
               <div class="polaroid-meta">
-                <strong>NHÓM NGHI PHẠM</strong>
-                <span>Bấm để mở hồ sơ thẩm vấn</span>
+                <strong>II. NHỮNG GƯƠNG MẶT SWEZAN</strong>
+                <span>Công tố viên, phòng trà, nhà xác &amp; phố cổ</span>
               </div>
             </article>
 
-            <!-- Đồng hồ bỏ túi 56 Turn + mẩu báo xé -->
             <div class="desk-props-row">
-              <div class="pocket-watch" title="Đếm ngược hạn chót Chủ Nhật 23:59">
+              <div class="pocket-watch" title="7 ngày cho mỗi hồi kịch">
                 <div class="watch-ring">
-                  <span class="watch-face-num">56</span>
-                  <span class="watch-face-sub">TURN LIMIT</span>
+                  <span class="watch-face-num">7D</span>
+                  <span class="watch-face-sub">CHU KỲ</span>
                 </div>
-                <span class="watch-note">23:59 CHỦ NHẬT</span>
+                <span class="watch-note">CHỦ NHẬT 23:59</span>
               </div>
 
               <div class="torn-clipping">
                 <span class="clipping-head">THE END?</span>
-                <p>Khung giờ vàng K-TV Kênh 8: Màn hình CRT chỉ còn tiếng rè 50Hz.</p>
+                <p>Mỗi quyết định đều phải trả giá bằng thời gian thực của thung lũng.</p>
               </div>
             </div>
 
             <!-- Polaroid 3 -->
-            <article class="polaroid-card tilt-slight" data-open-tab="map">
+            <article class="polaroid-card tilt-slight" data-open-tab="profile">
               <span class="tape-strip" aria-hidden="true"></span>
               <div class="polaroid-frame">
-                <div class="polaroid-art art-swezan">
-                  <span class="art-code">SWEZAN 1994 // -3°C</span>
-                  <span class="art-caption">16 TỌA ĐỘ HIỆN TRƯỜNG</span>
+                <div class="polaroid-art">
+                  <svg class="polaroid-svg" viewBox="0 0 220 150" aria-hidden="true">
+                    <rect x="42" y="24" width="136" height="102" fill="none" stroke="rgba(255,220,220,0.5)" stroke-width="1.8" />
+                    <line x1="60" y1="52" x2="160" y2="52" stroke="rgba(255,220,220,0.5)" />
+                    <line x1="60" y1="74" x2="142" y2="74" stroke="rgba(255,220,220,0.4)" />
+                    <line x1="60" y1="96" x2="125" y2="96" stroke="rgba(255,220,220,0.4)" />
+                  </svg>
+                  <span class="art-code">5 THÂN PHẬN NHẬP VAI</span>
+                  <span class="art-caption">CHỌN VAI TRÒ &amp; BƯỚC VÀO THUNG LŨNG</span>
                 </div>
               </div>
               <div class="polaroid-meta">
-                <strong>BẢN ĐỒ THUNG LŨNG</strong>
-                <span>Altstadt · Schwarzhaven · Hüt IV</span>
+                <strong>III. TẠO HỒ SƠ NHẬP TỊCH</strong>
+                <span>Thanh tra · Thám tử · Pháp y · Ký giả · Dân thường</span>
               </div>
             </article>
           </div>
 
-          <!-- CỘT PHẢI: TỜ BÁO NHẬT BÁO SWEZAN TAGBLATT (KIỂU ẢNH 2) -->
+          <!-- CỘT PHẢI: TỜ BÁO GIỚI THIỆU SWEZAN TAGBLATT -->
           <article class="newspaper-sheet">
             <div class="news-top-meta">
               <span>THỨ HAI, 30-11-1994</span>
-              <span class="news-edition">SWEZAN ARCHIVE EDITION</span>
-              <span>GIÁ: 2 MARK</span>
+              <span class="news-edition">SWEZAN EDITION · 1994</span>
+              <span>NOIR INTERACTIVE</span>
             </div>
 
             <h2 class="news-masthead">SWEZAN TAGBLATT</h2>
 
             <div class="news-headline-block">
-              <p class="news-sub-red">THE RIDER ĐANG CƯỚP SÓNG</p>
+              <p class="news-sub-red">TRUYỀN HÌNH ĐÊM ĐÃ BỊ CHIẾM SÓNG</p>
               <div class="news-oval-wrap">
-                <h3 class="news-big-headline">KHỦNG HOẢNG</h3>
+                <h3 class="news-big-headline">THE SHOWRUNNER</h3>
                 <span class="news-red-oval" aria-hidden="true"></span>
               </div>
             </div>
 
             <div class="news-columns">
               <div class="news-col">
-                <p class="news-dropcap">
-                  Lúc 06:00 sáng nay, lực lượng tuần tra trục vớt một con cá chép lai đột biến
-                  bụng trương phềnh tại hồ nước đen ven rừng. Bên trong chứa cuộn băng
-                  <strong>VHS-C (Băng A — Tập 3/4)</strong> xác nhận Phó Cảnh Sát Trưởng
-                  <strong>Matthäus August</strong> đã bị bắt cóc từ trưa Chủ Nhật.
-                </p>
                 <p>
-                  Dư chấn từ vụ cướp sóng truyền hình Kênh 8 đêm qua vẫn chưa lắng xuống khi
-                  hình ảnh cái chết của tiểu thư Malia Ariane bị phát thẳng vào hàng vạn hộ dân.
-                </p>
-              </div>
-
-              <div class="news-photo-box">
-                <div class="news-photo-overlay">
-                  <span>CH-08 // 50Hz</span>
-                  <span>BĂNG A TẬP 3 ĐÃ THU GIỮ</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="news-red-banner">
-              MASS HYSTERIA: 75% &mdash; CẢNH BÁO BẠO ĐỘNG BẾN CẢNG
-            </div>
-
-            <!-- Bản chép Băng A ngay trên mặt báo -->
-            <div class="tape-transcript-box">
-              <div class="tape-box-head">
-                <span>&#127902; [BĂNG A: THÁCH THỨC — TẬP 3/4]</span>
-                <span>THỜI LƯỢNG: 03:30</span>
-              </div>
-              <p class="tape-quote">
-                “Con ấu trùng đã phá kén, và thứ bò ra không phải thiên thần, mà là một con bọ
-                ăn thịt đồng loại mang phù hiệu ngôi sao bạc. Kẻ từng dùng ruột của những đứa trẻ
-                nghèo làm mồi câu cá... nay sẽ được học cách làm mồi câu cho chính đồng loại của mình.
-                7 ngày... hoặc một bộ xương trắng.”
-              </p>
-              <div class="tape-clues">
-                <span><strong>Âm thanh:</strong> Máy sục khí bể thủy sản 50Hz, dội âm tôn mạ kẽm</span>
-                <span><strong>Khung hình:</strong> Tem ố vàng [SCHWARZHAVEN-AQUACULTURE 1974]</span>
-              </div>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <!-- =====================================================
-           TAB 2: HỒ SƠ 4 VỤ ÁN
-           ===================================================== -->
-      <section id="tab-cases" class="desk-panel" hidden>
-        <div class="panel-header-strip">
-          <div>
-            <p class="panel-kicker">DOSSIER ARCHIVE // VỞ BI KỊCH 4 HỒI</p>
-            <h2 class="panel-title">HỒ SƠ CÁC TẬP PHIM CỦA THE RIDER</h2>
-          </div>
-          <button id="secret-lock-btn" class="studio-btn" type="button">
-            &#128274; HỒ SƠ MẬT (GM): ĐANG KHÓA
-          </button>
-        </div>
-
-        <div id="cases-grid" class="dossier-grid"></div>
-      </section>
-
-      <!-- =====================================================
-           TAB 3: NHÂN VẬT CỐ ĐỊNH & 4 NGHI PHẠM
-           ===================================================== -->
-      <section id="tab-cast" class="desk-panel" hidden>
-        <div class="panel-header-strip">
-          <div>
-            <p class="panel-kicker">LENORMAND &amp; SUSPECT MATRIX // 1994</p>
-            <h2 class="panel-title">HỒ SƠ NHÂN VẬT SWEZAN</h2>
-          </div>
-          <div class="cast-filter-group">
-            <button class="studio-btn is-active" type="button" data-cast-filter="all">TẤT CẢ</button>
-            <button class="studio-btn" type="button" data-cast-filter="core">NHÂN VẬT CỐ ĐỊNH</button>
-            <button class="studio-btn" type="button" data-cast-filter="suspect">4 NGHI PHẠM</button>
-          </div>
-        </div>
-
-        <div id="cast-grid" class="cast-grid"></div>
-      </section>
-
-      <!-- =====================================================
-           TAB 4: BẢN ĐỒ TỌA ĐỘ SWEZAN (16 ĐỊA DANH)
-           ===================================================== -->
-      <section id="tab-map" class="desk-panel" hidden>
-        <div class="panel-header-strip">
-          <div>
-            <p class="panel-kicker">SPATIAL TOPOGRAPHY // THUNG LŨNG SWEZAN 1994</p>
-            <h2 class="panel-title">16 ĐỊA DANH &amp; MẠNG LƯỚI TỌA ĐỘ</h2>
-          </div>
-        </div>
-
-        <div id="map-zones-grid" class="map-zones-grid"></div>
-      </section>
-
-      <!-- =====================================================
-           TAB 5: HỒ SƠ NHẬP TỊCH & COPY PROMPT
-           ===================================================== -->
-      <section id="tab-profile" class="desk-panel" hidden>
-        <div class="panel-header-strip">
-          <div>
-            <p class="panel-kicker">CHARACTER INITIALIZATION // 5 THÂN PHẬN</p>
-            <h2 class="panel-title">TẠO HỒ SƠ NHẬP TỊCH &amp; XUẤT PROMPT</h2>
-          </div>
-          <button id="copy-profile-btn" class="studio-btn studio-btn-red" type="button">
-            &#128203; COPY HỒ SƠ NHẬP TỊCH
-          </button>
-        </div>
-
-        <div class="profile-builder-grid">
-          <form id="citizen-form" class="citizen-form">
-            <div class="form-row-2">
-              <label class="field-box">
-                <span>Họ và tên</span>
-                <input id="pf-name" type="text" placeholder="VD: Lukas Henrik Weber" />
-              </label>
-              <label class="field-box">
-                <span>Tuổi (18+) &amp; Giới tính</span>
-                <input id="pf-age-gender" type="text" placeholder="VD: 32 tuổi | Nam (Anh/Tôi)" />
-              </label>
-            </div>
-
-            <div class="form-row-2">
-              <label class="field-box">
-                <span>Thân phận khởi điểm (Swezan 1994)</span>
-                <select id="pf-archetype">
-                  <option value="Thanh Tra Cấp Cao (1.200 M)">Thanh Tra Cấp Cao (1.200 Mark)</option>
-                  <option value="Thám Tử Tư / Cựu Sĩ Quan (300 M)">Thám Tử Tư / Cựu Sĩ Quan (300 Mark)</option>
-                  <option value="Bác Sĩ Pháp Y Độc Lập (1.500 M)">Bác Sĩ Pháp Y Độc Lập (1.500 Mark)</option>
-                  <option value="Phóng Viên Điều Tra (600 M)">Phóng Viên Điều Tra (600 Mark)</option>
-                  <option value="Dân Thường / Thợ Thuyền (60 M)">Dân Thường / Thợ Thuyền (60 Mark)</option>
-                </select>
-              </label>
-              <label class="field-box">
-                <span>Địa bàn cư trú &amp; Lá Lenormand</span>
-                <input id="pf-district" type="text" placeholder="VD: Phố cổ Altstadt | Lá 33 - Chìa Khóa" />
-              </label>
-            </div>
-
-            <label class="field-box">
-              <span>Ngoại hình, trang phục &amp; mùi hương đặc trưng (1994 Noir)</span>
-              <textarea id="pf-look" rows="2" placeholder="VD: Cao 1m80, áo măng tô dạ xám sờn vai, mùi thuốc lá Lucky Strike quyện mưa bùn than..."></textarea>
-            </label>
-
-            <label class="field-box">
-              <span>Trang bị &amp; Vũ khí khởi điểm</span>
-              <input id="pf-gear" type="text" placeholder="VD: Walther PPK, đèn pin kim loại, sổ tay da, xe sedan cũ" />
-            </label>
-
-            <label class="field-box">
-              <span>Bí mật đen tối &amp; Mục tiêu tại Swezan</span>
-              <textarea id="pf-secret" rows="2" placeholder="VD: Lần theo dấu vết đứa em mất tích trong vụ cháy 1974; giải cứu August trước 23:59 Chủ Nhật..."></textarea>
-            </label>
-
-            <label class="field-box">
-              <span>Câu thoại mẫu</span>
-              <input id="pf-quote" type="text" placeholder="VD: “Người chết không biết nói dối, chỉ có kẻ đứng sau máy quay mới làm vậy.”" />
-            </label>
-          </form>
-
-          <div class="profile-preview-card">
-            <div class="preview-head">
-              <span>BẢN XUẤT HỒ SƠ CHUẨN DÁN VÀO ROLEPLAY</span>
-              <span id="copy-feedback" class="copy-feedback"></span>
-            </div>
-            <pre id="profile-output" class="profile-output"></pre>
-          </div>
-        </div>
-      </section>
-    </div>
-  </section>
-
-  <script src="js/static-noise.js?v=5" defer></script>
-  <script src="js/gate.js?v=5" defer></script>
-  <script src="js/main.js?v=5" defer></script>
-</body>
-</html>
+                  Năm <strong>1994</strong>, thung lũng công nghiệp <strong>Swezan</strong> chìm trong
+                  mưa phùn tro than, tiếng máy dệt rỉ sét và nỗi kinh hoàng mang tên

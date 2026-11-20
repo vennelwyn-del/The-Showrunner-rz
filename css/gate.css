@@ -119,14 +119,16 @@ body.is-main-active #analog-noise-canvas {
 
 .top-pill-bar {
   position: fixed;
-  top: clamp(12px, 2vw, 22px);
-  left: clamp(14px, 2.4vw, 32px);
-  right: clamp(14px, 2.4vw, 32px);
+  top: clamp(10px, 1.8vw, 18px);
+  left: clamp(14px, 2.2vw, 28px);
+  right: clamp(18px, 2.5vw, 32px);
+  max-width: calc(100vw - 32px);
   z-index: 40;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   pointer-events: none;
 }
 

@@ -1,20 +1,20 @@
 /* =========================================================
-   THE SHOWRUNNER (1994) — BẢNG MÀU & BIẾN ĐỔI 2 GIAO DIỆN
+   THE SHOWRUNNER (1994) — BẢNG MÀU & 2 GIAO DIỆN ĐỎ / ĐEN
    ========================================================= */
 :root {
   /* --- Bảng 1: Red Color Palette --- */
-  --red-signal:    #9C0412;
-  --red-scarlet:   #740107;
-  --red-blood:     #520102;
-  --red-oxblood:   #3D0606;
+  --red-signal:    #C81020;
+  --red-scarlet:   #9C0412;
+  --red-blood:     #740107;
+  --red-oxblood:   #520102;
   --red-abyss:     #340506;
 
   /* --- Bảng 2: 黒鍵の祈り (Silent Relic) --- */
-  --abyss-black:   #090909;
-  --dark-espresso: #280e11;
-  --blood-wine:    #3f1117;
-  --fog-stone:     #353535;
-  --faded-silver:  #acacac;
+  --abyss-black:   #121214;
+  --dark-espresso: #2f171a;
+  --blood-wine:    #561c24;
+  --fog-stone:     #49494c;
+  --faded-silver:  #d8d6d4;
 
   /* --- Typography hỗ trợ tiếng Việt --- */
   --font-serif: "Cormorant Garamond", Georgia, serif;
@@ -23,63 +23,63 @@
 }
 
 /* =========================================================
-   THEME 1: ĐỎ (RED COLOR PALETTE)
+   THEME 1: ĐỎ (RED COLOR PALETTE — TONE SÁNG HƠN)
    ========================================================= */
 html[data-theme="red"],
 body[data-theme="red"] {
-  --bg-radial-1:   rgba(156, 4, 18, 0.34);
-  --bg-radial-2:   rgba(116, 1, 7, 0.30);
-  --bg-core:       #520102;
-  --bg-mid:        #3D0606;
-  --bg-deep:       #340506;
-  --bg-edge:       #090909;
+  --bg-radial-1:   rgba(184, 16, 32, 0.34);
+  --bg-radial-2:   rgba(116, 1, 7, 0.28);
+  --bg-core:       #6b151c;
+  --bg-mid:        #471519;
+  --bg-deep:       #2c1416;
+  --bg-edge:       #181112;
 
-  --surface-panel: rgba(52, 5, 6, 0.90);
-  --surface-btn:   rgba(61, 6, 6, 0.85);
-  --surface-hover: rgba(116, 1, 7, 0.68);
+  --surface-panel: rgba(38, 20, 22, 0.84);
+  --surface-btn:   rgba(74, 22, 26, 0.88);
+  --surface-hover: rgba(156, 4, 18, 0.72);
 
-  --accent-main:   #9C0412;
-  --accent-mid:    #740107;
+  --accent-main:   #b80f1e;
+  --accent-mid:    #820712;
   --accent-dark:   #520102;
-  --accent-glow:   rgba(156, 4, 18, 0.62);
+  --accent-glow:   rgba(200, 16, 32, 0.45);
 
-  --text-main:     #e6cfcf;
-  --text-sub:      rgba(220, 178, 178, 0.72);
-  --border-frame:  rgba(156, 4, 18, 0.45);
-  --border-line:   rgba(156, 4, 18, 0.65);
+  --text-main:     #f2ebeb;
+  --text-sub:      rgba(236, 214, 214, 0.78);
+  --border-frame:  rgba(200, 16, 32, 0.42);
+  --border-line:   rgba(220, 80, 90, 0.55);
 
-  --noise-r:       156;
-  --noise-g:       4;
-  --noise-b:       18;
+  --noise-r:       184;
+  --noise-g:       16;
+  --noise-b:       32;
 }
 
 /* =========================================================
-   THEME 2: ĐEN (黒鍵の祈り / SILENT RELIC)
+   THEME 2: ĐEN (黒鍵の祈り / SILENT RELIC — XÁM BẠC SÁNG RÕ)
    ========================================================= */
 html[data-theme="relic"],
 body[data-theme="relic"] {
-  --bg-radial-1:   rgba(53, 53, 53, 0.24);
-  --bg-radial-2:   rgba(63, 17, 23, 0.22);
-  --bg-core:       #1d1416;
-  --bg-mid:        #151515;
-  --bg-deep:       #0d0d0d;
-  --bg-edge:       #090909;
+  --bg-radial-1:   rgba(172, 172, 172, 0.20);
+  --bg-radial-2:   rgba(86, 28, 36, 0.24);
+  --bg-core:       #3d3b3d;
+  --bg-mid:        #2d2b2d;
+  --bg-deep:       #1f1d1f;
+  --bg-edge:       #141314;
 
-  --surface-panel: rgba(16, 16, 16, 0.92);
-  --surface-btn:   rgba(40, 14, 17, 0.72);
-  --surface-hover: rgba(63, 17, 23, 0.75);
+  --surface-panel: rgba(34, 34, 37, 0.86);
+  --surface-btn:   rgba(58, 42, 45, 0.88);
+  --surface-hover: rgba(86, 28, 36, 0.80);
 
-  --accent-main:   #3f1117;
-  --accent-mid:    #280e11;
-  --accent-dark:   #353535;
-  --accent-glow:   rgba(172, 172, 172, 0.30);
+  --accent-main:   #6d232d;
+  --accent-mid:    #44181e;
+  --accent-dark:   #353538;
+  --accent-glow:   rgba(216, 214, 212, 0.28);
 
-  --text-main:     #acacac;
-  --text-sub:      rgba(172, 172, 172, 0.60);
-  --border-frame:  rgba(53, 53, 53, 0.65);
-  --border-line:   rgba(172, 172, 172, 0.38);
+  --text-main:     #e8e6e4;
+  --text-sub:      rgba(218, 216, 214, 0.74);
+  --border-frame:  rgba(172, 172, 172, 0.36);
+  --border-line:   rgba(216, 214, 212, 0.44);
 
-  --noise-r:       172;
-  --noise-g:       172;
-  --noise-b:       172;
+  --noise-r:       210;
+  --noise-g:       210;
+  --noise-b:       210;
 }

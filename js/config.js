@@ -91,6 +91,10 @@ window.SHOWRUNNER_CONFIG = {
      4. CÁC BĂNG VIDEO ĐÃ ĐƯỢC CÔNG BỐ (CHỈ THÔNG TIN CÔNG KHAI)
      Có thể điền thêm thumbnailUrl (ảnh bìa) & videoUrl (.mp4)
      ------------------------------------------------------- */
+  /* -------------------------------------------------------
+     4. CÁC BĂNG VIDEO ĐÃ ĐƯỢC CÔNG BỐ
+     Dán link ảnh cắt nền (.PNG không nền) vào mục "sim" bên dưới
+     ------------------------------------------------------- */
   videos: [
     {
       id: "tape-2",
@@ -99,8 +103,16 @@ window.SHOWRUNNER_CONFIG = {
       title: "“Khởi nguồn tội ác: Trứng ấu trùng”",
       duration: "05:20 · VHS 4:3",
       date: "00:00 CHỦ NHẬT TUẦN TRƯỚC",
-      thumbnailUrl: "", // <-- Dán link ảnh bìa video Tập 2 (nếu có)
-      videoUrl: "", // <-- Dán link file video .mp4 Tập 2 (nếu có)
+      thumbnailUrl: "",
+      videoUrl: "", // Nếu có file .mp4 thật thì dán vào đây (sẽ ưu tiên phát video)
+      sim: {
+        tintMode: "noir",   // "noir" = nhuộm đen trắng 1994 | "shadow" = bóng đen thuần | "original" = giữ màu gốc
+        bgUrl: "",          // (Tùy chọn) Link ảnh nền buồng kính
+        personUrl: "",      // <-- DÁN LINK ẢNH NGƯỜI CẮT NỀN (.PNG) TẠI ĐÂY
+        flowerUrl: "",      // <-- DÁN LINK ẢNH HOA LOA KÈN CẮT NỀN (.PNG) BÊN TRÁI / CHÍNH GIỮA
+        flowerRightUrl: "", // (Tùy chọn) Link ảnh hoa cắt nền thứ 2 bên góc phải
+        overlayUrl: "",     // (Tùy chọn) Ảnh lớp kính mờ hoặc giọt hơi nước đè lên trên
+      },
       summary:
         "Đoạn băng bị kẻ tự xưng The Rider chiếm sóng truyền hình Kênh 8 phát thẳng vào hàng vạn hộ dân Swezan, ghi lại cái chết ngột ngạt trong buồng kính hơi nước của tiểu thư Malia Ariane.",
       transcript:
@@ -113,8 +125,16 @@ window.SHOWRUNNER_CONFIG = {
       title: "“Khởi nguồn tội ác: Phá kén” (Lời thách thức)",
       duration: "03:30 · VHS-C ĐEN TRẮNG",
       date: "30/11/1994 · 06:00",
-      thumbnailUrl: "", // <-- Dán link ảnh bìa Băng A Tập 3 (nếu có)
-      videoUrl: "", // <-- Dán link file video .mp4 Tập 3 (nếu có)
+      thumbnailUrl: "",
+      videoUrl: "",
+      sim: {
+        tintMode: "noir",
+        bgUrl: "",          // (Tùy chọn) Ảnh nền mặt nước tối / hầm
+        personUrl: "",      // <-- DÁN LINK ẢNH NGƯỜI NGỒI GHẾ CẮT NỀN (.PNG)
+        flowerUrl: "",      // (Tùy chọn) Link ảnh vật thể / dây xích cắt nền (.PNG)
+        flowerRightUrl: "",
+        overlayUrl: "",     // (Tùy chọn) Link ảnh bàn tay đeo găng đen lướt qua (.PNG)
+      },
       summary:
         "Cuộn băng vừa được thu giữ sáng nay sau vụ mất tích của Phó Cảnh sát trưởng Matthäus August. Khung hình đen trắng quay cảnh ông bị bịt mắt, trói trên ghế sắt phía trên mặt nước tối.",
       transcript:
@@ -127,8 +147,16 @@ window.SHOWRUNNER_CONFIG = {
       title: "“Khởi nguồn tội ác: Tái sinh”",
       duration: "KHÔNG RÕ THỜI LƯỢNG",
       date: "~14 NGÀY TRƯỚC",
-      thumbnailUrl: "", // <-- Dán link ảnh bìa (nếu có)
-      videoUrl: "", // <-- Dán link video (nếu có)
+      thumbnailUrl: "",
+      videoUrl: "",
+      sim: {
+        tintMode: "shadow",
+        bgUrl: "",
+        personUrl: "",      // <-- DÁN LINK ẢNH CẮT NỀN TẬP 1 (.PNG) NẾU CÓ
+        flowerUrl: "",
+        flowerRightUrl: "",
+        overlayUrl: "",
+      },
       summary:
         "Trước khi Kênh 8 bị cướp sóng, từng có tin đồn về một cuộn băng mở màn xuất hiện tại tiệm ăn nhỏ Lutz sau khi chủ tiệm Ottomar Burchard mất tích. Hồ sơ này chưa từng được công bố rộng rãi.",
       transcript:
@@ -143,6 +171,14 @@ window.SHOWRUNNER_CONFIG = {
       date: "ĐANG CHỜ...",
       thumbnailUrl: "",
       videoUrl: "",
+      sim: {
+        tintMode: "shadow",
+        bgUrl: "",
+        personUrl: "",
+        flowerUrl: "",
+        flowerRightUrl: "",
+        overlayUrl: "",
+      },
       summary:
         "Không có hình ảnh. Màn hình chỉ phát ra tiếng rít rè trắng 50Hz kéo dài.",
       transcript: "“Vở kịch gồm bốn hồi. Hồi cuối cùng vẫn chưa kéo màn.”",

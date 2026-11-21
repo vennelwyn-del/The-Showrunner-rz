@@ -1811,3 +1811,256 @@ body[data-theme="relic"] .form-section-label {
     max-height: none;
   }
 }
+/* =========================================================
+   SÂN KHẤU XẾP LỚP ẢNH CẮT NỀN (.PNG) & ANIMATION 3.8 GIÂY
+   ========================================================= */
+
+.sim-cutout-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  perspective: 900px;
+  background: radial-gradient(circle at 50% 42%, #3a1116 0%, #17080a 64%, #080405 100%);
+}
+
+/* Chế độ màu phủ lên ảnh cắt nền */
+.sim-tint-noir {
+  filter: grayscale(76%) contrast(1.22) brightness(0.86) drop-shadow(0 10px 22px rgba(0, 0, 0, 0.92));
+}
+
+.sim-tint-shadow {
+  filter: brightness(0) contrast(1.5) drop-shadow(0 0 14px rgba(200, 16, 32, 0.48));
+  opacity: 0.92;
+}
+
+.sim-tint-original {
+  filter: contrast(1.08) brightness(0.95) drop-shadow(0 10px 22px rgba(0, 0, 0, 0.9));
+}
+
+/* Lớp 1: Ảnh nền phía sau */
+.sim-layer-bg {
+  position: absolute;
+  inset: -4%;
+  width: 108%;
+  height: 108%;
+  object-fit: cover;
+  z-index: 1;
+  opacity: 0.65;
+}
+
+.tape-sim-stage.is-playing .sim-layer-bg {
+  animation: cutoutBgPush 3.8s ease-out forwards;
+}
+
+/* Lớp 2 & 4: Làn hơi nước / sương mờ kẹp giữa người và hoa */
+.sim-fog-band {
+  position: absolute;
+  left: -15%;
+  right: -15%;
+  bottom: -10%;
+  height: 62%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 32% 72%, rgba(235, 224, 224, 0.24) 0%, transparent 56%),
+    radial-gradient(ellipse at 70% 68%, rgba(220, 200, 200, 0.22) 0%, transparent 58%);
+  filter: blur(8px);
+}
+
+.sim-fog-back  { z-index: 2; opacity: 0.72; }
+.sim-fog-front { z-index: 4; opacity: 0.55; }
+
+.tape-sim-stage.is-playing .sim-fog-back {
+  animation: cutoutFogDrift 3.8s ease-in-out forwards;
+}
+
+.tape-sim-stage.is-playing .sim-fog-front {
+  animation: cutoutFogDriftFront 3.8s ease-in-out forwards;
+}
+
+/* Lớp 3: Ảnh người cắt nền */
+.sim-layer-person {
+  position: absolute;
+  left: 50%;
+  bottom: 2%;
+  height: 86%;
+  width: auto;
+  max-width: 82%;
+  object-fit: contain;
+  transform: translateX(-50%);
+  transform-origin: center bottom;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.tape-sim-stage.is-playing .sim-layer-person.motion-tape-2 {
+  animation: cutoutPersonStruggle 3.8s ease-in-out forwards;
+}
+
+.tape-sim-stage.is-playing .sim-layer-person.motion-tape-3a {
+  animation: cutoutChairPendulum 3.8s ease-in-out forwards;
+}
+
+.tape-sim-stage.is-playing .sim-layer-person.motion-tape-1 {
+  animation: cutoutCocoonDrop 3.8s ease-in-out forwards;
+}
+
+.tape-sim-stage.is-playing .sim-layer-person.motion-tape-4 {
+  animation: simGhostFlash 3.8s steps(1, end) forwards;
+}
+
+/* Lớp 5: Ảnh hoa / vật thể cắt nền phía trước */
+.sim-layer-flower {
+  position: absolute;
+  bottom: -4%;
+  height: 56%;
+  width: auto;
+  max-width: 66%;
+  object-fit: contain;
+  transform-origin: center bottom;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.sim-layer-flower.is-center {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.sim-layer-flower.is-left {
+  left: -4%;
+}
+
+.sim-layer-flower.is-right {
+  right: -4%;
+}
+
+.tape-sim-stage.is-playing .sim-layer-flower.is-center {
+  animation: cutoutFlowerCenter 3.8s ease-in-out forwards;
+}
+
+.tape-sim-stage.is-playing .sim-layer-flower.is-left {
+  animation: cutoutFlowerSwayLeft 3.8s ease-in-out forwards;
+}
+
+.tape-sim-stage.is-playing .sim-layer-flower.is-right {
+  animation: cutoutFlowerSwayRight 3.8s ease-in-out forwards;
+}
+
+/* Lớp 6: Ảnh overlay trên cùng (kính mờ / dây xích / bàn tay) */
+.sim-layer-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 6;
+  pointer-events: none;
+  opacity: 0.72;
+}
+
+.tape-sim-stage.is-playing .sim-layer-overlay.motion-tape-3a {
+  animation: cutoutGloveSweep 3.8s ease-in-out forwards;
+}
+
+/* Khung kính mờ nhẹ tự nhiên cho Tập 2 (khi chưa có overlayUrl riêng) */
+.sim-egg-glass-rim {
+  position: absolute;
+  inset: 6% 18%;
+  border-radius: 50% 50% 46% 46% / 56% 56% 42% 42%;
+  border: 2px solid rgba(255, 228, 228, 0.24);
+  box-shadow:
+    inset 18px 0 32px rgba(255, 240, 240, 0.10),
+    inset -18px 0 32px rgba(184, 16, 32, 0.16),
+    0 0 28px rgba(0, 0, 0, 0.55);
+  z-index: 6;
+  pointer-events: none;
+}
+
+/* Trạng thái chờ khi chưa dán ảnh cắt nền */
+.sim-empty-cutout-hint {
+  position: relative;
+  z-index: 3;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  font-family: var(--font-mono);
+  color: rgba(255, 220, 220, 0.72);
+  gap: 8px;
+}
+
+.sim-empty-cutout-hint strong {
+  color: #ff6b78;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+}
+
+.sim-empty-cutout-hint span {
+  font-size: 11px;
+  opacity: 0.78;
+}
+
+/* Keyframes chuyển động 3.8s cho ảnh cắt nền */
+@keyframes cutoutBgPush {
+  0%   { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.1) translate(-1%, 1%); }
+}
+
+@keyframes cutoutFogDrift {
+  0%   { transform: translate(-4%, 14%) scale(0.95); opacity: 0.4; }
+  65%  { transform: translate(3%, -4%) scale(1.06); opacity: 0.82; }
+  100% { transform: translate(5%, -10%) scale(1.1); opacity: 0.9; }
+}
+
+@keyframes cutoutFogDriftFront {
+  0%   { transform: translate(4%, 18%); opacity: 0.25; }
+  60%  { transform: translate(-2%, 2%); opacity: 0.65; }
+  100% { transform: translate(-5%, -8%); opacity: 0.78; }
+}
+
+@keyframes cutoutPersonStruggle {
+  0%   { transform: translateX(-50%) translateY(6px) scale(0.97); }
+  28%  { transform: translateX(-49%) translateY(0px) scale(1.01) rotate(-1.2deg); }
+  56%  { transform: translateX(-51%) translateY(-4px) scale(1.04) rotate(1.4deg); }
+  78%  { transform: translateX(-50%) translateY(2px) scale(1.05) rotate(-0.8deg); }
+  100% { transform: translateX(-50%) translateY(4px) scale(1.06); }
+}
+
+@keyframes cutoutChairPendulum {
+  0%   { transform: translateX(-50%) rotate(-3deg) translateY(-4px); }
+  50%  { transform: translateX(-50%) rotate(3deg) translateY(4px); }
+  100% { transform: translateX(-50%) rotate(-1.8deg) translateY(0px) scale(1.05); }
+}
+
+@keyframes cutoutCocoonDrop {
+  0%   { transform: translateX(-50%) translateY(-18px) scale(0.95); }
+  100% { transform: translateX(-50%) translateY(14px) scale(1.04); }
+}
+
+@keyframes cutoutFlowerCenter {
+  0%   { transform: translateX(-50%) rotate(-1.5deg) scale(1); }
+  50%  { transform: translateX(-50%) rotate(1.8deg) scale(1.03); }
+  100% { transform: translateX(-50%) translateY(8px) rotate(3deg) scale(1.04); }
+}
+
+@keyframes cutoutFlowerSwayLeft {
+  0%   { transform: rotate(-2deg) scale(1); }
+  50%  { transform: rotate(2.5deg) scale(1.04); }
+  100% { transform: translateY(7px) rotate(4deg) scale(1.05); }
+}
+
+@keyframes cutoutFlowerSwayRight {
+  0%   { transform: rotate(2deg) scale(1); }
+  50%  { transform: rotate(-2.5deg) scale(1.04); }
+  100% { transform: translateY(7px) rotate(-4deg) scale(1.05); }
+}
+
+@keyframes cutoutGloveSweep {
+  0%, 30%  { transform: translateX(-110%); opacity: 0; }
+  52%      { transform: translateX(0%); opacity: 0.9; }
+  80%, 100%{ transform: translateX(110%); opacity: 0; }
+}

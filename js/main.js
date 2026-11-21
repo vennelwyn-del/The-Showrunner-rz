@@ -303,74 +303,76 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let simRafId = null;
 
-  function buildTapeSilhouetteSvg(tapeId) {
-    if (tapeId === "tape-2") {
+  function buildCutoutSimHtml(tape) {
+    const sim = tape.sim || {};
+    const hasCustomCutouts = Boolean(
+      sim.bgUrl || sim.personUrl || sim.flowerUrl || sim.flowerRightUrl || sim.overlayUrl
+    );
+
+    const tintClass =
+      sim.tintMode === "shadow"
+        ? "sim-tint-shadow"
+        : sim.tintMode === "original"
+        ? "sim-tint-original"
+        : "sim-tint-noir";
+
+    const motionClass = `motion-${tape.id}`;
+
+    // Nếu người tạo chưa chèn link ảnh cắt nền nào thì giữ thông báo + khung chờ gọn
+    if (!hasCustomCutouts) {
       return `
-      <svg class="sim-scene-svg" viewBox="0 0 320 240" aria-hidden="true">
-        <defs>
-          <radialGradient id="fogGlow2" cx="50%" cy="46%" r="55%">
-            <stop offset="0%" stop-color="rgba(220,210,210,0.34)" />
-            <stop offset="70%" stop-color="rgba(80,12,18,0.45)" />
-            <stop offset="100%" stop-color="rgba(8,6,7,0.96)" />
-          </radialGradient>
-        </defs>
-        <rect width="320" height="240" fill="url(#fogGlow2)" />
-        <ellipse cx="160" cy="128" rx="84" ry="96" fill="none" stroke="rgba(235,220,220,0.3)" stroke-width="3" />
-        <g class="sim-hand-press">
-          <circle cx="158" cy="86" r="21" fill="rgba(8,6,7,0.9)" />
-          <path d="M114,195 C118,142 135,116 158,116 C182,116 198,142 204,195 Z" fill="rgba(8,6,7,0.92)" />
-          <path d="M188,136 L214,112 L222,120 L195,152 Z" fill="rgba(8,6,7,0.88)" />
-        </g>
-        <g class="sim-steam-rise" opacity="0.72">
-          <ellipse cx="120" cy="172" rx="70" ry="34" fill="rgba(215,205,205,0.22)" />
-          <ellipse cx="195" cy="158" rx="76" ry="38" fill="rgba(215,205,205,0.2)" />
-        </g>
-      </svg>`;
+        <div class="sim-cutout-stage">
+          <div class="sim-fog-band sim-fog-back"></div>
+          <div class="sim-empty-cutout-hint">
+            <strong>${escapeHtml(tape.status)}</strong>
+            <span>Chèn link ảnh người &amp; hoa cắt nền (.PNG) vào mục <code>videos → sim</code> trong <code>js/config.js</code> để phát hoạt ảnh.</span>
+          </div>
+          <div class="sim-noise-grain"></div>
+          <div class="sim-tracking-band"></div>
+          <div class="sim-flash-glitch"></div>
+        </div>
+      `;
     }
 
-    if (tapeId === "tape-3a") {
-      return `
-      <svg class="sim-scene-svg" viewBox="0 0 320 240" aria-hidden="true">
-        <rect width="320" height="240" fill="#090607" />
-        <g class="sim-sway-lamp">
-          <line x1="160" y1="0" x2="160" y2="34" stroke="rgba(220,200,200,0.45)" stroke-width="2" />
-          <polygon points="160,34 62,215 258,215" fill="rgba(225,215,215,0.14)" />
-          <circle cx="160" cy="38" r="5" fill="rgba(255,235,235,0.85)" />
-        </g>
-        <line x1="160" y1="0" x2="160" y2="74" stroke="rgba(180,170,170,0.35)" stroke-width="2" />
-        <g>
-          <circle cx="160" cy="96" r="15" fill="#060405" />
-          <rect x="142" y="112" width="36" height="46" rx="6" fill="#060405" />
-          <rect x="134" y="156" width="52" height="12" fill="#120d0e" />
-        </g>
-        <rect x="0" y="188" width="320" height="52" fill="rgba(14,8,10,0.92)" />
-        <ellipse class="sim-water-ripple" cx="160" cy="196" rx="74" ry="8" fill="none" stroke="rgba(210,190,190,0.32)" stroke-width="1.5" />
-        <g class="sim-glove-pass">
-          <path d="M-20,240 L26,130 C32,118 46,122 44,136 L26,240 Z" fill="#040304" />
-        </g>
-      </svg>`;
+    const bgHtml = sim.bgUrl
+      ? `<img class="sim-layer-bg ${tintClass}" src="${escapeHtml(sim.bgUrl)}" alt="" />`
+      : "";
+
+    const personHtml = sim.personUrl
+      ? `<img class="sim-layer-person ${tintClass} ${motionClass}" src="${escapeHtml(sim.personUrl)}" alt="${escapeHtml(tape.title)}" />`
+      : "";
+
+    let flowerHtml = "";
+    if (sim.flowerUrl && sim.flowerRightUrl) {
+      flowerHtml = `
+        <img class="sim-layer-flower is-left ${tintClass}" src="${escapeHtml(sim.flowerUrl)}" alt="" />
+        <img class="sim-layer-flower is-right ${tintClass}" src="${escapeHtml(sim.flowerRightUrl)}" alt="" />
+      `;
+    } else if (sim.flowerUrl) {
+      flowerHtml = `<img class="sim-layer-flower is-center ${tintClass}" src="${escapeHtml(sim.flowerUrl)}" alt="" />`;
+    } else if (sim.flowerRightUrl) {
+      flowerHtml = `<img class="sim-layer-flower is-right ${tintClass}" src="${escapeHtml(sim.flowerRightUrl)}" alt="" />`;
     }
 
-    if (tapeId === "tape-1") {
-      return `
-      <svg class="sim-scene-svg" viewBox="0 0 320 240" aria-hidden="true">
-        <rect width="320" height="240" fill="#0b0708" />
-        <circle cx="160" cy="95" r="78" fill="rgba(168,16,32,0.16)" />
-        <line x1="160" y1="0" x2="160" y2="95" stroke="rgba(210,200,200,0.4)" stroke-width="4" stroke-dasharray="6 4" />
-        <ellipse cx="160" cy="132" rx="22" ry="44" fill="#050404" />
-        <text x="160" y="123" text-anchor="middle" fill="rgba(240,55,70,0.85)" font-family="monospace" font-size="14" font-weight="700">[SEALED FILE]</text>
-      </svg>`;
-    }
+    const overlayHtml = sim.overlayUrl
+      ? `<img class="sim-layer-overlay ${motionClass}" src="${escapeHtml(sim.overlayUrl)}" alt="" />`
+      : tape.id === "tape-2"
+      ? `<div class="sim-egg-glass-rim"></div>`
+      : "";
 
     return `
-      <svg class="sim-scene-svg" viewBox="0 0 320 240" aria-hidden="true">
-        <rect width="320" height="240" fill="#0d090a" />
-        <g class="sim-rider-ghost">
-          <circle cx="160" cy="92" r="24" fill="#040304" />
-          <path d="M105,225 C112,155 132,126 160,126 C188,126 208,155 215,225 Z" fill="#040304" />
-        </g>
-        <text x="160" y="124" text-anchor="middle" fill="rgba(245,215,215,0.65)" font-family="monospace" font-size="13" letter-spacing="3">NO SIGNAL // 50Hz</text>
-      </svg>`;
+      <div class="sim-cutout-stage">
+        ${bgHtml}
+        <div class="sim-fog-band sim-fog-back"></div>
+        ${personHtml}
+        <div class="sim-fog-band sim-fog-front"></div>
+        ${flowerHtml}
+        ${overlayHtml}
+        <div class="sim-noise-grain"></div>
+        <div class="sim-tracking-band"></div>
+        <div class="sim-flash-glitch"></div>
+      </div>
+    `;
   }
 
   function playTapeSimulation(tape) {
@@ -394,59 +396,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
     tapeCrtMedia.innerHTML = `
       <div id="tape-sim-stage" class="tape-sim-stage is-playing">
-        <div id="tape-3d-mount" style="width:100%;height:100%;position:relative;"></div>
+        ${buildCutoutSimHtml(tape)}
         <div class="sim-end-stamp">■ END OF PREVIEW // BẤM PHÁT LẠI</div>
       </div>
     `;
 
-    const mountEl = document.getElementById("tape-3d-mount");
-    const used3D =
-      window.Tape3DSim &&
-      window.Tape3DSim.isSupported() &&
-      window.Tape3DSim.mount(
-        mountEl,
-        tape.id,
-        (ratio) => {
-          const sec = Math.min(4, Math.floor(ratio * 4));
-          if (tapeSimProgress) tapeSimProgress.style.width = `${(ratio * 100).toFixed(1)}%`;
-          if (tapeCrtTimer) tapeCrtTimer.textContent = ratio < 1 ? `▶ PLAY 00:0${sec}` : "■ STOP 00:04";
-        },
-        () => {
-          const stage = document.getElementById("tape-sim-stage");
-          if (stage) {
-            stage.classList.remove("is-playing");
-            stage.classList.add("is-ended");
-          }
-        }
-      );
+    const durationMs = 3800;
+    const startAt = performance.now();
 
-    if (!used3D && mountEl) {
-      mountEl.innerHTML = `
-        ${buildTapeSilhouetteSvg(tape.id)}
-        <div class="sim-noise-grain"></div>
-        <div class="sim-tracking-band"></div>
-        <div class="sim-flash-glitch"></div>
-      `;
-      const durationMs = 3800;
-      const startAt = performance.now();
-      function stepFallback(now) {
-        const ratio = Math.min(1, (now - startAt) / durationMs);
-        const sec = Math.min(4, Math.floor(ratio * 4));
-        if (tapeSimProgress) tapeSimProgress.style.width = `${(ratio * 100).toFixed(1)}%`;
-        if (tapeCrtTimer) tapeCrtTimer.textContent = ratio < 1 ? `▶ PLAY 00:0${sec}` : "■ STOP 00:04";
-        if (ratio < 1) {
-          simRafId = requestAnimationFrame(stepFallback);
-        } else {
-          const stage = document.getElementById("tape-sim-stage");
-          if (stage) {
-            stage.classList.remove("is-playing");
-            stage.classList.add("is-ended");
-          }
-          simRafId = null;
-        }
+    function step(now) {
+      const ratio = Math.min(1, (now - startAt) / durationMs);
+      const sec = Math.min(4, Math.floor(ratio * 4));
+
+      if (tapeSimProgress) tapeSimProgress.style.width = `${(ratio * 100).toFixed(1)}%`;
+      if (tapeCrtTimer) {
+        tapeCrtTimer.textContent = ratio < 1 ? `▶ PLAY 00:0${sec}` : "■ STOP 00:04";
       }
-      simRafId = requestAnimationFrame(stepFallback);
+
+      if (ratio < 1) {
+        simRafId = requestAnimationFrame(step);
+      } else {
+        const stage = document.getElementById("tape-sim-stage");
+        if (stage) {
+          stage.classList.remove("is-playing");
+          stage.classList.add("is-ended");
+        }
+        simRafId = null;
+      }
     }
+
+    simRafId = requestAnimationFrame(step);
   }
 
   function selectTape(tapeId, shouldPlay = true) {

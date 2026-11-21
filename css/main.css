@@ -1224,3 +1224,223 @@ body[data-theme="relic"] .end-rule-box strong { color: var(--faded-silver); }
   .newspaper-sheet { transform: none; }
   .tape-yellow { display: none; }
 }
+/* =========================================================
+   MÔ PHỎNG BĂNG VHS BÓNG MỜ (3.8 GIÂY) & CHẤM MÁU CLICK
+   ========================================================= */
+
+.tape-sim-progress-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.14);
+  z-index: 6;
+}
+
+.tape-sim-progress-bar {
+  width: 0%;
+  height: 100%;
+  background: #e21b2c;
+  box-shadow: 0 0 8px #ff1e2d;
+}
+
+.tape-sim-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 42%, #2a0a0e 0%, #100708 62%, #050404 100%);
+  filter: grayscale(85%) contrast(1.35);
+}
+
+.tape-sim-stage.is-playing {
+  animation: vhsTapeShake 3.8s linear forwards;
+}
+
+.tape-sim-stage.is-ended {
+  filter: grayscale(100%) contrast(1.45) brightness(0.72);
+}
+
+/* Hạt nhiễu & vệt tracking chạy ngang trong lúc phát */
+.sim-noise-grain {
+  position: absolute;
+  inset: -12px;
+  pointer-events: none;
+  z-index: 5;
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.04) 0 1px,
+      rgba(0, 0, 0, 0.35) 1px 3px
+    );
+  opacity: 0.85;
+}
+
+.sim-tracking-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 18%;
+  top: -20%;
+  z-index: 6;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 255, 255, 0.14) 40%,
+    rgba(216, 20, 36, 0.25) 55%,
+    transparent
+  );
+  backdrop-filter: blur(2px);
+}
+
+.tape-sim-stage.is-playing .sim-tracking-band {
+  animation: simTrackingSweep 3.8s ease-in-out forwards;
+}
+
+.sim-flash-glitch {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  background: rgba(200, 16, 32, 0.32);
+  opacity: 0;
+}
+
+.tape-sim-stage.is-playing .sim-flash-glitch {
+  animation: simBurstFlash 3.8s steps(2, end) forwards;
+}
+
+.sim-scene-svg {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.sim-end-stamp {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: grid;
+  place-items: center;
+  background: rgba(9, 9, 9, 0.48);
+  opacity: 0;
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: #f4dcdc;
+  transition: opacity 0.25s ease;
+}
+
+.tape-sim-stage.is-ended .sim-end-stamp {
+  opacity: 1;
+}
+
+/* Hoạt ảnh bóng mờ riêng cho từng tập khi đang phát */
+.tape-sim-stage.is-playing .sim-sway-lamp {
+  transform-origin: 160px 0px;
+  animation: simLampSwing 3.8s ease-in-out infinite;
+}
+
+.tape-sim-stage.is-playing .sim-steam-rise {
+  animation: simSteamRise 3.8s ease-in-out forwards;
+}
+
+.tape-sim-stage.is-playing .sim-hand-press {
+  animation: simShadowCreep 3.8s ease-in-out forwards;
+}
+
+.tape-sim-stage.is-playing .sim-glove-pass {
+  animation: simGloveSlide 3.8s ease-in-out forwards;
+}
+
+.tape-sim-stage.is-playing .sim-water-ripple {
+  animation: simRipplePulse 1.4s ease-in-out infinite;
+}
+
+.tape-sim-stage.is-playing .sim-rider-ghost {
+  animation: simGhostFlash 3.8s steps(1, end) forwards;
+}
+
+@keyframes vhsTapeShake {
+  0%   { transform: translate(0, 0) scale(1.02); filter: grayscale(100%) contrast(1.8) brightness(1.25); }
+  12%  { transform: translate(-2px, 1px) scale(1); filter: grayscale(85%) contrast(1.35); }
+  54%  { transform: translate(0, 0); }
+  56%  { transform: translate(4px, -2px) skewX(-3deg); filter: grayscale(95%) contrast(1.7); }
+  59%  { transform: translate(-3px, 1px) skewX(2deg); }
+  62%  { transform: translate(0, 0) skewX(0); filter: grayscale(85%) contrast(1.35); }
+  94%  { transform: translate(-1px, 0); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes simTrackingSweep {
+  0%   { top: -22%; opacity: 0.9; }
+  45%  { top: 48%; opacity: 0.85; }
+  62%  { top: 38%; opacity: 1; }
+  100% { top: 112%; opacity: 0.4; }
+}
+
+@keyframes simBurstFlash {
+  0%, 53%, 61%, 88%, 93%, 100% { opacity: 0; }
+  55%, 58% { opacity: 0.65; }
+  90%      { opacity: 0.45; }
+}
+
+@keyframes simLampSwing {
+  0%, 100% { transform: rotate(-4deg); }
+  50%      { transform: rotate(4deg); }
+}
+
+@keyframes simSteamRise {
+  0%   { transform: translateY(18px) scale(0.96); opacity: 0.35; }
+  70%  { transform: translateY(-10px) scale(1.06); opacity: 0.82; }
+  100% { transform: translateY(-18px) scale(1.1); opacity: 0.92; }
+}
+
+@keyframes simShadowCreep {
+  0%   { transform: translateY(8px); opacity: 0.38; }
+  45%  { transform: translateY(0px) scale(1.04); opacity: 0.82; }
+  75%  { transform: translateY(-3px) scale(1.06); opacity: 0.92; }
+  100% { transform: translateY(2px); opacity: 0.65; }
+}
+
+@keyframes simGloveSlide {
+  0%, 35%  { transform: translateX(-95px); opacity: 0; }
+  52%      { transform: translateX(0px); opacity: 0.92; }
+  78%, 100%{ transform: translateX(115px); opacity: 0; }
+}
+
+@keyframes simRipplePulse {
+  0%, 100% { transform: scaleX(0.95); opacity: 0.45; }
+  50%      { transform: scaleX(1.06); opacity: 0.85; }
+}
+
+@keyframes simGhostFlash {
+  0%, 66%  { opacity: 0; }
+  68%      { opacity: 0.88; }
+  73%, 100%{ opacity: 0; }
+}
+
+/* Chấm máu click chuột */
+.blood-click-splat {
+  position: fixed;
+  width: 78px;
+  height: 92px;
+  transform: translate(-50%, -44%) rotate(var(--splat-rot, 0deg)) scale(0.45);
+  pointer-events: none;
+  z-index: 9999;
+  animation: bloodSplatFade 2.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.blood-click-splat svg { width: 100%; height: 100%; display: block; }
+
+@keyframes bloodSplatFade {
+  0%   { opacity: 0.95; transform: translate(-50%, -44%) rotate(var(--splat-rot, 0deg)) scale(0.35); }
+  18%  { opacity: 0.92; transform: translate(-50%, -44%) rotate(var(--splat-rot, 0deg)) scale(1); }
+  75%  { opacity: 0.65; transform: translate(-50%, -40%) rotate(var(--splat-rot, 0deg)) scale(1.04); }
+  100% { opacity: 0;    transform: translate(-50%, -34%) rotate(var(--splat-rot, 0deg)) scale(1.08); }
+}

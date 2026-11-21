@@ -224,19 +224,160 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* -------------------------------------------------------
-     4. TAB 3: CÁC BĂNG VIDEO ĐÃ ĐƯỢC CÔNG BỐ
+     4. TAB 3: CÁC BĂNG VIDEO ĐÃ ĐƯỢC CÔNG BỐ (MÔ PHỎNG BÓNG MỜ 3.8s)
      ------------------------------------------------------- */
   const videos = Array.isArray(cfg.videos) ? cfg.videos : [];
   const tapesListGrid = document.getElementById("tapes-list-grid");
   const tapeCrtMedia = document.getElementById("tape-crt-media");
   const tapeCrtCode = document.getElementById("tape-crt-code");
   const tapeCrtDate = document.getElementById("tape-crt-date");
+  const tapeCrtTimer = document.getElementById("tape-crt-timer");
+  const tapeSimProgress = document.getElementById("tape-sim-progress");
+  const tapeReplayBtn = document.getElementById("tape-replay-btn");
   const tapeCrtStatus = document.getElementById("tape-crt-status");
   const tapeCrtTitle = document.getElementById("tape-crt-title");
   const tapeCrtSummary = document.getElementById("tape-crt-summary");
   const tapeCrtQuote = document.getElementById("tape-crt-quote");
 
   let activeTapeId = videos[0] ? videos[0].id : "";
+  let simRafId = null;
+
+  function buildTapeSilhouetteSvg(tapeId) {
+    if (tapeId === "tape-2") {
+      // Tập 2: Bóng người trong buồng kính hơi nước & nhánh hoa loa kèn mờ
+      return `
+      <svg class="sim-scene-svg" viewBox="0 0 320 240" aria-hidden="true">
+        <defs>
+          <radialGradient id="fogGlow2" cx="50%" cy="46%" r="55%">
+            <stop offset="0%" stop-color="rgba(220,210,210,0.34)" />
+            <stop offset="70%" stop-color="rgba(80,12,18,0.45)" />
+            <stop offset="100%" stop-color="rgba(8,6,7,0.96)" />
+          </radialGradient>
+        </defs>
+        <rect width="320" height="240" fill="url(#fogGlow2)" />
+        <ellipse cx="160" cy="128" rx="84" ry="96" fill="none" stroke="rgba(235,220,220,0.3)" stroke-width="3" />
+        <g class="sim-hand-press">
+          <circle cx="158" cy="86" r="21" fill="rgba(8,6,7,0.9)" />
+          <path d="M114,195 C118,142 135,116 158,116 C182,116 198,142 204,195 Z" fill="rgba(8,6,7,0.92)" />
+          <path d="M188,136 L214,112 L222,120 L195,152 Z" fill="rgba(8,6,7,0.88)" />
+        </g>
+        <g class="sim-steam-rise" opacity="0.72">
+          <ellipse cx="120" cy="172" rx="70" ry="34" fill="rgba(215,205,205,0.22)" />
+          <ellipse cx="195" cy="158" rx="76" ry="38" fill="rgba(215,205,205,0.2)" />
+          <ellipse cx="158" cy="118" rx="64" ry="28" fill="rgba(215,205,205,0.16)" />
+        </g>
+      </svg>`;
+    }
+
+    if (tapeId === "tape-3a") {
+      // Tập 3A: Đèn treo đung đưa, bóng ghế sắt trên mặt nước tối & bóng găng tay lướt qua
+      return `
+      <svg class="sim-scene-svg" viewBox="0 0 320 240" aria-hidden="true">
+        <rect width="320" height="240" fill="#090607" />
+        <g class="sim-sway-lamp">
+          <line x1="160" y1="0" x2="160" y2="34" stroke="rgba(220,200,200,0.45)" stroke-width="2" />
+          <polygon points="160,34 62,215 258,215" fill="rgba(225,215,215,0.14)" />
+          <circle cx="160" cy="38" r="5" fill="rgba(255,235,235,0.85)" />
+        </g>
+        <line x1="160" y1="0" x2="160" y2="74" stroke="rgba(180,170,170,0.35)" stroke-width="2" />
+        <g>
+          <circle cx="160" cy="96" r="15" fill="#060405" />
+          <rect x="142" y="112" width="36" height="46" rx="6" fill="#060405" />
+          <rect x="134" y="156" width="52" height="12" fill="#120d0e" />
+          <line x1="142" y1="168" x2="138" y2="188" stroke="#0b0809" stroke-width="5" />
+          <line x1="178" y1="168" x2="182" y2="188" stroke="#0b0809" stroke-width="5" />
+        </g>
+        <rect x="0" y="188" width="320" height="52" fill="rgba(14,8,10,0.92)" />
+        <ellipse class="sim-water-ripple" cx="160" cy="196" rx="74" ry="8" fill="none" stroke="rgba(210,190,190,0.32)" stroke-width="1.5" />
+        <g class="sim-glove-pass">
+          <path d="M-20,240 L26,130 C32,118 46,122 44,136 L26,240 Z" fill="#040304" />
+        </g>
+      </svg>`;
+    }
+
+    if (tapeId === "tape-1") {
+      // Tập 1: Bóng dây xích ròng rọc trong sương hóa chất
+      return `
+      <svg class="sim-scene-svg" viewBox="0 0 320 240" aria-hidden="true">
+        <rect width="320" height="240" fill="#0b0708" />
+        <circle cx="160" cy="95" r="78" fill="rgba(168,16,32,0.16)" />
+        <line x1="160" y1="0" x2="160" y2="95" stroke="rgba(210,200,200,0.4)" stroke-width="4" stroke-dasharray="6 4" />
+        <ellipse cx="160" cy="132" rx="22" ry="44" fill="#050404" />
+        <g class="sim-steam-rise" opacity="0.65">
+          <ellipse cx="160" cy="204" rx="130" ry="32" fill="rgba(195,185,185,0.22)" />
+        </g>
+        <rect x="92" y="102" width="136" height="32" fill="none" stroke="rgba(220,24,42,0.65)" stroke-width="2" transform="rotate(-6 160 118)" />
+        <text x="160" y="123" text-anchor="middle" fill="rgba(240,55,70,0.85)" font-family="monospace" font-size="14" font-weight="700" transform="rotate(-6 160 118)">[SEALED FILE]</text>
+      </svg>`;
+    }
+
+    // Tập 4: Nhiễu hạt chờ + chớp thoáng bóng Kỵ Sĩ
+    return `
+      <svg class="sim-scene-svg" viewBox="0 0 320 240" aria-hidden="true">
+        <rect width="320" height="240" fill="#0d090a" />
+        <g class="sim-rider-ghost">
+          <circle cx="160" cy="92" r="24" fill="#040304" />
+          <path d="M105,225 C112,155 132,126 160,126 C188,126 208,155 215,225 Z" fill="#040304" />
+        </g>
+        <text x="160" y="124" text-anchor="middle" fill="rgba(245,215,215,0.65)" font-family="monospace" font-size="13" letter-spacing="3">NO SIGNAL // 50Hz</text>
+      </svg>`;
+  }
+
+  function playTapeSimulation(tape) {
+    if (!tapeCrtMedia || !tape) return;
+    if (simRafId) {
+      cancelAnimationFrame(simRafId);
+      simRafId = null;
+    }
+
+    if (tape.videoUrl) {
+      tapeCrtMedia.innerHTML = `<video src="${escapeHtml(tape.videoUrl)}" ${tape.thumbnailUrl ? `poster="${escapeHtml(tape.thumbnailUrl)}"` : ""} controls autoplay playsinline></video>`;
+      if (tapeCrtTimer) tapeCrtTimer.textContent = "▶ VIDEO";
+      if (tapeSimProgress) tapeSimProgress.style.width = "100%";
+      return;
+    }
+
+    tapeCrtMedia.innerHTML = `
+      <div id="tape-sim-stage" class="tape-sim-stage is-playing">
+        ${buildTapeSilhouetteSvg(tape.id)}
+        <div class="sim-noise-grain"></div>
+        <div class="sim-tracking-band"></div>
+        <div class="sim-flash-glitch"></div>
+        <div class="sim-end-stamp">■ END OF PREVIEW // BẤM PHÁT LẠI</div>
+      </div>
+    `;
+
+    if (window.AnalogAudio && typeof window.AnalogAudio.playTapeStaticBurst === "function") {
+      window.AnalogAudio.playTapeStaticBurst(3.8);
+    }
+
+    const durationMs = 3800;
+    const startAt = performance.now();
+
+    function step(now) {
+      const elapsed = now - startAt;
+      const ratio = Math.min(1, elapsed / durationMs);
+      const sec = Math.min(4, Math.floor(ratio * 4));
+
+      if (tapeSimProgress) tapeSimProgress.style.width = `${(ratio * 100).toFixed(1)}%`;
+      if (tapeCrtTimer) {
+        tapeCrtTimer.textContent = ratio < 1 ? `▶ PLAY 00:0${sec}` : "■ STOP 00:04";
+      }
+
+      if (ratio < 1) {
+        simRafId = requestAnimationFrame(step);
+      } else {
+        const stage = document.getElementById("tape-sim-stage");
+        if (stage) {
+          stage.classList.remove("is-playing");
+          stage.classList.add("is-ended");
+        }
+        simRafId = null;
+      }
+    }
+
+    simRafId = requestAnimationFrame(step);
+  }
 
   function selectTape(tapeId) {
     const tape = videos.find((v) => v.id === tapeId) || videos[0];
@@ -250,25 +391,20 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tapeCrtSummary) tapeCrtSummary.textContent = tape.summary;
     if (tapeCrtQuote) tapeCrtQuote.textContent = tape.transcript;
 
-    if (tapeCrtMedia) {
-      if (tape.videoUrl) {
-        tapeCrtMedia.innerHTML = `<video src="${escapeHtml(tape.videoUrl)}" ${tape.thumbnailUrl ? `poster="${escapeHtml(tape.thumbnailUrl)}"` : ""} controls playsinline></video>`;
-      } else if (tape.thumbnailUrl) {
-        tapeCrtMedia.innerHTML = `<img src="${escapeHtml(tape.thumbnailUrl)}" alt="${escapeHtml(tape.title)}" />`;
-      } else {
-        tapeCrtMedia.innerHTML = `
-          <div class="tape-crt-fallback">
-            <strong>${escapeHtml(tape.status)}</strong>
-            <span>${escapeHtml(tape.duration)}</span>
-          </div>`;
-      }
-    }
-
     if (tapesListGrid) {
       tapesListGrid.querySelectorAll(".tape-card-btn").forEach((b) => {
         b.classList.toggle("is-active", b.dataset.tapeId === activeTapeId);
       });
     }
+
+    playTapeSimulation(tape);
+  }
+
+  if (tapeReplayBtn) {
+    tapeReplayBtn.addEventListener("click", () => {
+      const tape = videos.find((v) => v.id === activeTapeId) || videos[0];
+      if (tape) playTapeSimulation(tape);
+    });
   }
 
   if (tapesListGrid && videos.length > 0) {

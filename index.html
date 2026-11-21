@@ -12,9 +12,9 @@
     rel="stylesheet"
   />
 
-  <link rel="stylesheet" href="css/palette.css?v=10" />
-  <link rel="stylesheet" href="css/gate.css?v=10" />
-  <link rel="stylesheet" href="css/main.css?v=10" />
+  <link rel="stylesheet" href="css/palette.css?v=11" />
+  <link rel="stylesheet" href="css/gate.css?v=11" />
+  <link rel="stylesheet" href="css/main.css?v=11" />
 </head>
 <body class="is-standby" data-theme="red">
 
@@ -483,16 +483,20 @@
       </section>
 
       <!-- TAB 3: CÁC BĂNG VIDEO ĐÃ ĐƯỢC CÔNG BỐ -->
+      <!-- TAB 3: CÁC BĂNG VIDEO ĐÃ ĐƯỢC CÔNG BỐ -->
       <section id="tab-tapes" class="desk-panel" hidden>
         <div class="panel-header-strip">
           <div>
             <p class="panel-kicker">BROADCAST ARCHIVE // K-TV CH-08 &amp; VHS-C</p>
             <h2 class="panel-title">CÁC CUỘN BĂNG VIDEO ĐÃ ĐƯỢC CÔNG BỐ</h2>
           </div>
+          <button id="tape-replay-btn" class="studio-btn studio-btn-red" type="button">
+            &#9654; PHÁT LẠI MÔ PHỎNG (3.8s)
+          </button>
         </div>
 
         <div class="tapes-workspace">
-          <!-- Màn hình CRT phát / xem trích đoạn băng -->
+          <!-- Màn hình CRT phát mô phỏng bóng mờ -->
           <div class="tape-monitor-shell">
             <div class="tape-monitor-bezel">
               <div id="tape-crt-screen" class="tape-crt-screen">
@@ -500,7 +504,11 @@
                 <div id="tape-crt-media" class="tape-crt-media"></div>
                 <div class="tape-crt-osd">
                   <span id="tape-crt-code">CH-08 // VHS-C</span>
+                  <span id="tape-crt-timer">▶ PLAY 00:00</span>
                   <span id="tape-crt-date">30/11/1994</span>
+                </div>
+                <div class="tape-sim-progress-track">
+                  <div id="tape-sim-progress" class="tape-sim-progress-bar"></div>
                 </div>
               </div>
             </div>

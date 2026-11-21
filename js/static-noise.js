@@ -236,35 +236,28 @@
     isMuted() { return isMuted; },
     toggleMute() { isMuted = !isMuted; return isMuted; },
     playPowerOnSound() {
+      this.playTapeStaticBurst(3.8);
+    },
+    playTapeStaticBurst(durationSec = 3.8) {
       if (isMuted) return;
       try {
         const ctxAudio = ensureAudioContext();
         if (!ctxAudio) return;
         const now = ctxAudio.currentTime;
-
-        const clickOsc = ctxAudio.createOscillator();
-        const clickGain = ctxAudio.createGain();
-        clickOsc.type = "triangle";
-        clickOsc.frequency.setValueAtTime(160, now);
-        clickOsc.frequency.exponentialRampToValueAtTime(42, now + 0.065);
-        clickGain.gain.setValueAtTime(0.45, now);
-        clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
-        clickOsc.connect(clickGain).connect(ctxAudio.destination);
-        clickOsc.start(now);
-        clickOsc.stop(now + 0.075);
-
         const noiseSrc = ctxAudio.createBufferSource();
-        noiseSrc.buffer = createNoiseBuffer(ctxAudio, 1.5);
+        noiseSrc.buffer = createNoiseBuffer(ctxAudio, durationSec);
         const bandpass = ctxAudio.createBiquadFilter();
         bandpass.type = "bandpass";
-        bandpass.frequency.setValueAtTime(1400, now + 0.1);
-        const noiseGain = ctxAudio.createGain();
-        noiseGain.gain.setValueAtTime(0.001, now + 0.08);
-        noiseGain.gain.linearRampToValueAtTime(0.16, now + 0.25);
-        noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.55);
-        noiseSrc.connect(bandpass).connect(noiseGain).connect(ctxAudio.destination);
-        noiseSrc.start(now + 0.08);
-        noiseSrc.stop(now + 1.58);
+        bandpass.frequency.setValueAtTime(1100, now);
+        bandpass.Q.setValueAtTime(1.1, now);
+        const gain = ctxAudio.createGain();
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.linearRampToValueAtTime(0.055, now + 0.25);
+        gain.gain.setValueAtTime(0.045, now + durationSec - 0.35);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + durationSec);
+        noiseSrc.connect(bandpass).connect(gain).connect(ctxAudio.destination);
+        noiseSrc.start(now);
+        noiseSrc.stop(now + durationSec + 0.05);
       } catch (err) {}
     },
     playPowerOffSound() {
@@ -449,4 +442,5 @@
     togglePlay() {
       return radioPlaying ? this.stop() : this.play();
     },
+  };
 })();

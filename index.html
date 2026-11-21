@@ -12,9 +12,9 @@
     rel="stylesheet"
   />
 
-  <link rel="stylesheet" href="css/palette.css?v=12" />
-  <link rel="stylesheet" href="css/gate.css?v=12" />
-  <link rel="stylesheet" href="css/main.css?v=12" />
+  <link rel="stylesheet" href="css/palette.css?v=13" />
+  <link rel="stylesheet" href="css/gate.css?v=13" />
+  <link rel="stylesheet" href="css/main.css?v=13" />
 </head>
 <body class="is-standby" data-theme="red">
 
@@ -184,11 +184,7 @@
     <div id="glitch-osd" class="glitch-osd">SIGNAL DETECTED // CH-08</div>
   </div>
 
-  <!-- GIAO DIỆN 2: CRIME BOARD & WEB GIỚI THIỆU -->
-  <!-- =========================================================
-       LỚP NỀN, DÂY ĐỎ, BĂNG CẢNH SÁT & CAMERA FULL MÀN HÌNH
-       (Tách khỏi #main-app để luôn đứng yên full màn khi cuộn)
-       ========================================================= -->
+  <!-- LỚP NỀN, DÂY ĐỎ, BĂNG CẢNH SÁT & CAMERA FULL MÀN HÌNH -->
   <div class="main-fx-backdrop" aria-hidden="true">
     <div id="main-bg-layer" class="main-bg-layer has-bw-filter"></div>
     <div class="main-wood-vignette"></div>
@@ -252,11 +248,9 @@
     </svg>
   </div>
 
-  <!-- GIAO DIỆN 2: CHỈ CHỨA PHẦN NỘI DUNG CUỘN -->
+  <!-- GIAO DIỆN 2: PHẦN NỘI DUNG CUỘN -->
   <section id="main-app" class="main-app" hidden>
-
     <div class="desk-shell">
-      <!-- THANH ĐIỀU HÀNH (CHỈ CÓ TABS & NÚT TẮT TIVI) -->
       <header class="desk-topbar">
         <div class="desk-brand">
           <span class="play-badge">&#9654; THE SHOWRUNNER // 1994</span>
@@ -280,8 +274,12 @@
         </div>
       </header>
 
-      <!-- TAB 1: TỔNG QUAN -->
+      <!-- TAB 0: BACKSTORY (ĐÃ ĐÓNG THẺ ĐÚNG CHUẨN) -->
       <section id="tab-backstory" class="desk-panel" hidden>
+        <div id="backstory-content" class="backstory-layout"></div>
+      </section>
+
+      <!-- TAB 1: TỔNG QUAN -->
       <section id="tab-overview" class="desk-panel is-active">
         <div class="evidence-desk-grid">
           <div class="polaroid-cluster">
@@ -485,7 +483,6 @@
       </section>
 
       <!-- TAB 3: CÁC BĂNG VIDEO ĐÃ ĐƯỢC CÔNG BỐ -->
-      <!-- TAB 3: CÁC BĂNG VIDEO ĐÃ ĐƯỢC CÔNG BỐ -->
       <section id="tab-tapes" class="desk-panel" hidden>
         <div class="panel-header-strip">
           <div>
@@ -498,7 +495,6 @@
         </div>
 
         <div class="tapes-workspace">
-          <!-- Màn hình CRT phát mô phỏng bóng mờ -->
           <div class="tape-monitor-shell">
             <div class="tape-monitor-bezel">
               <div id="tape-crt-screen" class="tape-crt-screen">
@@ -506,7 +502,7 @@
                 <div id="tape-crt-media" class="tape-crt-media"></div>
                 <div class="tape-crt-osd">
                   <span id="tape-crt-code">CH-08 // VHS-C</span>
-                  <span id="tape-crt-timer">▶ PLAY 00:00</span>
+                  <span id="tape-crt-timer">&#9654; PLAY 00:00</span>
                   <span id="tape-crt-date">30/11/1994</span>
                 </div>
                 <div class="tape-sim-progress-track">
@@ -523,12 +519,11 @@
             </div>
           </div>
 
-          <!-- Danh sách các cuộn băng công khai -->
           <div id="tapes-list-grid" class="tapes-list-grid"></div>
         </div>
       </section>
 
-      <!-- TAB 4: NHÂN VẬT (KHÔNG CÓ Ô ĐỔI LINK TRÊN WEB) -->
+      <!-- TAB 4: NHÂN VẬT -->
       <section id="tab-cast" class="desk-panel" hidden>
         <div class="panel-header-strip">
           <div>
@@ -681,9 +676,9 @@
         </div>
       </footer>
     </div>
-    <!-- =========================================================
-       BẢNG GHI CHÚ THÔNG TIN CÔNG KHAI KHI ẤN VÀO NHÂN VẬT
-       ========================================================= -->
+  </section>
+
+  <!-- BẢNG GHI CHÚ THÔNG TIN CÔNG KHAI KHI ẤN VÀO NHÂN VẬT (NẰM NGOÀI #main-app) -->
   <div id="char-note-modal" class="char-note-modal" hidden role="dialog" aria-modal="true" aria-labelledby="note-char-name">
     <div class="char-note-sheet">
       <span class="pushpin" aria-hidden="true"></span>
@@ -738,8 +733,6 @@
       </div>
     </div>
   </div>
-  </section>
-  
 
   <!-- MÀN HÌNH DỪNG BĂNG THE END -->
   <div id="end-curtain-overlay" class="end-curtain-overlay" hidden>
@@ -758,19 +751,13 @@
     </div>
   </div>
 
-  <!-- Nạp config & characters TRƯỚC static-noise, gate và main -->
-  <script src="js/config.js?v=8" defer></script>
-  <script src="js/characters.js?v=8" defer></script>
-  <script src="js/static-noise.js?v=8" defer></script>
-  <script src="js/gate.js?v=8" defer></script>
-  <script src="js/main.js?v=8" defer></script>
-  <!-- Thư viện Three.js để dựng model 3D cơ thể người, buồng trứng & hoa loa kèn -->
+  <!-- NẠP DUY NHẤT 1 LẦN CÁC FILE JS -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js" defer></script>
-  <script src="js/config.js?v=12" defer></script>
-  <script src="js/characters.js?v=12" defer></script>
-  <script src="js/static-noise.js?v=12" defer></script>
-  <script src="js/gate.js?v=12" defer></script>
-  <script src="js/tape3d.js?v=12" defer></script>
-  <script src="js/main.js?v=12" defer></script>
+  <script src="js/config.js?v=13" defer></script>
+  <script src="js/characters.js?v=13" defer></script>
+  <script src="js/static-noise.js?v=13" defer></script>
+  <script src="js/gate.js?v=13" defer></script>
+  <script src="js/tape3d.js?v=13" defer></script>
+  <script src="js/main.js?v=13" defer></script>
 </body>
 </html>

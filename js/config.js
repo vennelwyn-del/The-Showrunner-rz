@@ -11,7 +11,7 @@ window.SHOWRUNNER_CONFIG = {
   backstory: {
     kicker: "PROLOGUE // HỒ SƠ MỞ ĐẦU (1994)",
     title: "THUNG LŨNG SWEZAN TRƯỚC GIỜ G",
-    imageUrl: "assets/OPW/Theshowrunner/System/showrunnerbg.png", // <-- Dán link 1 ảnh Backstory của bạn tại đây (VD: "assets/backstory.jpg" hoặc "https://...")
+    img: "assets/OPW/Theshowrunner/System/showrunnerbg.png", // <-- Dán link 1 ảnh Backstory của bạn tại đây (VD: "assets/backstory.jpg" hoặc "https://...")
     imageCaption: "SWEZAN VALLEY · THÁNG 11 NĂM 1994 · -3°C",
     quote:
       "“Có những thị trấn không sụp đổ vì bom đạn, mà mục ruỗng từ bên trong dưới lớp bụi than và những màn hình tivi bật sáng lúc nửa đêm.”",
@@ -31,7 +31,7 @@ window.SHOWRUNNER_CONFIG = {
      1. ẢNH NỀN (BACKGROUND) CỦA GIAO DIỆN 2
      ------------------------------------------------------- */
   background: {
-    imageUrl: ".assets/assets/OPW/Theshowrunner/System/19.png", // <-- Dán link ảnh nền vào đây (VD: "assets/bg.jpg" hoặc "https://...")
+    img: ".assets/assets/OPW/Theshowrunner/System/19.png", // <-- Dán link ảnh nền vào đây (VD: "assets/bg.jpg" hoặc "https://...")
     bwAndWireframe: true, // true = phủ đen trắng + khung dây đỏ | false = giữ màu gốc của ảnh
     dimOpacity: 0.22, // Độ tối phủ từ 0.05 (rất sáng) đến 0.80 (rất tối)
   },
@@ -49,7 +49,7 @@ window.SHOWRUNNER_CONFIG = {
      3. ẢNH BẢN ĐỒ TỔNG & 18 ĐỊA DANH (TỌA ĐỘ GHIM % TRÊN ẢNH)
      ------------------------------------------------------- */
   map: {
-    imageUrl: "", // <-- Dán link ảnh bản đồ Swezan của bạn tại đây (để trống = dùng nền bản đồ mặc định)
+    img: "", // <-- Dán link ảnh bản đồ Swezan của bạn tại đây (để trống = dùng nền bản đồ mặc định)
     bwFilter: true, // true = phủ đen trắng u tối lên ảnh bản đồ | false = giữ nguyên màu ảnh
   },
 
@@ -64,7 +64,7 @@ window.SHOWRUNNER_CONFIG = {
       short: "Đồn Cảnh Sát",
       zone: "ĐÔNG · ALTSTADT",
       title: "Đồn Cảnh Sát Trung Tâm (Polizeirevier)",
-      imageUrl: ".assets/assets/OPW/Theshowrunner/System/01.png",
+      img: ".assets/assets/OPW/Theshowrunner/System/01.png",
       sensory: "Đá sa thạch đen ám muội, đèn dây tóc 40W, khói Chesterfield, mùi gin & tiếng máy đánh chữ Olympia.",
       desc: "Tòa nhà 3 tầng từ thế kỷ 19 nơi Cảnh sát trưởng Jaxson Heckler và tân binh Ian Alix làm việc, đặt phòng giam tạm giữ và đài vô tuyến sóng ngắn.",
     },
@@ -77,7 +77,7 @@ window.SHOWRUNNER_CONFIG = {
       short: "Nhà Xác Pháp Y",
       zone: "ĐÔNG · ALTSTADT",
       title: "Nhà Xác & Phòng Pháp Y (Hầm Tòa Án Cũ)",
-      imageUrl: ".assets/assets/OPW/Theshowrunner/System/02.png",
+      img: ".assets/assets/OPW/Theshowrunner/System/02.png",
       sensory: "Gạch men trắng ố vàng, đèn huỳnh quang rè 50Hz, nồng mùi formol, ether và tinh dầu bạc hà cay xè.",
       desc: "Khu hầm ngầm lạnh lẽo không ánh mặt trời do Bác sĩ Eva Livingston phụ trách, chuyên giải phẫu tử thi và xét nghiệm độc chất.",
     },
@@ -90,7 +90,7 @@ window.SHOWRUNNER_CONFIG = {
       short: "Cassius & Co.",
       zone: "ĐÔNG · ALTSTADT",
       title: "Tiệm Cà Phê Sách “Cassius & Co.”",
-      imageUrl: ".assets/assets/OPW/Theshowrunner/System/03.png",
+      img: ".assets/assets/OPW/Theshowrunner/System/03.png",
       sensory: "Gỗ sồi đánh sáp ong, đĩa than Chopin, giấy da cổ, cà phê rang mộc, trà Earl Grey & cam bergamot.",
       desc: "Hiệu sách yên tĩnh tại ngã tư bờ kênh của Alistair Cassius, có đặt một chiếc tivi CRT 21-inch vỏ gỗ ở góc quán để khách ghé xem tin tức.",
     },
@@ -103,7 +103,7 @@ window.SHOWRUNNER_CONFIG = {
       short: "Báo Tagblatt",
       zone: "ĐÔNG · ALTSTADT",
       title: "Tòa Soạn Nhật Báo “Swezan Tagblatt”",
-      imageUrl: ".assets/assets/OPW/Theshowrunner/System/04.png",
+      img: ".assets/assets/OPW/Theshowrunner/System/04.png",
       sensory: "Tầng áp mái kèo gỗ sồi, máy in typo dập ầm ầm, mùi mực in mới, hóa chất tráng phim & thuốc lá vani Black Devil.",
       desc: "Nơi làm việc của phóng viên Isabel Werner cùng buồng tối tráng phim 35mm, trung tâm săn tin nóng và lan truyền dư luận của thị trấn.",
     },
@@ -116,7 +116,7 @@ window.SHOWRUNNER_CONFIG = {
       short: "Tòa Thị Chính",
       zone: "ĐÔNG · ALTSTADT",
       title: "Tòa Thị Chính & Kho Lưu Trữ Vi Phim",
-      imageUrl: ".assets/assets/OPW/Theshowrunner/System/05.png",
+      img: ".assets/assets/OPW/Theshowrunner/System/05.png",
       sensory: "Tầng trên gỗ gụ đỏ thoảng mùi gỗ đàn hương; tầng hầm rỉ sét màn hình vi phim xanh lè & mùi bụi giấy ẩm.",
       desc: "Nơi đặt văn phòng Công tố viên Đặc biệt Julian von Brandt ở tầng trên và kho lưu trữ hồ sơ địa chính, tư liệu cũ của Swezan ở tầng hầm.",
     },
@@ -129,7 +129,7 @@ window.SHOWRUNNER_CONFIG = {
       short: "Thiên Nga Đen",
       zone: "RÌA ALTSTADT",
       title: "Phòng Trà Jazz “Thiên Nga Đen”",
-      imageUrl: ".assets/assets/OPW/Theshowrunner/System/06.png",
+      img: ".assets/assets/OPW/Theshowrunner/System/06.png",
       sensory: "Đèn chùm pha lê mờ, rèm nhung đỏ thẫm, tiếng saxophone trầm khàn, hoa nhài đêm & vang đỏ Bordeaux.",
       desc: "Câu lạc bộ đêm sang trọng do nữ danh ca Clara Evelyne Moreau làm chủ, tụ điểm giải khuây quen thuộc của giới quan chức và thượng lưu.",
     },
@@ -144,7 +144,7 @@ window.SHOWRUNNER_CONFIG = {
       short: "Tiệm Tổ Quạ",
       zone: "TÂY · SCHWARZHAVEN",
       title: "Tiệm Cầm Đồ & Xưởng “Tổ Quạ” (Raven's Nest)",
-      imageUrl: ".assets/assets/OPW/Theshowrunner/System/07.png",
+      img: ".assets/assets/OPW/Theshowrunner/System/07.png",
       sensory: "Biển neon hình quạ chớp tắt, dầu lau súng Ballistol, mỡ máy, thuốc lá Lucky Strike & rượu Bourbon.",
       desc: "Kho gạch cũ kẹp giữa các bãi than ven sông của Lukas “Raven” Kováč — nơi trao đổi đầu máy VCR, đồ điện tử, thiết bị cơ khí và tin đồn bến tàu.",
     },
@@ -157,7 +157,7 @@ window.SHOWRUNNER_CONFIG = {
       short: "Xưởng Thủy Sản",
       zone: "TÂY · SCHWARZHAVEN",
       title: "Xí Nghiệp Thủy Sản Cũ Bến Cảng",
-      imageUrl: ".assets/assets/OPW/Theshowrunner/System/10.png",
+      img: ".assets/assets/OPW/Theshowrunner/System/10.png",
       sensory: "Bê tông ẩm mốc, mùi bùn nước lợ sông Schwarze tanh nồng, tiếng gió rít qua cửa tôn gỉ sét.",
       desc: "Khu xưởng đóng hộp cá và các hầm bảo quản bỏ hoang lâu năm dọc mép nước Bến Cảng Sông Đen.",
     },
@@ -170,7 +170,7 @@ window.SHOWRUNNER_CONFIG = {
       short: "Quán Mỏ Neo Mù",
       zone: "TÂY · SCHWARZHAVEN",
       title: "Quán Rượu Ngầm “Mỏ Neo Mù”",
-      imageUrl: ".assets/assets/OPW/Theshowrunner/System/16.png",
+      img: ".assets/assets/OPW/Theshowrunner/System/16.png",
       sensory: "Thấp hơn mực nước sông, đà gỗ sồi rỉ nước, rượu gin tự nấu, bia ôi, thuốc tẩu & tiếng sóng vỗ vách đá.",
       desc: "Tửu quán dưới tầng hầm của dân sà lan than và thợ bến tàu — nơi mua bán tin vỉa hè ban đêm nhưng cũng dễ nảy sinh ẩu đả.",
     },
@@ -185,7 +185,7 @@ window.SHOWRUNNER_CONFIG = {
       short: "Trạm Xử Lý 09",
       zone: "NAM · HÜT IV",
       title: "Khu Xưởng Dệt & Trạm Xử Lý Số 09",
-      imageUrl: ".assets/assets/OPW/Theshowrunner/System/08.png",
+      img: ".assets/assets/OPW/Theshowrunner/System/08.png",
       sensory: "Mái vòm bê tông 7 thanh giằng, hơi kiềm nóng nồng gắt & tiếng vọng kim loại rỉ sét.",
       desc: "Khu vực hạ tầng ngầm thuộc tổ hợp Swezan Textil & Chem, hiện đang nằm trong diện kiểm soát nghiêm ngặt sau biến cố Tập 1.",
     },
@@ -198,7 +198,7 @@ window.SHOWRUNNER_CONFIG = {
       short: "Nhà Kính C-4",
       zone: "NAM · HÜT IV",
       title: "Nhà Kính Thực Nghiệm Bỏ Hoang C-4",
-      imageUrl: ".assets/assets/OPW/Theshowrunner/System/09.png",
+      img: ".assets/assets/OPW/Theshowrunner/System/09.png",
       sensory: "Vòm thép uốn cong như xương cá voi, kính mái vỡ nát, dây leo khô & mùi lưu huỳnh thoang thoảng.",
       desc: "Khu ươm cây sợi dệt cũ kỹ bị bỏ phế giữa vành đai công nghiệp phía Nam, vừa được cảnh sát giăng dây phong tỏa tuần qua.",
     },
@@ -211,7 +211,7 @@ window.SHOWRUNNER_CONFIG = {
       short: "Lò Thép Hüt IV",
       zone: "NAM · HÜT IV",
       title: "Lò Luyện Kim & Cán Thép “Số 4” (Hüt IV)",
-      imageUrl: ".assets/assets/OPW/Theshowrunner/System/12.png",
+      img: ".assets/assets/OPW/Theshowrunner/System/12.png",
       sensory: "Rừng ống khói đen kịt, bánh răng cao 4 mét đóng xỉ than, mùi quặng sắt rỉ & xì gà Havana.",
       desc: "Pháo đài công nghiệp đồ sộ của ông chủ Kurt Denholm với những phân xưởng nguội lạnh và đội bảo an tư nhân tuần tra quanh các container hàng.",
     },
@@ -224,7 +224,7 @@ window.SHOWRUNNER_CONFIG = {
       short: "Ga Güterof",
       zone: "NAM · GÜTEROF",
       title: "Ga Hàng Hóa & Bãi Đầu Máy Cũ Güterof",
-      imageUrl: ".assets/assets/OPW/Theshowrunner/System/13.png",
+      img: ".assets/assets/OPW/Theshowrunner/System/13.png",
       sensory: "Đường ray cụt phủ cỏ dại, đầu máy hơi nước mục rỉ, mùi dầu hắc ín tà vẹt, nhựa thông & thuốc lá sợi.",
       desc: "Bãi toa xe chở than bỏ không giáp bìa rừng thông — nơi các nhóm công nhân bãi công của Lotte Loris thường tập kết giữ lửa.",
     },
@@ -239,7 +239,7 @@ window.SHOWRUNNER_CONFIG = {
       short: "Dinh Thự Vanessa",
       zone: "TÂY BẮC · KRANZHÜGEL",
       title: "Dinh Thự Vanessa (Đồi Kranzhügel)",
-      imageUrl: ".assets/assets/OPW/Theshowrunner/System/11.png",
+      img: ".assets/assets/OPW/Theshowrunner/System/11.png",
       sensory: "Kiến trúc tân cổ điển, tháp chuông đồng 1888, vườn hoa hồng sương lạnh & hương nước hoa Guerlain.",
       desc: "Tư dinh xa hoa sau cổng sắt rèn của góa phụ Traudl Vanessa trên vùng đồi cao tách biệt, gần đây tăng cường vệ sĩ canh gác nghiêm ngặt.",
     },
@@ -252,7 +252,7 @@ window.SHOWRUNNER_CONFIG = {
       short: "Tháp Sóng Wigel",
       zone: "BẮC · ĐỒI WIGEL",
       title: "Tháp Truyền Hình & Trạm Sóng Đồi Gió Hú",
-      imageUrl: ".assets/assets/OPW/Theshowrunner/System/14.png",
+      img: ".assets/assets/OPW/Theshowrunner/System/14.png",
       sensory: "Đỉnh núi đá vôi đóng băng, đèn đỏ chớp tắt, màn hình CRT xanh lè, rít tĩnh điện 15kHz & mùi ozone.",
       desc: "Trạm tiếp sóng của đài K-TV Kênh 8 nơi kỹ thuật viên Ena Sherley trực ca đêm — tâm điểm kỹ thuật sau vụ cướp sóng truyền hình.",
     },
@@ -265,7 +265,7 @@ window.SHOWRUNNER_CONFIG = {
       short: "Viện St. Nazet",
       zone: "BÌA RỪNG TÂY · NGOẠI Ô",
       title: "Bệnh Viện Tâm Thần Bỏ Hoang St. Nazet",
-      imageUrl: ".assets/assets/OPW/Theshowrunner/System/15.png",
+      img: ".assets/assets/OPW/Theshowrunner/System/15.png",
       sensory: "Hành lang vòm đá Gothic phủ rêu đen, hồ sơ mục nát vung vãi, thoảng mùi cồn & phấn diên vĩ lạnh.",
       desc: "Khu viện cô lập đã giải thể từ năm 1988, nơi Dr. Alis Zola từng công tác trước khi rút về sống ẩn dật.",
     },
@@ -278,7 +278,7 @@ window.SHOWRUNNER_CONFIG = {
       short: "St. Leopold 1974",
       zone: "ĐẦM LẦY NAM · NGOẠI Ô",
       title: "Phế Tích Trại Trẻ St. Leopold (1974)",
-      imageUrl: ".assets/assets/OPW/Theshowrunner/System/17.png",
+      img: ".assets/assets/OPW/Theshowrunner/System/17.png",
       sensory: "Gạch nung cháy đen giữa lau sậy ngập tuyết, khung giường sắt cong vênh & cổng đá khắc số “1974”.",
       desc: "Tàn tích vụ hỏa hoạn lớn hai thập kỷ trước ở rìa đầm lầy ngoại ô — địa danh cũ kỹ hiếm ai còn nhắc tới trong các trang báo hiện tại.",
     },
@@ -291,7 +291,7 @@ window.SHOWRUNNER_CONFIG = {
       short: "Chung Cư Khối 7–12",
       zone: "NGOẠI Ô · VÀNH ĐAI BÊ TÔNG",
       title: "Khu Chung Cư Công Nhân Khối 7–12",
-      imageUrl: ".assets/assets/OPW/Theshowrunner/System/18.png",
+      img: ".assets/assets/OPW/Theshowrunner/System/18.png",
       sensory: "Khối bê tông Brutalist 12 tầng, dây phơi chằng chịt, ăng-ten râu thỏ & tivi trùm chăn sau khung cửa kính.",
       desc: "Nơi ở của hàng vạn lao động nghèo và tân binh Ian Alix; không khí luôn sục sôi bức xúc mỗi khi còi hú đổi ca hay cắt lương.",
     },
@@ -308,7 +308,7 @@ window.SHOWRUNNER_CONFIG = {
       title: "“Khởi nguồn tội ác: Trứng ấu trùng”",
       duration: "05:20 · VHS 4:3",
       date: "00:00 CHỦ NHẬT TUẦN TRƯỚC",
-      thumbnailUrl: ".assets/assets/OPW/Theshowrunner/System/tape-2.png", // <-- Dán link ảnh thumbnail của băng tập 2 tại đây
+      img: ".assets/assets/OPW/Theshowrunner/System/tape-2.png", // <-- Dán link ảnh thumbnail của băng tập 2 tại đây
       videoUrl: "", // Nếu có file .mp4 thật thì dán vào đây (sẽ ưu tiên phát video)
       sim: {
         tintMode: "noir",   // "noir" = nhuộm đen trắng 1994 | "shadow" = bóng đen thuần | "original" = giữ màu gốc
@@ -330,7 +330,7 @@ window.SHOWRUNNER_CONFIG = {
       title: "“Khởi nguồn tội ác: Phá kén” (Lời thách thức)",
       duration: "03:30 · VHS-C ĐEN TRẮNG",
       date: "30/11/1994 · 06:00",
-      thumbnailUrl: ".assets/assets/OPW/Theshowrunner/System/tape-3.png", // <-- Dán link ảnh thumbnail của băng tập 3a tại đây
+      img: ".assets/assets/OPW/Theshowrunner/System/tape-3.png", // <-- Dán link ảnh thumbnail của băng tập 3a tại đây
       videoUrl: "",
       sim: {
         tintMode: "noir",
@@ -352,7 +352,7 @@ window.SHOWRUNNER_CONFIG = {
       title: "“Khởi nguồn tội ác: Tái sinh”",
       duration: "KHÔNG RÕ THỜI LƯỢNG",
       date: "~14 NGÀY TRƯỚC",
-      thumbnailUrl: ".assets/assets/OPW/Theshowrunner/System/tape-1.png", // <-- Dán link ảnh thumbnail của băng tập 1 tại đây
+      img: ".assets/assets/OPW/Theshowrunner/System/tape-1.png", // <-- Dán link ảnh thumbnail của băng tập 1 tại đây
       videoUrl: "",
       sim: {
         tintMode: "shadow",
@@ -374,7 +374,7 @@ window.SHOWRUNNER_CONFIG = {
       title: "Tập 4/4 — [DỮ LIỆU TRỐNG]",
       duration: "--:-- · 50Hz STATIC",
       date: "ĐANG CHỜ...",
-      thumbnailUrl: ".assets/assets/OPW/Theshowrunner/System/tape-4.png", // <-- Dán link ảnh thumbnail của băng tập 4 tại đây
+      img: ".assets/assets/OPW/Theshowrunner/System/tape-4.png", // <-- Dán link ảnh thumbnail của băng tập 4 tại đây
       videoUrl: "",
       sim: {
         tintMode: "shadow",

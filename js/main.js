@@ -263,28 +263,76 @@ document.addEventListener("DOMContentLoaded", () => {
     ).join("");
   }
 
+  const worldCompassMap = document.getElementById("world-compass-map");
+  if (worldCompassMap) {
+    worldCompassMap.textContent =
+`               [BẮC: ĐỒI GIÓ HÚ (WIGEL) — THÁP SÓNG KÊNH 8 (14)]
+               [TÂY BẮC: ĐỒI KRANZHÜGEL — DINH THỰ VANESSA (11)]
+                                      │
+    [TÂY: BẾN CẢNG SÔNG ĐEN] ─────────┼───────── [ĐÔNG: ALTSTADT — PHỐ CỔ]
+    - Tiệm cầm đồ "Tổ Quạ" (07)       │          - Đồn Cảnh sát (01) & Nhà xác (02)
+    - Xí nghiệp thủy sản cũ (10)      │          - Tiệm sách "Cassius & Co." (03)
+    - Quán rượu "Mỏ Neo Mù" (16)      │          - Tòa soạn báo "Tagblatt" (04)
+    - Kho than & Bến sà lan           │          - Tòa thị chính & Kho Vi phim (05)
+                                      │          - Phòng trà "Thiên Nga Đen" (06)
+                                      │
+               [NAM: VÀNH ĐAI RỈ SÉT & CÔNG XƯỞNG HÜT IV]
+               - Khu xử lý chất thải số 09 (08)
+               - Nhà kính bỏ hoang C-4 (09)
+               - Lò luyện kim & Cán thép "Số 4" - Hüt IV (12)
+               - Ga hàng hóa & Bãi đầu máy cũ Güterof (13)
+                                      │
+               [NGOẠI Ô: VÀNH ĐAI BÊ TÔNG & ĐẦM LẦY]
+               - Bệnh viện tâm thần bỏ hoang St. Nazet (15)
+               - Phế tích cũ St. Leopold 1974 (17)
+               - Khu chung cư công nhân Khối 7–12 (18)`;
+  }
+
   const locations = Array.isArray(cfg.locations) ? cfg.locations : [];
-  if (worldDistrictsGrid) {
-    worldDistrictsGrid.innerHTML = locations
+  let locFilter = "all";
+  const locFilterBtns = document.querySelectorAll("[data-loc-filter]");
+
+  function renderLocations() {
+    if (!worldDistrictsGrid) return;
+    const list =
+      locFilter === "all" ? locations : locations.filter((l) => l.region === locFilter);
+
+    worldDistrictsGrid.innerHTML = list
       .map((loc) => {
+        const numLabel = loc.num ? `${loc.num} // ` : "";
         const photoHtml = loc.imageUrl
           ? `<img class="location-photo-img" src="${escapeHtml(loc.imageUrl)}" alt="${escapeHtml(loc.title)}" />`
           : `<div class="location-photo-empty">
-               <span>CAM // ARCHIVE PHOTO</span>
+               <span>CAM ${escapeHtml(loc.num || "--")} // ARCHIVE PHOTO</span>
                <strong>${escapeHtml(loc.title)}</strong>
              </div>`;
+        const sensoryHtml = loc.sensory
+          ? `<div class="location-sensory"><strong>GIÁC QUAN:</strong> ${escapeHtml(loc.sensory)}</div>`
+          : "";
+
         return `
         <article class="location-card">
           <div class="location-photo-box">${photoHtml}</div>
           <div class="location-body">
-            <div class="card-badge-row"><span>${escapeHtml(loc.zone)}</span></div>
+            <div class="card-badge-row"><span>${numLabel}${escapeHtml(loc.zone)}</span></div>
             <h3 class="card-h3">${escapeHtml(loc.title)}</h3>
             <p class="card-body">${escapeHtml(loc.desc)}</p>
+            ${sensoryHtml}
           </div>
         </article>`;
       })
       .join("");
   }
+
+  locFilterBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      locFilter = btn.dataset.locFilter;
+      locFilterBtns.forEach((b) => b.classList.toggle("is-active", b === btn));
+      renderLocations();
+    });
+  });
+
+  renderLocations();
 
   /* -------------------------------------------------------
      4. TAB 03: CÁC BĂNG VIDEO ĐÃ CÔNG BỐ (3D MODEL & 2D FALLBACK)

@@ -49,139 +49,196 @@ window.SHOWRUNNER_CONFIG = {
   /* -------------------------------------------------------
      3. LINK ẢNH CÁC KHU VỰC TRONG THỊ TRẤN SWEZAN
      ------------------------------------------------------- */
+ /* -------------------------------------------------------
+     3. LINK ẢNH 18 ĐỊA DANH TRONG THỊ TRẤN SWEZAN (THÔNG TIN CÔNG KHAI)
+     ------------------------------------------------------- */
   locations: [
+    // --- PHÍA ĐÔNG: ALTSTADT (PHỐ CỔ) ---
     {
-      id: "altstadt",
-      zone: "ĐÔNG · TRUNG TÂM CỔ",
-      title: "Phố Cổ Altstadt",
-      imageUrl: "", // <-- Dán link ảnh Phố Cổ Altstadt tại đây
-      desc: "Kiến trúc đá sa thạch thế kỷ 19, Đồn Cảnh sát, Tòa Thị chính, Tòa soạn Tagblatt, phòng trà Thiên Nga Đen và hiệu sách Cassius & Co.",
+      id: "loc-01",
+      num: "01",
+      region: "east",
+      zone: "ĐÔNG · ALTSTADT",
+      title: "Đồn Cảnh Sát Trung Tâm (Polizeirevier)",
+      imageUrl: "", // <-- Dán link ảnh Đồn Cảnh Sát tại đây
+      sensory: "Đá sa thạch đen ám muội, đèn dây tóc 40W, khói Chesterfield, mùi gin & tiếng máy đánh chữ Olympia.",
+      desc: "Tòa nhà 3 tầng từ thế kỷ 19 nơi Cảnh sát trưởng Jaxson Heckler và tân binh Ian Alix làm việc, đặt phòng giam tạm giữ và đài vô tuyến sóng ngắn.",
     },
     {
-      id: "harbor",
-      zone: "TÂY · ĐƯỜNG THỦY",
-      title: "Bến Cảng Sông Đen (Schwarzhaven)",
-      imageUrl: "", // <-- Dán link ảnh Bến Cảng Sông Đen tại đây
-      desc: "Bãi than ướt sũng, sà lan chở hàng đêm, tiệm cầm đồ Tổ Quạ và quán rượu ngầm Mỏ Neo Mù nồng mùi rượu gin và thuốc lá sợi.",
+      id: "loc-02",
+      num: "02",
+      region: "east",
+      zone: "ĐÔNG · ALTSTADT",
+      title: "Nhà Xác & Phòng Pháp Y (Hầm Tòa Án Cũ)",
+      imageUrl: "", // <-- Dán link ảnh Nhà Xác tại đây
+      sensory: "Gạch men trắng ố vàng, đèn huỳnh quang rè 50Hz, nồng mùi formol, ether và tinh dầu bạc hà cay xè.",
+      desc: "Khu hầm ngầm lạnh lẽo không ánh mặt trời do Bác sĩ Eva Livingston phụ trách, chuyên giải phẫu tử thi và xét nghiệm độc chất.",
     },
     {
-      id: "hut4",
-      zone: "NAM · VÀNH ĐAI RỈ SÉT",
-      title: "Tổ Hợp Công Nghiệp Hüt IV & Ga Güterof",
-      imageUrl: "", // <-- Dán link ảnh Nhà máy Hüt IV / Ga tàu cũ tại đây
-      desc: "Những ống khói lò luyện kim sừng sững, phân xưởng dệt cũ và bãi toa xe lửa bỏ không giữa rừng thông ẩm ướt.",
+      id: "loc-03",
+      num: "03",
+      region: "east",
+      zone: "ĐÔNG · ALTSTADT",
+      title: "Tiệm Cà Phê Sách “Cassius & Co.”",
+      imageUrl: "", // <-- Dán link ảnh Tiệm Sách tại đây
+      sensory: "Gỗ sồi đánh sáp ong, đĩa than Chopin, giấy da cổ, cà phê rang mộc, trà Earl Grey & cam bergamot.",
+      desc: "Hiệu sách yên tĩnh tại ngã tư bờ kênh của Alistair Cassius, có đặt một chiếc tivi CRT 21-inch vỏ gỗ ở góc quán để khách ghé xem tin tức.",
     },
     {
-      id: "hills",
-      zone: "BẮC · VÙNG ĐỒI",
-      title: "Đồi Kranzhügel & Đồi Gió Hú Wigel",
-      imageUrl: "", // <-- Dán link ảnh Đồi Kranzhügel / Tháp sóng Wigel tại đây
-      desc: "Một bên là những biệt thự quý tộc sau cổng sắt rèn; bên kia là tháp tiếp sóng truyền hình K-TV Kênh 8 giữa sương mù.",
+      id: "loc-04",
+      num: "04",
+      region: "east",
+      zone: "ĐÔNG · ALTSTADT",
+      title: "Tòa Soạn Nhật Báo “Swezan Tagblatt”",
+      imageUrl: "", // <-- Dán link ảnh Tòa Soạn Báo tại đây
+      sensory: "Tầng áp mái kèo gỗ sồi, máy in typo dập ầm ầm, mùi mực in mới, hóa chất tráng phim & thuốc lá vani Black Devil.",
+      desc: "Nơi làm việc của phóng viên Isabel Werner cùng buồng tối tráng phim 35mm, trung tâm săn tin nóng và lan truyền dư luận của thị trấn.",
     },
     {
-      id: "blocks",
-      zone: "NGOẠI Ô · KHU LAO ĐỘNG",
-      title: "Chung Cư Công Nhân Khối 7–12",
-      imageUrl: "", // <-- Dán link ảnh Khu chung cư Khối 7-12 tại đây
-      desc: "Những dãy nhà bê tông xám xịt giăng đầy dây phơi và ăng-ten râu thỏ, nơi công nhân tụ tập quanh thùng phuy đốt lửa.",
+      id: "loc-05",
+      num: "05",
+      region: "east",
+      zone: "ĐÔNG · ALTSTADT",
+      title: "Tòa Thị Chính & Kho Lưu Trữ Vi Phim",
+      imageUrl: "", // <-- Dán link ảnh Tòa Thị Chính / Kho Vi Phim tại đây
+      sensory: "Tầng trên gỗ gụ đỏ thoảng mùi gỗ đàn hương; tầng hầm rỉ sét màn hình vi phim xanh lè & mùi bụi giấy ẩm.",
+      desc: "Nơi đặt văn phòng Công tố viên Đặc biệt Julian von Brandt ở tầng trên và kho lưu trữ hồ sơ địa chính, tư liệu cũ của Swezan ở tầng hầm.",
     },
-  ],
+    {
+      id: "loc-06",
+      num: "06",
+      region: "east",
+      zone: "RÌA ALTSTADT",
+      title: "Phòng Trà Jazz “Thiên Nga Đen”",
+      imageUrl: "", // <-- Dán link ảnh Phòng Trà tại đây
+      sensory: "Đèn chùm pha lê mờ, rèm nhung đỏ thẫm, tiếng saxophone trầm khàn, hoa nhài đêm & vang đỏ Bordeaux.",
+      desc: "Câu lạc bộ đêm sang trọng do nữ danh ca Clara Evelyne Moreau làm chủ, tụ điểm giải khuây quen thuộc của giới quan chức và thượng lưu.",
+    },
 
-  /* -------------------------------------------------------
-     4. CÁC BĂNG VIDEO ĐÃ ĐƯỢC CÔNG BỐ (CHỈ THÔNG TIN CÔNG KHAI)
-     Có thể điền thêm thumbnailUrl (ảnh bìa) & videoUrl (.mp4)
-     ------------------------------------------------------- */
-  /* -------------------------------------------------------
-     4. CÁC BĂNG VIDEO ĐÃ ĐƯỢC CÔNG BỐ
-     Dán link ảnh cắt nền (.PNG không nền) vào mục "sim" bên dưới
-     ------------------------------------------------------- */
-  videos: [
+    // --- PHÍA TÂY: BẾN CẢNG SÔNG ĐEN (SCHWARZHAVEN) ---
     {
-      id: "tape-2",
-      code: "BROADCAST // TẬP 2/4",
-      status: "ĐÃ CƯỚP SÓNG TRỰC TIẾP K-TV KÊNH 8",
-      title: "“Khởi nguồn tội ác: Trứng ấu trùng”",
-      duration: "05:20 · VHS 4:3",
-      date: "00:00 CHỦ NHẬT TUẦN TRƯỚC",
-      thumbnailUrl: "",
-      videoUrl: "", // Nếu có file .mp4 thật thì dán vào đây (sẽ ưu tiên phát video)
-      sim: {
-        tintMode: "noir",   // "noir" = nhuộm đen trắng 1994 | "shadow" = bóng đen thuần | "original" = giữ màu gốc
-        bgUrl: "",          // (Tùy chọn) Link ảnh nền buồng kính
-        personUrl: "",      // <-- DÁN LINK ẢNH NGƯỜI CẮT NỀN (.PNG) TẠI ĐÂY
-        flowerUrl: "",      // <-- DÁN LINK ẢNH HOA LOA KÈN CẮT NỀN (.PNG) BÊN TRÁI / CHÍNH GIỮA
-        flowerRightUrl: "", // (Tùy chọn) Link ảnh hoa cắt nền thứ 2 bên góc phải
-        overlayUrl: "",     // (Tùy chọn) Ảnh lớp kính mờ hoặc giọt hơi nước đè lên trên
-      },
-      summary:
-        "Đoạn băng bị kẻ tự xưng The Rider chiếm sóng truyền hình Kênh 8 phát thẳng vào hàng vạn hộ dân Swezan, ghi lại cái chết ngột ngạt trong buồng kính hơi nước của tiểu thư Malia Ariane.",
-      transcript:
-        "“Sự thanh cao của các người chỉ chịu được 100 độ C. Hãy chờ đợi... mầm mống tội ác tiếp theo sẽ đến từ chính những kẻ đang mang phù hiệu công lý.”",
+      id: "loc-07",
+      num: "07",
+      region: "west",
+      zone: "TÂY · SCHWARZHAVEN",
+      title: "Tiệm Cầm Đồ & Xưởng “Tổ Quạ” (Raven's Nest)",
+      imageUrl: "", // <-- Dán link ảnh Tiệm Cầm Đồ Tổ Quạ tại đây
+      sensory: "Biển neon hình quạ chớp tắt, dầu lau súng Ballistol, mỡ máy, thuốc lá Lucky Strike & rượu Bourbon.",
+      desc: "Kho gạch cũ kẹp giữa các bãi than ven sông của Lukas “Raven” Kováč — nơi trao đổi đầu máy VCR, đồ điện tử, thiết bị cơ khí và tin đồn bến tàu.",
     },
     {
-      id: "tape-3a",
-      code: "LEAKED // BĂNG A — TẬP 3/4",
-      status: "MỚI PHÁT HIỆN · 06:00 SÁNG 30/11/1994",
-      title: "“Khởi nguồn tội ác: Phá kén” (Lời thách thức)",
-      duration: "03:30 · VHS-C ĐEN TRẮNG",
-      date: "30/11/1994 · 06:00",
-      thumbnailUrl: "",
-      videoUrl: "",
-      sim: {
-        tintMode: "noir",
-        bgUrl: "",          // (Tùy chọn) Ảnh nền mặt nước tối / hầm
-        personUrl: "",      // <-- DÁN LINK ẢNH NGƯỜI NGỒI GHẾ CẮT NỀN (.PNG)
-        flowerUrl: "",      // (Tùy chọn) Link ảnh vật thể / dây xích cắt nền (.PNG)
-        flowerRightUrl: "",
-        overlayUrl: "",     // (Tùy chọn) Link ảnh bàn tay đeo găng đen lướt qua (.PNG)
-      },
-      summary:
-        "Cuộn băng vừa được thu giữ sáng nay sau vụ mất tích của Phó Cảnh sát trưởng Matthäus August. Khung hình đen trắng quay cảnh ông bị bịt mắt, trói trên ghế sắt phía trên mặt nước tối.",
-      transcript:
-        "“Con ấu trùng đã phá kén... 7 ngày, hoặc một bộ xương trắng. Đồng hồ đếm ngược đến 23:59 đêm Chủ Nhật đã bắt đầu.”",
+      id: "loc-10",
+      num: "10",
+      region: "west",
+      zone: "TÂY · SCHWARZHAVEN",
+      title: "Xí Nghiệp Thủy Sản Cũ Bến Cảng",
+      imageUrl: "", // <-- Dán link ảnh Xí Nghiệp Thủy Sản tại đây
+      sensory: "Bê tông ẩm mốc, mùi bùn nước lợ sông Schwarze tanh nồng, tiếng gió rít qua cửa tôn gỉ sét.",
+      desc: "Khu xưởng đóng hộp cá và các hầm bảo quản bỏ hoang lâu năm dọc mép nước Bến Cảng Sông Đen.",
     },
     {
-      id: "tape-1",
-      code: "RUMOR // HỒ SƠ TẬP 1/4",
-      status: "TIN ĐỒN BỊ NIÊM PHONG",
-      title: "“Khởi nguồn tội ác: Tái sinh”",
-      duration: "KHÔNG RÕ THỜI LƯỢNG",
-      date: "~14 NGÀY TRƯỚC",
-      thumbnailUrl: "",
-      videoUrl: "",
-      sim: {
-        tintMode: "shadow",
-        bgUrl: "",
-        personUrl: "",      // <-- DÁN LINK ẢNH CẮT NỀN TẬP 1 (.PNG) NẾU CÓ
-        flowerUrl: "",
-        flowerRightUrl: "",
-        overlayUrl: "",
-      },
-      summary:
-        "Trước khi Kênh 8 bị cướp sóng, từng có tin đồn về một cuộn băng mở màn xuất hiện tại tiệm ăn nhỏ Lutz sau khi chủ tiệm Ottomar Burchard mất tích. Hồ sơ này chưa từng được công bố rộng rãi.",
-      transcript:
-        "“Băng từ nằm trong diện lưu trữ kín tại Đồn Cảnh sát Altstadt.”",
+      id: "loc-16",
+      num: "16",
+      region: "west",
+      zone: "TÂY · SCHWARZHAVEN",
+      title: "Quán Rượu Ngầm “Mỏ Neo Mù”",
+      imageUrl: "", // <-- Dán link ảnh Quán Rượu Mỏ Neo Mù tại đây
+      sensory: "Thấp hơn mực nước sông, đà gỗ sồi rỉ nước, rượu gin tự nấu, bia ôi, thuốc tẩu & tiếng sóng vỗ vách đá.",
+      desc: "Tửu quán dưới tầng hầm của dân sà lan than và thợ bến tàu — nơi mua bán tin vỉa hè ban đêm nhưng cũng dễ nảy sinh ẩu đả.",
+    },
+
+    // --- PHÍA NAM: VÀNH ĐAI RỈ SÉT & CÔNG XƯỞNG HÜT IV ---
+    {
+      id: "loc-08",
+      num: "08",
+      region: "south",
+      zone: "NAM · HÜT IV",
+      title: "Khu Xưởng Dệt & Trạm Xử Lý Số 09",
+      imageUrl: "", // <-- Dán link ảnh Trạm Xử Lý Số 09 tại đây
+      sensory: "Mái vòm bê tông 7 thanh giằng, hơi kiềm nóng nồng gắt & tiếng vọng kim loại rỉ sét.",
+      desc: "Khu vực hạ tầng ngầm thuộc tổ hợp Swezan Textil & Chem, hiện đang nằm trong diện kiểm soát nghiêm ngặt sau biến cố Tập 1.",
     },
     {
-      id: "tape-4",
-      code: "CARRIER // TÍN HIỆU CHỜ",
-      status: "NO SIGNAL · CHƯA CÔNG BỐ",
-      title: "Tập 4/4 — [DỮ LIỆU TRỐNG]",
-      duration: "--:-- · 50Hz STATIC",
-      date: "ĐANG CHỜ...",
-      thumbnailUrl: "",
-      videoUrl: "",
-      sim: {
-        tintMode: "shadow",
-        bgUrl: "",
-        personUrl: "",
-        flowerUrl: "",
-        flowerRightUrl: "",
-        overlayUrl: "",
-      },
-      summary:
-        "Không có hình ảnh. Màn hình chỉ phát ra tiếng rít rè trắng 50Hz kéo dài.",
-      transcript: "“Vở kịch gồm bốn hồi. Hồi cuối cùng vẫn chưa kéo màn.”",
+      id: "loc-09",
+      num: "09",
+      region: "south",
+      zone: "NAM · HÜT IV",
+      title: "Nhà Kính Thực Nghiệm Bỏ Hoang C-4",
+      imageUrl: "", // <-- Dán link ảnh Nhà Kính C-4 tại đây
+      sensory: "Vòm thép uốn cong như xương cá voi, kính mái vỡ nát, dây leo khô & mùi lưu huỳnh thoang thoảng.",
+      desc: "Khu ươm cây sợi dệt cũ kỹ bị bỏ phế giữa vành đai công nghiệp phía Nam, vừa được cảnh sát giăng dây phong tỏa tuần qua.",
+    },
+    {
+      id: "loc-12",
+      num: "12",
+      region: "south",
+      zone: "NAM · HÜT IV",
+      title: "Lò Luyện Kim & Cán Thép “Số 4” (Hüt IV)",
+      imageUrl: "", // <-- Dán link ảnh Lò Luyện Kim Số 4 tại đây
+      sensory: "Rừng ống khói đen kịt, bánh răng cao 4 mét đóng xỉ than, mùi quặng sắt rỉ & xì gà Havana.",
+      desc: "Pháo đài công nghiệp đồ sộ của ông chủ Kurt Denholm với những phân xưởng nguội lạnh và đội bảo an tư nhân tuần tra quanh các container hàng.",
+    },
+    {
+      id: "loc-13",
+      num: "13",
+      region: "south",
+      zone: "NAM · GÜTEROF",
+      title: "Ga Hàng Hóa & Bãi Đầu Máy Cũ Güterof",
+      imageUrl: "", // <-- Dán link ảnh Ga Güterof tại đây
+      sensory: "Đường ray cụt phủ cỏ dại, đầu máy hơi nước mục rỉ, mùi dầu hắc ín tà vẹt, nhựa thông & thuốc lá sợi.",
+      desc: "Bãi toa xe chở than bỏ không giáp bìa rừng thông — nơi các nhóm công nhân bãi công của Lotte Loris thường tập kết giữ lửa.",
+    },
+
+    // --- PHÍA BẮC, TÂY BẮC & NGOẠI Ô ---
+    {
+      id: "loc-11",
+      num: "11",
+      region: "north",
+      zone: "TÂY BẮC · KRANZHÜGEL",
+      title: "Dinh Thự Vanessa (Đồi Kranzhügel)",
+      imageUrl: "", // <-- Dán link ảnh Dinh Thự Vanessa tại đây
+      sensory: "Kiến trúc tân cổ điển, tháp chuông đồng 1888, vườn hoa hồng sương lạnh & hương nước hoa Guerlain.",
+      desc: "Tư dinh xa hoa sau cổng sắt rèn của góa phụ Traudl Vanessa trên vùng đồi cao tách biệt, gần đây tăng cường vệ sĩ canh gác nghiêm ngặt.",
+    },
+    {
+      id: "loc-14",
+      num: "14",
+      region: "north",
+      zone: "BẮC · ĐỒI WIGEL",
+      title: "Tháp Truyền Hình & Trạm Sóng Đồi Gió Hú",
+      imageUrl: "", // <-- Dán link ảnh Tháp Sóng Đồi Wigel tại đây
+      sensory: "Đỉnh núi đá vôi đóng băng, đèn đỏ chớp tắt, màn hình CRT xanh lè, rít tĩnh điện 15kHz & mùi ozone.",
+      desc: "Trạm tiếp sóng của đài K-TV Kênh 8 nơi kỹ thuật viên Ena Sherley trực ca đêm — tâm điểm kỹ thuật sau vụ cướp sóng truyền hình.",
+    },
+    {
+      id: "loc-15",
+      num: "15",
+      region: "north",
+      zone: "BÌA RỪNG TÂY · NGOẠI Ô",
+      title: "Bệnh Viện Tâm Thần Bỏ Hoang St. Nazet",
+      imageUrl: "", // <-- Dán link ảnh Viện St. Nazet tại đây
+      sensory: "Hành lang vòm đá Gothic phủ rêu đen, hồ sơ mục nát vung vãi, thoảng mùi cồn & phấn diên vĩ lạnh.",
+      desc: "Khu viện cô lập đã giải thể từ năm 1988, nơi Dr. Alis Zola từng công tác trước khi rút về sống ẩn dật.",
+    },
+    {
+      id: "loc-17",
+      num: "17",
+      region: "north",
+      zone: "ĐẦM LẦY NAM · NGOẠI Ô",
+      title: "Phế Tích Trại Trẻ St. Leopold (1974)",
+      imageUrl: "", // <-- Dán link ảnh Phế Tích 1974 tại đây
+      sensory: "Gạch nung cháy đen giữa lau sậy ngập tuyết, khung giường sắt cong vênh & cổng đá khắc số “1974”.",
+      desc: "Tàn tích vụ hỏa hoạn lớn hai thập kỷ trước ở rìa đầm lầy ngoại ô — địa danh cũ kỹ hiếm ai còn nhắc tới trong các trang báo hiện tại.",
+    },
+    {
+      id: "loc-18",
+      num: "18",
+      region: "north",
+      zone: "NGOẠI Ô · VÀNH ĐAI BÊ TÔNG",
+      title: "Khu Chung Cư Công Nhân Khối 7–12",
+      imageUrl: "", // <-- Dán link ảnh Chung Cư Khối 7-12 tại đây
+      sensory: "Khối bê tông Brutalist 12 tầng, dây phơi chằng chịt, ăng-ten râu thỏ & tivi trùm chăn sau khung cửa kính.",
+      desc: "Nơi ở của hàng vạn lao động nghèo và tân binh Ian Alix; không khí luôn sục sôi bức xúc mỗi khi còi hú đổi ca hay cắt lương.",
     },
   ],
 };

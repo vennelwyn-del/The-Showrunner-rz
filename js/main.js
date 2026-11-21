@@ -27,12 +27,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* -------------------------------------------------------
      2. CHUYỂN TAB GIAO DIỆN 2
-     ------------------------------------------------------- */
      /* -------------------------------------------------------
      2B. TAB 0: BACKSTORY & 1 KHUNG ẢNH MỞ ĐẦU (TỪ config.js)
      ------------------------------------------------------- */
   const backstoryEl = document.getElementById("backstory-content");
   const bs = cfg.backstory || {};
+
+  function formatRichText(str) {
+    return escapeHtml(str)
+      .replace(/&lt;(strong|b)&gt;([\s\S]*?)&lt;\/\1&gt;/gi, "<strong>$2</strong>")
+      .replace(/&lt;(em|i)&gt;([\s\S]*?)&lt;\/\1&gt;/gi, "<em>$2</em>")
+      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*([^\s*][^*]*?)\*/g, "<em>$1</em>");
+  }
 
   if (backstoryEl) {
     const bsPhoto = bs.imageUrl
@@ -43,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
          </div>`;
 
     const bsParagraphs = Array.isArray(bs.paragraphs)
-      ? bs.paragraphs.map((p) => `<p>${escapeHtml(p)}</p>`).join("")
+      ? bs.paragraphs.map((p) => `<p>${formatRichText(p)}</p>`).join("")
       : "";
 
     backstoryEl.innerHTML = `
@@ -59,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <article class="backstory-story-card">
         <p class="panel-kicker">${escapeHtml(bs.kicker || "PROLOGUE // 1994")}</p>
         <h2 class="backstory-title">${escapeHtml(bs.title || "THUNG LŨNG SWEZAN TRƯỚC GIỜ G")}</h2>
-        ${bs.quote ? `<blockquote class="backstory-quote">${escapeHtml(bs.quote)}</blockquote>` : ""}
+        ${bs.quote ? `<blockquote class="backstory-quote">${formatRichText(bs.quote)}</blockquote>` : ""}
         <div class="backstory-paragraphs">${bsParagraphs}</div>
       </article>
     `;

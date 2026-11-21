@@ -23,7 +23,7 @@ window.SHOWRUNNER_CONFIG = {
       "<strong>Hồi 2 (Tập 2): Malia Isabel Ariane</strong> — nàng thiên kim đá quý từ thiện giả cầy bị hấp chín bởi hơi nước 100 độ C và khí độc lưu huỳnh trong lồng kính cùng hàng trăm cành hoa loa kèn. Đoạn băng ghi lại cái chết co giật của cô đã bị cướp sóng đài K-TV Kênh 8 vào đúng nửa đêm Chủ nhật tuần trước, phát thẳng vào phòng ngủ của hàng vạn cư dân, gieo rắc hội chứng \"sợ màn hình tivi\" lên toàn bộ Swezan.",
       "Và sáng nay, <strong>Hồi thứ 3 chính thức mở màn.</strong>",
       "Mười hai tiếng trước, Phó Cảnh sát trưởng <strong>Matthäus August</strong> — cánh tay phải nắm giữ mọi hồ sơ đen của đồn cảnh sát — đã biến mất bí ẩn bên bờ hồ sau tư gia. Rạng sáng Thứ Hai, người ta vớt được một con cá chép lai đột biến bụng trương phềnh trên mặt hồ nước đen; bên trong nội tạng của nó là <strong>cuộn Băng A (Tập 3)</strong> bọc trong bao cao su dính đầy dịch tanh tưởi.",
-      "Đồng hồ tử thần 7 ngày đã bắt đầu gõ nhịp. <strong>Hạn chót là 23:59 đêm Chủ nhật tới</strong>, trước khi chiếc ghế sắt treo August lao xuống đáy bể cá ăn thịt tại Bến Cảng Sông Đen.",
+      "Đồng hồ tử thần 7 ngày đã bắt đầu gõ nhịp. <strong>Hạn chót là 23:59 đêm Chủ nhật tới</strong>, trước khi chiếc ghế sắt treo August lao xuống đáy bể cá ăn thịt.",
       "Swezan rúng động. Còi xe cảnh sát xé toạc màn sương sớm, và ở một góc nào đó của thung lũng bùn than này, bạn đang chuẩn bị bước vào vòng xoáy định mệnh..."
     ],
   },

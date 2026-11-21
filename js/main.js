@@ -203,10 +203,10 @@ document.addEventListener("DOMContentLoaded", () => {
       title: "Phóng Viên Điều Tra",
       body: "Sở hữu thẻ nhà báo, máy ảnh 35mm và mạng lưới tin đồn khắp thung lũng. Ngòi bút có thể xoay chuyển dư luận nhưng dễ bị cả cảnh sát lẫn tội phạm nhắm tới.",
     },
-    {
-      tag: "THÂN PHẬN 05 · 60 MARK",
-      title: "Dân Thường / Thợ Thuyền Bản Địa",
-      body: "Sở hữu lớp vỏ bọc vô hình để hòa vào dòng người biểu tình và khu chung cư lao động, dùng trực giác và quan hệ xóm giềng để sinh tồn (dù dễ bị bắt oan).",
+     {
+      tag: "THÂN PHẬN 05 · LINH HOẠT ĐỊA VỊ",
+      title: "Dân Thường Tự Do (Ngoài 4 Nhóm Trên)",
+      body: "Bao gồm mọi thân phận không nằm trong 4 ngành điều tra (Thanh tra, Thám tử, Pháp y, Phóng viên). Bạn có thể là thợ cơ khí bãi than, chủ tiệm, nghệ sĩ cho đến quý tộc / bá tước — tài chính và quyền thế tùy thuộc vào Nghề nghiệp & Địa vị bạn chọn.",
     },
   ];
 
@@ -647,22 +647,74 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCast();
 
   /* -------------------------------------------------------
-     6. TAB 5: TẠO HỒ SƠ NHẬP VAI & COPY
+     6. TAB 5: TẠO HỒ SƠ NHẬP TỊCH & COPY (KHỚP TEMPLATE 1994)
      ------------------------------------------------------- */
-  const pfFields = [
+  const pfIds = [
     "pf-name",
-    "pf-age-gender",
+    "pf-alias",
+    "pf-age",
+    "pf-gender",
+    "pf-orientation",
     "pf-archetype",
+    "pf-occupation",
     "pf-district",
-    "pf-look",
-    "pf-gear",
+    "pf-lenormand",
+    "pf-physique",
+    "pf-attire",
+    "pf-scent",
+    "pf-personality",
+    "pf-weakness",
+    "pf-relations",
+    "pf-weapon",
+    "pf-tools",
+    "pf-vehicle",
+    "pf-bio",
     "pf-secret",
+    "pf-goal",
     "pf-quote",
-  ].map((id) => document.getElementById(id));
+    "pf-extra",
+  ];
 
+  const ROLE_HINTS = {
+    "Thanh Tra Cấp Cao":
+      "Nhóm Điều Tra Nhà Nước: Có lệnh trưng dụng từ Bộ Nội vụ và vũ khí công vụ (khởi điểm ~1.200 M), nhưng bị cảnh sát địa phương dè chừng và công nhân thù địch.",
+    "Thám Tử Tư":
+      "Nhóm Điều Tra Tự Do: Không có thẩm quyền pháp lý chính thức (~300 M), bù lại tự do đi lại ngoài giới nghiêm và giao dịch dưới bến cảng đêm.",
+    "Bác Sĩ Pháp Y":
+      "Nhóm Giám Định Khoa Học: Nắm quyền tại Nhà xác Tòa án Cũ (~1.500 M), tiếng nói khoa học có trọng lượng nhưng thiếu quyền cưỡng chế ngoài phố.",
+    "Phóng Viên Điều Tra":
+      "Nhóm Truyền Thông: Có thẻ nhà báo & mạng lưới tin tức (~600 M), định hướng được dư luận nhưng dễ bị cả cảnh sát lẫn tội phạm đề phòng.",
+    "Dân Thường Tự Do":
+      "Nhóm Ngoài 4 Ngành Điều Tra: Địa vị và tài sản hoàn toàn tự do theo ô “Nghề nghiệp / Địa vị” (có thể là thợ cơ khí bãi than, thân nhân nạn nhân, chủ tiệm, nghệ sĩ hoặc quý tộc / bá tước...).",
+  };
+
+  const pfArchetypeEl = document.getElementById("pf-archetype");
+  const pfOccupationEl = document.getElementById("pf-occupation");
+  const pfRoleHintEl = document.getElementById("pf-role-hint");
   const profileOutput = document.getElementById("profile-output");
   const copyProfileBtn = document.getElementById("copy-profile-btn");
   const copyFeedback = document.getElementById("copy-feedback");
+
+  function syncRoleHint() {
+    if (!pfArchetypeEl) return;
+    const role = pfArchetypeEl.value;
+    if (pfRoleHintEl) {
+      pfRoleHintEl.textContent = ROLE_HINTS[role] || "";
+    }
+    if (pfOccupationEl) {
+      if (role === "Dân Thường Tự Do") {
+        pfOccupationEl.placeholder = "VD: Bá tước đồi Kranzhügel / Thợ cơ khí bãi than / Chủ tiệm bánh...";
+      } else if (role === "Thanh Tra Cấp Cao") {
+        pfOccupationEl.placeholder = "VD: Thanh tra cảnh sát liên bang / Đặc phái viên Bộ Nội vụ...";
+      } else if (role === "Thám Tử Tư") {
+        pfOccupationEl.placeholder = "VD: Thám tử tư giải ngũ / Cựu sĩ quan mất quân tịch...";
+      } else if (role === "Bác Sĩ Pháp Y") {
+        pfOccupationEl.placeholder = "VD: Bác sĩ giám định độc lập / Chuyên viên giải phẫu...";
+      } else {
+        pfOccupationEl.placeholder = "VD: Phóng viên điều tra tòa soạn / Ký giả tự do...";
+      }
+    }
+  }
 
   function buildProfileText() {
     const val = (id, fallback) => {
@@ -670,25 +722,69 @@ document.addEventListener("DOMContentLoaded", () => {
       return el && el.value.trim() ? el.value.trim() : fallback;
     };
 
+    const rawQuote = val(
+      "pf-quote",
+      "Mọi cuộn băng đều có điểm dừng, chỉ có những gì nằm lại trong bóng tối là còn tiếp tục."
+    ).replace(/^["“”]+|["“”]+$/g, "");
+
     const text = `║ HỒ SƠ NHẬP TỊCH SWEZAN (1994) ║
 
-**Họ và tên:** ${val("pf-name", "[Chưa điền tên]")}
-**Tuổi & Giới tính / Xưng hô:** ${val("pf-age-gender", "28 tuổi | Nam (Anh / Tôi)")}
-**Thân phận khởi điểm:** ${val("pf-archetype", "Thanh Tra Cấp Cao (1.200 M)")}
-**Địa bàn cư trú & Kỷ vật:** ${val("pf-district", "Phố cổ Altstadt | Chiếc bật lửa bạc")}
-**Ngoại hình & Mùi hương (1994 Noir):** ${val("pf-look", "Áo măng tô dạ tối màu, mùi cà phê đen và khói than Swezan.")}
-**Trang bị mang theo:** ${val("pf-gear", "Đèn pin kim loại, sổ tay da, bộ dụng cụ chuyên môn.")}
-**Động cơ & Mục tiêu tại Swezan:** ${val("pf-secret", "Tìm hiểu sự thật sau những cuộn băng cướp sóng trên K-TV Kênh 8.")}
+**Họ và tên:** ${val("pf-name", "[Tên Chính] + [Tên Đệm / Tên Thánh] + [Họ Địa Phương]")}
+**Biệt danh / Danh hiệu:** ${val("pf-alias", "(Không có)")}
+**Tuổi:** ${val("pf-age", "[Từ 18 tuổi trở lên]")}
+**Giới tính & Đại từ xưng hô:** ${val("pf-gender", "Nam / Nữ | Anh / Cô / Tôi")}
+**Xu hướng tính dục:** ${val("pf-orientation", "Thẳng / Song tính / Đồng tính / Vô tính")}
+**Thân phận:** ${val("pf-archetype", "Dân Thường Tự Do")}
+**Nghề nghiệp / Địa vị:** ${val("pf-occupation", "[Ghi rõ nghề nghiệp hoặc tước vị: Bá tước, Thợ cơ khí, Thanh tra...]")}
+**Địa bàn cư trú tại Swezan:** ${val("pf-district", "Phố cổ Altstadt")}
+**Lá bài Lenormand / Biểu tượng cá nhân:** ${val("pf-lenormand", "Lá 33 - Chìa Khóa")}
+
+---
+
+**Ngoại hình & Giác quan (1994 Noir):**
+* Vóc dáng & Diện mạo: ${val("pf-physique", "[Chiều cao, dáng người, màu mắt, kiểu tóc, vết sẹo...]")}
+* Phong cách ăn mặc: ${val("pf-attire", "[Áo măng tô dạ, suit cũ, áo da, váy nhung...]")}
+* Mùi hương đặc trưng: ${val("pf-scent", "[Mùi cà phê đắng, thuốc lá, mưa bùn than...]")}
+
+**Tính cách & Tâm lý:**
+* Tính cách chủ đạo: ${val("pf-personality", "[Điềm tĩnh, hoài nghi, lạnh lùng...]")}
+* Điểm yếu tâm lý: ${val("pf-weakness", "[Mất ngủ kinh niên, bóng ma quá khứ...]")}
+
+**Mối quan hệ cá nhân:** ${val("pf-relations", "[Mối quan hệ sẵn có với nhân vật trong Swezan hoặc NPC tự tạo]")}
+
+**Trang bị & Vũ khí khởi điểm (Công nghệ 1994):**
+* Vũ khí: ${val("pf-weapon", "[Tay không / Dao găm / Súng lục...]")}
+* Dụng cụ nghiệp vụ (nếu có): ${val("pf-tools", "[Đèn pin kim loại, sổ tay da...]")}
+* Phương tiện: ${val("pf-vehicle", "[Xe sedan cũ / Xe đạp / Đi bộ]")}
+
+**Tiểu sử:** ${val("pf-bio", "[Quá khứ lớn lên và các biến cố chính]")}
+
+**Bí mật đen tối & Động cơ thực sự (Secret & Personal Motive):**
+* ${val("pf-secret", "[Lý do thực sự có mặt tại Swezan]")}
+
+**Mục tiêu trước mắt:**
+* ${val("pf-goal", "[Cứu Phó cảnh sát trưởng August trước Chủ Nhật / Tìm hiểu sự thật / Sinh tồn...]")}
+
 **Câu thoại mẫu:**
-> ${val("pf-quote", "“Mọi cuộn băng đều có điểm dừng, chỉ có sự thật là ở lại.”")}`;
+> **"${rawQuote}"**
+
+**Thông tin thêm:** ${val("pf-extra", "(Không có)")}`;
 
     if (profileOutput) profileOutput.textContent = text;
     return text;
   }
 
-  pfFields.forEach((el) => {
-    if (el) el.addEventListener("input", buildProfileText);
+  pfIds.forEach((id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const evt = el.tagName === "SELECT" ? "change" : "input";
+    el.addEventListener(evt, () => {
+      if (el === pfArchetypeEl) syncRoleHint();
+      buildProfileText();
+    });
   });
+
+  syncRoleHint();
   buildProfileText();
 
   if (copyProfileBtn) {

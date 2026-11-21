@@ -1754,3 +1754,60 @@ body[data-theme="relic"] .end-rule-box strong { color: var(--faded-silver); }
   color: #ffb8bf;
   font-style: italic;
 }
+/* =========================================================
+   BỔ SUNG FORM HỒ SƠ NHẬP TỊCH ĐẦY ĐỦ (TAB 05)
+   ========================================================= */
+
+.form-section-label {
+  margin-top: 6px;
+  padding: 5px 8px;
+  background: rgba(156, 4, 18, 0.16);
+  border-left: 3px solid var(--red-signal);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #ff8e98;
+}
+
+html[data-theme="relic"] .form-section-label,
+body[data-theme="relic"] .form-section-label {
+  color: var(--faded-silver);
+}
+
+.form-row-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.role-hint-banner {
+  padding: 8px 10px;
+  background: rgba(20, 14, 15, 0.72);
+  border: 1px dashed var(--border-line);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--text-sub);
+}
+
+.profile-preview-card {
+  position: sticky;
+  top: 16px;
+  max-height: calc(100vh - 110px);
+}
+
+.profile-output {
+  min-height: 460px;
+}
+
+@media (max-width: 920px) {
+  .form-row-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-preview-card {
+    position: static;
+    max-height: none;
+  }
+}

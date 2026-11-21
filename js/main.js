@@ -1,12 +1,26 @@
 /* =========================================================
-   THE SHOWRUNNER — GIAO DIỆN 2 (ĐỌC CẤU HÌNH TỪ config.js)
+   THE SHOWRUNNER — GIAO DIỆN 2 (BẢN GỘP HOÀN CHỈNH v15)
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
   const cfg = window.SHOWRUNNER_CONFIG || {};
 
+  function escapeHtml(str) {
+    return String(str == null ? "" : str).replace(/[&<>"']/g, (ch) => {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch];
+    });
+  }
+
+  function formatRichText(str) {
+    return escapeHtml(str)
+      .replace(/&lt;(strong|b)&gt;([\s\S]*?)&lt;\/\1&gt;/gi, "<strong>$2</strong>")
+      .replace(/&lt;(em|i)&gt;([\s\S]*?)&lt;\/\1&gt;/gi, "<em>$2</em>")
+      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*([^\s*][^*]*?)\*/g, "<em>$1</em>");
+  }
+
   /* -------------------------------------------------------
-     1. ÁP DỤNG ẢNH NỀN TỪ config.js (KHÔNG HIỆN TRÊN WEB)
+     1. ÁP DỤNG ẢNH NỀN TỪ config.js
      ------------------------------------------------------- */
   const bgLayer = document.getElementById("main-bg-layer");
   const wireframeSvg = document.getElementById("forensic-wireframe");
@@ -26,20 +40,42 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* -------------------------------------------------------
-     2. CHUYỂN TAB GIAO DIỆN 2
-     /* -------------------------------------------------------
-     2B. TAB 0: BACKSTORY & 1 KHUNG ẢNH MỞ ĐẦU (TỪ config.js)
+     2. HỆ THỐNG CHUYỂN TAB (MẶC ĐỊNH VÀO 00. BACKSTORY)
+     ------------------------------------------------------- */
+  const tabBtns = document.querySelectorAll(".desk-tab");
+  const deskPanels = document.querySelectorAll(".desk-panel");
+  const videos = Array.isArray(cfg.videos) ? cfg.videos : [];
+  let activeTapeId = videos[0] ? videos[0].id : "";
+
+  function switchTab(tabKey) {
+    tabBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.tab === tabKey));
+    deskPanels.forEach((p) => {
+      const match = p.id === `tab-${tabKey}`;
+      p.hidden = !match;
+      p.classList.toggle("is-active", match);
+    });
+
+    if (tabKey === "tapes") {
+      const activeTape = videos.find((v) => v.id === activeTapeId) || videos[0];
+      if (activeTape) playTapeSimulation(activeTape);
+    } else if (window.Tape3DSim) {
+      window.Tape3DSim.destroy();
+    }
+  }
+
+  tabBtns.forEach((btn) => {
+    btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+  });
+
+  document.querySelectorAll("[data-open-tab]").forEach((card) => {
+    card.addEventListener("click", () => switchTab(card.dataset.openTab));
+  });
+
+  /* -------------------------------------------------------
+     2B. TAB 00: BACKSTORY & 1 KHUNG ẢNH MỞ ĐẦU
      ------------------------------------------------------- */
   const backstoryEl = document.getElementById("backstory-content");
   const bs = cfg.backstory || {};
-
-  function formatRichText(str) {
-    return escapeHtml(str)
-      .replace(/&lt;(strong|b)&gt;([\s\S]*?)&lt;\/\1&gt;/gi, "<strong>$2</strong>")
-      .replace(/&lt;(em|i)&gt;([\s\S]*?)&lt;\/\1&gt;/gi, "<em>$2</em>")
-      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-      .replace(/\*([^\s*][^*]*?)\*/g, "<em>$1</em>");
-  }
 
   if (backstoryEl) {
     const bsPhoto = bs.imageUrl
@@ -71,32 +107,9 @@ document.addEventListener("DOMContentLoaded", () => {
       </article>
     `;
   }
-  const tabBtns = document.querySelectorAll(".desk-tab");
-  const deskPanels = document.querySelectorAll(".desk-panel");
-
-  function switchTab(tabKey) {
-    tabBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.tab === tabKey));
-    deskPanels.forEach((p) => {
-      const match = p.id === `tab-${tabKey}`;
-      p.hidden = !match;
-      p.classList.toggle("is-active", match);
-    });
-
-    if (tabKey === "tapes") {
-      const activeTape = videos.find((v) => v.id === activeTapeId) || videos[0];
-      if (activeTape) playTapeSimulation(activeTape);
-    } else if (window.Tape3DSim) {
-      window.Tape3DSim.destroy();
-    }
-  }
-
-  tabBtns.forEach((btn) => btn.addEventListener("click", () => switchTab(btn.dataset.tab)));
-  document.querySelectorAll("[data-open-tab]").forEach((card) => {
-    card.addEventListener("click", () => switchTab(card.dataset.openTab));
-  });
 
   /* -------------------------------------------------------
-     3. THẾ GIỚI SWEZAN: TIMELINE, DIỄN BIẾN, KHU VỰC & NGUYÊN TẮC
+     3. TAB 02: THẾ GIỚI SWEZAN, TIMELINE, KHU VỰC & NGUYÊN TẮC
      ------------------------------------------------------- */
   const WORLD_TIMELINE = [
     {
@@ -203,10 +216,10 @@ document.addEventListener("DOMContentLoaded", () => {
       title: "Phóng Viên Điều Tra",
       body: "Sở hữu thẻ nhà báo, máy ảnh 35mm và mạng lưới tin đồn khắp thung lũng. Ngòi bút có thể xoay chuyển dư luận nhưng dễ bị cả cảnh sát lẫn tội phạm nhắm tới.",
     },
-     {
+    {
       tag: "THÂN PHẬN 05 · LINH HOẠT ĐỊA VỊ",
       title: "Dân Thường Tự Do (Ngoài 4 Nhóm Trên)",
-      body: "Bao gồm mọi thân phận không nằm trong 4 ngành điều tra (Thanh tra, Thám tử, Pháp y, Phóng viên). Bạn có thể là thợ cơ khí bãi than, chủ tiệm, nghệ sĩ cho đến quý tộc / bá tước — tài chính và quyền thế tùy thuộc vào Nghề nghiệp & Địa vị bạn chọn.",
+      body: "Bao gồm mọi thân phận không nằm trong 4 ngành điều tra trên. Bạn có thể là thợ cơ khí bãi than, thân nhân nạn nhân, chủ tiệm, nghệ sĩ cho đến quý tộc / bá tước — tài chính và quyền thế tùy thuộc vào Nghề nghiệp & Địa vị bạn chọn.",
     },
   ];
 
@@ -274,9 +287,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* -------------------------------------------------------
-     4. TAB 3: CÁC BĂNG VIDEO ĐÃ ĐƯỢC CÔNG BỐ (MÔ PHỎNG BÓNG MỜ 3.8s)
+     4. TAB 03: CÁC BĂNG VIDEO ĐÃ CÔNG BỐ (3D MODEL & 2D FALLBACK)
      ------------------------------------------------------- */
-  const videos = Array.isArray(cfg.videos) ? cfg.videos : [];
   const tapesListGrid = document.getElementById("tapes-list-grid");
   const tapeCrtMedia = document.getElementById("tape-crt-media");
   const tapeCrtCode = document.getElementById("tape-crt-code");
@@ -289,12 +301,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const tapeCrtSummary = document.getElementById("tape-crt-summary");
   const tapeCrtQuote = document.getElementById("tape-crt-quote");
 
-  let activeTapeId = videos[0] ? videos[0].id : "";
   let simRafId = null;
 
   function buildTapeSilhouetteSvg(tapeId) {
     if (tapeId === "tape-2") {
-      // Tập 2: Bóng người trong buồng kính hơi nước & nhánh hoa loa kèn mờ
       return `
       <svg class="sim-scene-svg" viewBox="0 0 320 240" aria-hidden="true">
         <defs>
@@ -314,13 +324,11 @@ document.addEventListener("DOMContentLoaded", () => {
         <g class="sim-steam-rise" opacity="0.72">
           <ellipse cx="120" cy="172" rx="70" ry="34" fill="rgba(215,205,205,0.22)" />
           <ellipse cx="195" cy="158" rx="76" ry="38" fill="rgba(215,205,205,0.2)" />
-          <ellipse cx="158" cy="118" rx="64" ry="28" fill="rgba(215,205,205,0.16)" />
         </g>
       </svg>`;
     }
 
     if (tapeId === "tape-3a") {
-      // Tập 3A: Đèn treo đung đưa, bóng ghế sắt trên mặt nước tối & bóng găng tay lướt qua
       return `
       <svg class="sim-scene-svg" viewBox="0 0 320 240" aria-hidden="true">
         <rect width="320" height="240" fill="#090607" />
@@ -334,8 +342,6 @@ document.addEventListener("DOMContentLoaded", () => {
           <circle cx="160" cy="96" r="15" fill="#060405" />
           <rect x="142" y="112" width="36" height="46" rx="6" fill="#060405" />
           <rect x="134" y="156" width="52" height="12" fill="#120d0e" />
-          <line x1="142" y1="168" x2="138" y2="188" stroke="#0b0809" stroke-width="5" />
-          <line x1="178" y1="168" x2="182" y2="188" stroke="#0b0809" stroke-width="5" />
         </g>
         <rect x="0" y="188" width="320" height="52" fill="rgba(14,8,10,0.92)" />
         <ellipse class="sim-water-ripple" cx="160" cy="196" rx="74" ry="8" fill="none" stroke="rgba(210,190,190,0.32)" stroke-width="1.5" />
@@ -346,22 +352,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (tapeId === "tape-1") {
-      // Tập 1: Bóng dây xích ròng rọc trong sương hóa chất
       return `
       <svg class="sim-scene-svg" viewBox="0 0 320 240" aria-hidden="true">
         <rect width="320" height="240" fill="#0b0708" />
         <circle cx="160" cy="95" r="78" fill="rgba(168,16,32,0.16)" />
         <line x1="160" y1="0" x2="160" y2="95" stroke="rgba(210,200,200,0.4)" stroke-width="4" stroke-dasharray="6 4" />
         <ellipse cx="160" cy="132" rx="22" ry="44" fill="#050404" />
-        <g class="sim-steam-rise" opacity="0.65">
-          <ellipse cx="160" cy="204" rx="130" ry="32" fill="rgba(195,185,185,0.22)" />
-        </g>
-        <rect x="92" y="102" width="136" height="32" fill="none" stroke="rgba(220,24,42,0.65)" stroke-width="2" transform="rotate(-6 160 118)" />
-        <text x="160" y="123" text-anchor="middle" fill="rgba(240,55,70,0.85)" font-family="monospace" font-size="14" font-weight="700" transform="rotate(-6 160 118)">[SEALED FILE]</text>
+        <text x="160" y="123" text-anchor="middle" fill="rgba(240,55,70,0.85)" font-family="monospace" font-size="14" font-weight="700">[SEALED FILE]</text>
       </svg>`;
     }
 
-    // Tập 4: Nhiễu hạt chờ + chớp thoáng bóng Kỵ Sĩ
     return `
       <svg class="sim-scene-svg" viewBox="0 0 320 240" aria-hidden="true">
         <rect width="320" height="240" fill="#0d090a" />
@@ -373,29 +373,32 @@ document.addEventListener("DOMContentLoaded", () => {
       </svg>`;
   }
 
-     function playTapeSimulation(tape) {
+  function playTapeSimulation(tape) {
     if (!tapeCrtMedia || !tape) return;
     if (simRafId) {
       cancelAnimationFrame(simRafId);
       simRafId = null;
     }
     if (window.Tape3DSim) window.Tape3DSim.destroy();
+
     if (tape.videoUrl) {
       tapeCrtMedia.innerHTML = `<video src="${escapeHtml(tape.videoUrl)}" ${tape.thumbnailUrl ? `poster="${escapeHtml(tape.thumbnailUrl)}"` : ""} controls autoplay playsinline></video>`;
       if (tapeCrtTimer) tapeCrtTimer.textContent = "▶ VIDEO";
       if (tapeSimProgress) tapeSimProgress.style.width = "100%";
       return;
     }
+
     if (window.AnalogAudio && typeof window.AnalogAudio.playTapeStaticBurst === "function") {
       window.AnalogAudio.playTapeStaticBurst(3.8);
     }
-    // Tạo khung sân khấu 3D
-     tapeCrtMedia.innerHTML = `
+
+    tapeCrtMedia.innerHTML = `
       <div id="tape-sim-stage" class="tape-sim-stage is-playing">
         <div id="tape-3d-mount" style="width:100%;height:100%;position:relative;"></div>
         <div class="sim-end-stamp">■ END OF PREVIEW // BẤM PHÁT LẠI</div>
       </div>
     `;
+
     const mountEl = document.getElementById("tape-3d-mount");
     const used3D =
       window.Tape3DSim &&
@@ -417,8 +420,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       );
 
-    // Dự phòng nếu máy mất mạng không tải được Three.js -> chạy SVG bóng mờ 2D
-    if (!used3D) {
+    if (!used3D && mountEl) {
       mountEl.innerHTML = `
         ${buildTapeSilhouetteSvg(tape.id)}
         <div class="sim-noise-grain"></div>
@@ -447,7 +449,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function selectTape(tapeId) {
+  function selectTape(tapeId, shouldPlay = true) {
     const tape = videos.find((v) => v.id === tapeId) || videos[0];
     if (!tape) return;
     activeTapeId = tape.id;
@@ -465,7 +467,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    playTapeSimulation(tape);
+    if (shouldPlay) playTapeSimulation(tape);
   }
 
   if (tapeReplayBtn) {
@@ -492,13 +494,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     tapesListGrid.addEventListener("click", (e) => {
       const btn = e.target.closest(".tape-card-btn");
-      if (btn) selectTape(btn.dataset.tapeId);
+      if (btn) selectTape(btn.dataset.tapeId, true);
     });
 
-    selectTape(activeTapeId);
+    selectTape(activeTapeId, false);
   }
-/* -------------------------------------------------------
-     5. TAB 4: NHÂN VẬT & BẢNG GHI CHÚ THÔNG TIN CÔNG KHAI
+
+  /* -------------------------------------------------------
+     5. TAB 04: NHÂN VẬT & BẢNG GHI CHÚ THÔNG TIN CÔNG KHAI
      ------------------------------------------------------- */
   const characters = Array.isArray(window.SHOWRUNNER_CHARACTERS) ? window.SHOWRUNNER_CHARACTERS : [];
   let castFilter = "all";
@@ -518,7 +521,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (idx === -1 || !charNoteModal) return;
 
     const c = currentFilteredList[idx];
-    if (c.classified) return; // Hồ sơ đang niêm phong sẽ không mở chi tiết
+    if (c.classified) return;
     activeCharIndex = idx;
 
     const setText = (id, txt) => {
@@ -647,7 +650,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCast();
 
   /* -------------------------------------------------------
-     6. TAB 5: TẠO HỒ SƠ NHẬP TỊCH & COPY (KHỚP TEMPLATE 1994)
+     6. TAB 05: HỒ SƠ NHẬP TỊCH SWEZAN (1994)
      ------------------------------------------------------- */
   const pfIds = [
     "pf-name",
@@ -698,9 +701,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function syncRoleHint() {
     if (!pfArchetypeEl) return;
     const role = pfArchetypeEl.value;
-    if (pfRoleHintEl) {
-      pfRoleHintEl.textContent = ROLE_HINTS[role] || "";
-    }
+    if (pfRoleHintEl) pfRoleHintEl.textContent = ROLE_HINTS[role] || "";
     if (pfOccupationEl) {
       if (role === "Dân Thường Tự Do") {
         pfOccupationEl.placeholder = "VD: Bá tước đồi Kranzhügel / Thợ cơ khí bãi than / Chủ tiệm bánh...";
@@ -741,7 +742,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 ---
 
-**Ngoại hình (1994 Noir):**
+**Ngoại hình & Giác quan (1994 Noir):**
 * Vóc dáng & Diện mạo: ${val("pf-physique", "[Chiều cao, dáng người, màu mắt, kiểu tóc, vết sẹo...]")}
 * Phong cách ăn mặc: ${val("pf-attire", "[Áo măng tô dạ, suit cũ, áo da, váy nhung...]")}
 * Mùi hương đặc trưng: ${val("pf-scent", "[Mùi cà phê đắng, thuốc lá, mưa bùn than...]")}
@@ -790,14 +791,54 @@ document.addEventListener("DOMContentLoaded", () => {
   if (copyProfileBtn) {
     copyProfileBtn.addEventListener("click", () => {
       const text = buildProfileText();
+      const showCopied = () => {
+        if (copyFeedback) copyFeedback.textContent = "ĐÃ COPY!";
+        setTimeout(() => {
+          if (copyFeedback) copyFeedback.textContent = "";
+        }, 2200);
+      };
+
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(() => {
-          if (copyFeedback) copyFeedback.textContent = "ĐÃ COPY!";
-          setTimeout(() => {
-            if (copyFeedback) copyFeedback.textContent = "";
-          }, 2200);
-        });
+        navigator.clipboard.writeText(text).then(showCopied).catch(() => {});
+      } else {
+        const tmp = document.createElement("textarea");
+        tmp.value = text;
+        document.body.appendChild(tmp);
+        tmp.select();
+        try {
+          document.execCommand("copy");
+          showCopied();
+        } catch (e) {}
+        document.body.removeChild(tmp);
       }
     });
   }
+
+  /* -------------------------------------------------------
+     7. TAB 06 & FOOTER: DỪNG BĂNG & MÀN HÌNH HẠ MÀN (THE END)
+     ------------------------------------------------------- */
+  const triggerEndBtn = document.getElementById("trigger-end-btn");
+  const footerEndBtn = document.getElementById("footer-end-btn");
+  const endCurtainOverlay = document.getElementById("end-curtain-overlay");
+  const replayTapeBtn = document.getElementById("replay-tape-btn");
+
+  function openEndCurtain() {
+    if (!endCurtainOverlay) return;
+    if (window.AnalogAudio) window.AnalogAudio.playPowerOffSound();
+    if (window.AnalogNoise) window.AnalogNoise.setMode("standby");
+    endCurtainOverlay.hidden = false;
+  }
+
+  function closeEndCurtain() {
+    if (!endCurtainOverlay) return;
+    if (window.AnalogNoise) window.AnalogNoise.setMode("calm");
+    endCurtainOverlay.hidden = true;
+  }
+
+  if (triggerEndBtn) triggerEndBtn.addEventListener("click", openEndCurtain);
+  if (footerEndBtn) footerEndBtn.addEventListener("click", openEndCurtain);
+  if (replayTapeBtn) replayTapeBtn.addEventListener("click", closeEndCurtain);
+
+  // Mặc định khi bước vào Giao diện 2 sẽ mở thẳng Tab 00. BACKSTORY
+  switchTab("backstory");
 });

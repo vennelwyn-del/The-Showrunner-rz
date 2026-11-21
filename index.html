@@ -478,7 +478,37 @@
             </div>
           </div>
 
-          <pre id="world-compass-map" class="world-compass-map" aria-label="Sơ đồ địa lý 5 vùng Swezan"></pre>
+          <div class="swezan-map-wrapper">
+            <div id="swezan-map-scroll" class="swezan-map-scroll">
+              <div id="swezan-map-stage" class="swezan-map-stage">
+                <div id="swezan-map-bg" class="swezan-map-bg"></div>
+
+                <!-- Lưới địa hình & trục dòng sông Schwarze mặc định -->
+                <svg class="swezan-map-svg" viewBox="0 0 1000 580" preserveAspectRatio="none" aria-hidden="true">
+                  <!-- Sông Schwarze uốn giữa Bến Cảng (Tây) và Phố Cổ (Đông) -->
+                  <path d="M 380,0 C 350,140 430,260 365,390 C 310,490 360,540 330,580" fill="none" stroke="rgba(184, 16, 32, 0.35)" stroke-width="26" />
+                  <path d="M 380,0 C 350,140 430,260 365,390 C 310,490 360,540 330,580" fill="none" stroke="rgba(255, 190, 195, 0.2)" stroke-width="1.5" stroke-dasharray="8 6" />
+                  <!-- Trục giao lộ Đông-Tây / Bắc-Nam -->
+                  <line x1="0" y1="295" x2="1000" y2="295" stroke="rgba(220, 40, 56, 0.28)" stroke-dasharray="6 6" />
+                  <line x1="485" y1="0" x2="485" y2="580" stroke="rgba(220, 40, 56, 0.28)" stroke-dasharray="6 6" />
+                </svg>
+
+                <!-- Nhãn chữ các khu vực trên bản đồ -->
+                <span class="map-zone-stamp" style="left: 50%; top: 4%;">[BẮC: ĐỒI GIÓ HÚ WIGEL]</span>
+                <span class="map-zone-stamp" style="left: 8%; top: 5%;">[TÂY BẮC: ĐỒI KRANZHÜGEL]</span>
+                <span class="map-zone-stamp" style="left: 4%; top: 26%;">[TÂY: BẾN CẢNG SÔNG ĐEN]</span>
+                <span class="map-zone-stamp" style="left: 56%; top: 22%;">[ĐÔNG: PHỐ CỔ ALTSTADT]</span>
+                <span class="map-zone-stamp" style="left: 33%; top: 62%;">[NAM: VÀNH ĐAI HÜT IV &amp; GÜTEROF]</span>
+                <span class="map-zone-stamp" style="left: 72%; top: 67%;">[NGOẠI Ô: BÊ TÔNG &amp; ĐẦM LẦY]</span>
+
+                <!-- 18 điểm ghim chỉ điểm khu vực -->
+                <div id="swezan-map-pins" class="swezan-map-pins"></div>
+              </div>
+            </div>
+
+            <!-- Ô hiển thị thông tin điểm vừa chỉ trên bản đồ -->
+            <aside id="swezan-map-inspector" class="swezan-map-inspector" aria-live="polite"></aside>
+          </div>
           <div id="world-districts-grid" class="locations-photo-grid"></div>
         </div>
       </section>

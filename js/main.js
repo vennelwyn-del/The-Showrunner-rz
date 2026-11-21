@@ -18,6 +18,40 @@ document.addEventListener("DOMContentLoaded", () => {
       .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
       .replace(/\*([^\s*][^*]*?)\*/g, "<em>$1</em>");
   }
+  function normalizeImageUrl(raw) {
+    const url = String(raw || "").trim();
+    if (!url) return "";
+    // Tự chuyển link GitHub blob sang link ảnh raw
+    const ghMatch = url.match(/^https?:\/\/github\.com\/([^/]+)\/([^/]+)\/blob\/([^/]+)\/(.+)$/i);
+    if (ghMatch) {
+      return `https://raw.githubusercontent.com/${ghMatch[1]}/${ghMatch[2]}/${ghMatch[3]}/${ghMatch[4]}`;
+    }
+    // Tự chuyển link Google Drive /file/d/ID/view sang link ảnh trực tiếp
+    const gdMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
+    if (gdMatch) {
+      return `https://lh3.googleusercontent.com/d/${gdMatch[1]}`;
+    }
+    return url;
+  }
+
+  // Nếu bất kỳ ảnh nào bị hỏng link -> tự ẩn icon rách và hiện khung tối dự phòng
+  document.addEventListener(
+    "error",
+    (e) => {
+      const img = e.target;
+      if (!img || img.tagName !== "IMG") return;
+      const box = img.parentElement;
+      if (!box) return;
+      img.style.display = "none";
+      if (!box.querySelector(".img-fallback-box")) {
+        const fb = document.createElement("div");
+        fb.className = "location-photo-empty img-fallback-box";
+        fb.innerHTML = `<span>LINK ẢNH LỖI HOẶC CHƯA TẢI ĐƯỢC</span><strong>${escapeHtml(img.alt || "SWEZAN 1994")}</strong>`;
+        box.prepend(fb);
+      }
+    },
+    true
+  );
 
   /* -------------------------------------------------------
      1. ÁP DỤNG ẢNH NỀN TỪ config.js
@@ -263,34 +297,70 @@ document.addEventListener("DOMContentLoaded", () => {
     ).join("");
   }
 
-  const worldCompassMap = document.getElementById("world-compass-map");
-  if (worldCompassMap) {
-    worldCompassMap.textContent =
-`               [BẮC: ĐỒI GIÓ HÚ (WIGEL) — THÁP SÓNG KÊNH 8 (14)]
-               [TÂY BẮC: ĐỒI KRANZHÜGEL — DINH THỰ VANESSA (11)]
-                                      │
-    [TÂY: BẾN CẢNG SÔNG ĐEN] ─────────┼───────── [ĐÔNG: ALTSTADT — PHỐ CỔ]
-    - Tiệm cầm đồ "Tổ Quạ" (07)       │          - Đồn Cảnh sát (01) & Nhà xác (02)
-    - Xí nghiệp thủy sản cũ (10)      │          - Tiệm sách "Cassius & Co." (03)
-    - Quán rượu "Mỏ Neo Mù" (16)      │          - Tòa soạn báo "Tagblatt" (04)
-    - Kho than & Bến sà lan           │          - Tòa thị chính & Kho Vi phim (05)
-                                      │          - Phòng trà "Thiên Nga Đen" (06)
-                                      │
-               [NAM: VÀNH ĐAI RỈ SÉT & CÔNG XƯỞNG HÜT IV]
-               - Khu xử lý chất thải số 09 (08)
-               - Nhà kính bỏ hoang C-4 (09)
-               - Lò luyện kim & Cán thép "Số 4" - Hüt IV (12)
-               - Ga hàng hóa & Bãi đầu máy cũ Güterof (13)
-                                      │
-               [NGOẠI Ô: VÀNH ĐAI BÊ TÔNG & ĐẦM LẦY]
-               - Bệnh viện tâm thần bỏ hoang St. Nazet (15)
-               - Phế tích cũ St. Leopold 1974 (17)
-               - Khu chung cư công nhân Khối 7–12 (18)`;
-  }
-
   const locations = Array.isArray(cfg.locations) ? cfg.locations : [];
   let locFilter = "all";
+  let selectedLocId = locations[0] ? locations[0].id : "";
+
+  const mapBgEl = document.getElementById("swezan-map-bg");
+  const mapPinsEl = document.getElementById("swezan-map-pins");
+  const mapInspectorEl = document.getElementById("swezan-map-inspector");
   const locFilterBtns = document.querySelectorAll("[data-loc-filter]");
+  const mapCfg = cfg.map || {};
+
+  if (mapBgEl) {
+    const cleanMapUrl = normalizeImageUrl(mapCfg.imageUrl);
+    if (cleanMapUrl) {
+      mapBgEl.style.backgroundImage = `url("${cleanMapUrl.replace(/"/g, '\\"')}")`;
+    }
+    mapBgEl.classList.toggle("has-bw", mapCfg.bwFilter !== false);
+  }
+
+  function renderMapInspector() {
+    if (!mapInspectorEl) return;
+    const loc = locations.find((l) => l.id === selectedLocId) || locations[0];
+    if (!loc) return;
+
+    const imgUrl = normalizeImageUrl(loc.imageUrl);
+    const photoHtml = imgUrl
+      ? `<img class="location-photo-img" src="${escapeHtml(imgUrl)}" alt="${escapeHtml(loc.title)}" />`
+      : `<div class="location-photo-empty">
+           <span>PIN ${escapeHtml(loc.num || "--")} // ARCHIVE PHOTO</span>
+           <strong>${escapeHtml(loc.title)}</strong>
+         </div>`;
+
+    mapInspectorEl.innerHTML = `
+      <div class="card-badge-row">
+        <span>GHIM ${escapeHtml(loc.num || "--")} // ${escapeHtml(loc.zone)}</span>
+      </div>
+      <div class="location-photo-box">${photoHtml}</div>
+      <h3 class="card-h3">${escapeHtml(loc.title)}</h3>
+      <p class="card-body">${escapeHtml(loc.desc)}</p>
+      ${loc.sensory ? `<div class="location-sensory"><strong>GIÁC QUAN:</strong> ${escapeHtml(loc.sensory)}</div>` : ""}
+    `;
+  }
+
+  function renderMapPins() {
+    if (!mapPinsEl) return;
+    mapPinsEl.innerHTML = locations
+      .map((loc) => {
+        const isActive = loc.id === selectedLocId;
+        const isDimmed = locFilter !== "all" && loc.region !== locFilter;
+        const px = typeof loc.x === "number" ? loc.x : 50;
+        const py = typeof loc.y === "number" ? loc.y : 50;
+        return `
+        <button
+          class="map-pin-btn ${isActive ? "is-active" : ""} ${isDimmed ? "is-dimmed" : ""}"
+          type="button"
+          data-pin-id="${escapeHtml(loc.id)}"
+          style="left: ${px}%; top: ${py}%;"
+          title="${escapeHtml(loc.title)}"
+        >
+          <span class="map-pin-num">${escapeHtml(loc.num || "")}</span>
+          <span>${escapeHtml(loc.short || loc.title)}</span>
+        </button>`;
+      })
+      .join("");
+  }
 
   function renderLocations() {
     if (!worldDistrictsGrid) return;
@@ -300,8 +370,9 @@ document.addEventListener("DOMContentLoaded", () => {
     worldDistrictsGrid.innerHTML = list
       .map((loc) => {
         const numLabel = loc.num ? `${loc.num} // ` : "";
-        const photoHtml = loc.imageUrl
-          ? `<img class="location-photo-img" src="${escapeHtml(loc.imageUrl)}" alt="${escapeHtml(loc.title)}" />`
+        const imgUrl = normalizeImageUrl(loc.imageUrl);
+        const photoHtml = imgUrl
+          ? `<img class="location-photo-img" src="${escapeHtml(imgUrl)}" alt="${escapeHtml(loc.title)}" />`
           : `<div class="location-photo-empty">
                <span>CAM ${escapeHtml(loc.num || "--")} // ARCHIVE PHOTO</span>
                <strong>${escapeHtml(loc.title)}</strong>
@@ -311,7 +382,7 @@ document.addEventListener("DOMContentLoaded", () => {
           : "";
 
         return `
-        <article class="location-card">
+        <article class="location-card" data-card-loc-id="${escapeHtml(loc.id)}" style="cursor:pointer;">
           <div class="location-photo-box">${photoHtml}</div>
           <div class="location-body">
             <div class="card-badge-row"><span>${numLabel}${escapeHtml(loc.zone)}</span></div>
@@ -323,6 +394,42 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .join("");
   }
+
+  if (mapPinsEl) {
+    mapPinsEl.addEventListener("click", (e) => {
+      const pin = e.target.closest("[data-pin-id]");
+      if (!pin) return;
+      selectedLocId = pin.dataset.pinId;
+      renderMapPins();
+      renderMapInspector();
+    });
+  }
+
+  if (worldDistrictsGrid) {
+    worldDistrictsGrid.addEventListener("click", (e) => {
+      const card = e.target.closest("[data-card-loc-id]");
+      if (!card) return;
+      selectedLocId = card.dataset.cardLocId;
+      renderMapPins();
+      renderMapInspector();
+      if (mapInspectorEl) {
+        mapInspectorEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+    });
+  }
+
+  locFilterBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      locFilter = btn.dataset.locFilter;
+      locFilterBtns.forEach((b) => b.classList.toggle("is-active", b === btn));
+      renderMapPins();
+      renderLocations();
+    });
+  });
+
+  renderMapPins();
+  renderMapInspector();
+  renderLocations();
 
   locFilterBtns.forEach((btn) => {
     btn.addEventListener("click", () => {

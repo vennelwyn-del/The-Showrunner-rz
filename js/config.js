@@ -31,7 +31,7 @@ window.SHOWRUNNER_CONFIG = {
      1. ẢNH NỀN (BACKGROUND) CỦA GIAO DIỆN 2
      ------------------------------------------------------- */
   background: {
-    imageUrl: "", // <-- Dán link ảnh nền vào đây (VD: "assets/bg.jpg" hoặc "https://...")
+    imageUrl: "./assets/OPW/Theshowrunner/System/19.png", // <-- Dán link ảnh nền vào đây (VD: "assets/bg.jpg" hoặc "https://...")
     bwAndWireframe: true, // true = phủ đen trắng + khung dây đỏ | false = giữ màu gốc của ảnh
     dimOpacity: 0.22, // Độ tối phủ từ 0.05 (rất sáng) đến 0.80 (rất tối)
   },
@@ -45,10 +45,6 @@ window.SHOWRUNNER_CONFIG = {
     // { id: "track-1", freq: "TAPE 01", title: "Swezan Rain (Theme)", url: "assets/theme.mp3" },
     // { id: "track-2", freq: "TAPE 02", title: "Midnight Jazz", url: "https://.../music.mp3" },
   ],
-
-  /* -------------------------------------------------------
-     3. LINK ẢNH CÁC KHU VỰC TRONG THỊ TRẤN SWEZAN
-     ------------------------------------------------------- */
  /* -------------------------------------------------------
      3. LINK ẢNH 18 ĐỊA DANH TRONG THỊ TRẤN SWEZAN (THÔNG TIN CÔNG KHAI)
      ------------------------------------------------------- */
@@ -60,7 +56,7 @@ window.SHOWRUNNER_CONFIG = {
       region: "east",
       zone: "ĐÔNG · ALTSTADT",
       title: "Đồn Cảnh Sát Trung Tâm (Polizeirevier)",
-      imageUrl: "", // <-- Dán link ảnh Đồn Cảnh Sát tại đây
+      imageUrl: "./assets/OPW/Theshowrunner/System/01.png", // <-- Dán link ảnh Đồn Cảnh Sát tại đây
       sensory: "Đá sa thạch đen ám muội, đèn dây tóc 40W, khói Chesterfield, mùi gin & tiếng máy đánh chữ Olympia.",
       desc: "Tòa nhà 3 tầng từ thế kỷ 19 nơi Cảnh sát trưởng Jaxson Heckler và tân binh Ian Alix làm việc, đặt phòng giam tạm giữ và đài vô tuyến sóng ngắn.",
     },
@@ -70,7 +66,7 @@ window.SHOWRUNNER_CONFIG = {
       region: "east",
       zone: "ĐÔNG · ALTSTADT",
       title: "Nhà Xác & Phòng Pháp Y (Hầm Tòa Án Cũ)",
-      imageUrl: "", // <-- Dán link ảnh Nhà Xác tại đây
+      imageUrl: "./assets/OPW/Theshowrunner/System/02.png", // <-- Dán link ảnh Nhà Xác tại đây
       sensory: "Gạch men trắng ố vàng, đèn huỳnh quang rè 50Hz, nồng mùi formol, ether và tinh dầu bạc hà cay xè.",
       desc: "Khu hầm ngầm lạnh lẽo không ánh mặt trời do Bác sĩ Eva Livingston phụ trách, chuyên giải phẫu tử thi và xét nghiệm độc chất.",
     },
@@ -80,7 +76,7 @@ window.SHOWRUNNER_CONFIG = {
       region: "east",
       zone: "ĐÔNG · ALTSTADT",
       title: "Tiệm Cà Phê Sách “Cassius & Co.”",
-      imageUrl: "", // <-- Dán link ảnh Tiệm Sách tại đây
+      imageUrl: "./assets/OPW/Theshowrunner/System/03.png", // <-- Dán link ảnh Tiệm Sách tại đây
       sensory: "Gỗ sồi đánh sáp ong, đĩa than Chopin, giấy da cổ, cà phê rang mộc, trà Earl Grey & cam bergamot.",
       desc: "Hiệu sách yên tĩnh tại ngã tư bờ kênh của Alistair Cassius, có đặt một chiếc tivi CRT 21-inch vỏ gỗ ở góc quán để khách ghé xem tin tức.",
     },
@@ -90,7 +86,7 @@ window.SHOWRUNNER_CONFIG = {
       region: "east",
       zone: "ĐÔNG · ALTSTADT",
       title: "Tòa Soạn Nhật Báo “Swezan Tagblatt”",
-      imageUrl: "", // <-- Dán link ảnh Tòa Soạn Báo tại đây
+      imageUrl: "./assets/OPW/Theshowrunner/System/04.png", // <-- Dán link ảnh Tòa Soạn Báo tại đây
       sensory: "Tầng áp mái kèo gỗ sồi, máy in typo dập ầm ầm, mùi mực in mới, hóa chất tráng phim & thuốc lá vani Black Devil.",
       desc: "Nơi làm việc của phóng viên Isabel Werner cùng buồng tối tráng phim 35mm, trung tâm săn tin nóng và lan truyền dư luận của thị trấn.",
     },
@@ -100,7 +96,7 @@ window.SHOWRUNNER_CONFIG = {
       region: "east",
       zone: "ĐÔNG · ALTSTADT",
       title: "Tòa Thị Chính & Kho Lưu Trữ Vi Phim",
-      imageUrl: "", // <-- Dán link ảnh Tòa Thị Chính / Kho Vi Phim tại đây
+      imageUrl: "./assets/OPW/Theshowrunner/System/05.png", // <-- Dán link ảnh Tòa Thị Chính / Kho Vi Phim tại đây
       sensory: "Tầng trên gỗ gụ đỏ thoảng mùi gỗ đàn hương; tầng hầm rỉ sét màn hình vi phim xanh lè & mùi bụi giấy ẩm.",
       desc: "Nơi đặt văn phòng Công tố viên Đặc biệt Julian von Brandt ở tầng trên và kho lưu trữ hồ sơ địa chính, tư liệu cũ của Swezan ở tầng hầm.",
     },
@@ -110,7 +106,7 @@ window.SHOWRUNNER_CONFIG = {
       region: "east",
       zone: "RÌA ALTSTADT",
       title: "Phòng Trà Jazz “Thiên Nga Đen”",
-      imageUrl: "", // <-- Dán link ảnh Phòng Trà tại đây
+      imageUrl: "./assets/OPW/Theshowrunner/System/06.png", // <-- Dán link ảnh Phòng Trà tại đây
       sensory: "Đèn chùm pha lê mờ, rèm nhung đỏ thẫm, tiếng saxophone trầm khàn, hoa nhài đêm & vang đỏ Bordeaux.",
       desc: "Câu lạc bộ đêm sang trọng do nữ danh ca Clara Evelyne Moreau làm chủ, tụ điểm giải khuây quen thuộc của giới quan chức và thượng lưu.",
     },
@@ -122,7 +118,7 @@ window.SHOWRUNNER_CONFIG = {
       region: "west",
       zone: "TÂY · SCHWARZHAVEN",
       title: "Tiệm Cầm Đồ & Xưởng “Tổ Quạ” (Raven's Nest)",
-      imageUrl: "", // <-- Dán link ảnh Tiệm Cầm Đồ Tổ Quạ tại đây
+      imageUrl: "./assets/OPW/Theshowrunner/System/07.png", // <-- Dán link ảnh Tiệm Cầm Đồ Tổ Quạ tại đây
       sensory: "Biển neon hình quạ chớp tắt, dầu lau súng Ballistol, mỡ máy, thuốc lá Lucky Strike & rượu Bourbon.",
       desc: "Kho gạch cũ kẹp giữa các bãi than ven sông của Lukas “Raven” Kováč — nơi trao đổi đầu máy VCR, đồ điện tử, thiết bị cơ khí và tin đồn bến tàu.",
     },
@@ -132,7 +128,7 @@ window.SHOWRUNNER_CONFIG = {
       region: "west",
       zone: "TÂY · SCHWARZHAVEN",
       title: "Xí Nghiệp Thủy Sản Cũ Bến Cảng",
-      imageUrl: "", // <-- Dán link ảnh Xí Nghiệp Thủy Sản tại đây
+      imageUrl: "./assets/OPW/Theshowrunner/System/10.png", // <-- Dán link ảnh Xí Nghiệp Thủy Sản tại đây
       sensory: "Bê tông ẩm mốc, mùi bùn nước lợ sông Schwarze tanh nồng, tiếng gió rít qua cửa tôn gỉ sét.",
       desc: "Khu xưởng đóng hộp cá và các hầm bảo quản bỏ hoang lâu năm dọc mép nước Bến Cảng Sông Đen.",
     },
@@ -142,7 +138,7 @@ window.SHOWRUNNER_CONFIG = {
       region: "west",
       zone: "TÂY · SCHWARZHAVEN",
       title: "Quán Rượu Ngầm “Mỏ Neo Mù”",
-      imageUrl: "", // <-- Dán link ảnh Quán Rượu Mỏ Neo Mù tại đây
+      imageUrl: "./assets/OPW/Theshowrunner/System/16.png", // <-- Dán link ảnh Quán Rượu Mỏ Neo Mù tại đây
       sensory: "Thấp hơn mực nước sông, đà gỗ sồi rỉ nước, rượu gin tự nấu, bia ôi, thuốc tẩu & tiếng sóng vỗ vách đá.",
       desc: "Tửu quán dưới tầng hầm của dân sà lan than và thợ bến tàu — nơi mua bán tin vỉa hè ban đêm nhưng cũng dễ nảy sinh ẩu đả.",
     },
@@ -154,7 +150,7 @@ window.SHOWRUNNER_CONFIG = {
       region: "south",
       zone: "NAM · HÜT IV",
       title: "Khu Xưởng Dệt & Trạm Xử Lý Số 09",
-      imageUrl: "", // <-- Dán link ảnh Trạm Xử Lý Số 09 tại đây
+      imageUrl: "./assets/OPW/Theshowrunner/System/08.png", // <-- Dán link ảnh Trạm Xử Lý Số 09 tại đây
       sensory: "Mái vòm bê tông 7 thanh giằng, hơi kiềm nóng nồng gắt & tiếng vọng kim loại rỉ sét.",
       desc: "Khu vực hạ tầng ngầm thuộc tổ hợp Swezan Textil & Chem, hiện đang nằm trong diện kiểm soát nghiêm ngặt sau biến cố Tập 1.",
     },
@@ -164,7 +160,7 @@ window.SHOWRUNNER_CONFIG = {
       region: "south",
       zone: "NAM · HÜT IV",
       title: "Nhà Kính Thực Nghiệm Bỏ Hoang C-4",
-      imageUrl: "", // <-- Dán link ảnh Nhà Kính C-4 tại đây
+      imageUrl: "./assets/OPW/Theshowrunner/System/09.png", // <-- Dán link ảnh Nhà Kính C-4 tại đây
       sensory: "Vòm thép uốn cong như xương cá voi, kính mái vỡ nát, dây leo khô & mùi lưu huỳnh thoang thoảng.",
       desc: "Khu ươm cây sợi dệt cũ kỹ bị bỏ phế giữa vành đai công nghiệp phía Nam, vừa được cảnh sát giăng dây phong tỏa tuần qua.",
     },
@@ -174,7 +170,7 @@ window.SHOWRUNNER_CONFIG = {
       region: "south",
       zone: "NAM · HÜT IV",
       title: "Lò Luyện Kim & Cán Thép “Số 4” (Hüt IV)",
-      imageUrl: "", // <-- Dán link ảnh Lò Luyện Kim Số 4 tại đây
+      imageUrl: "./assets/OPW/Theshowrunner/System/12.png", // <-- Dán link ảnh Lò Luyện Kim Số 4 tại đây
       sensory: "Rừng ống khói đen kịt, bánh răng cao 4 mét đóng xỉ than, mùi quặng sắt rỉ & xì gà Havana.",
       desc: "Pháo đài công nghiệp đồ sộ của ông chủ Kurt Denholm với những phân xưởng nguội lạnh và đội bảo an tư nhân tuần tra quanh các container hàng.",
     },
@@ -184,7 +180,7 @@ window.SHOWRUNNER_CONFIG = {
       region: "south",
       zone: "NAM · GÜTEROF",
       title: "Ga Hàng Hóa & Bãi Đầu Máy Cũ Güterof",
-      imageUrl: "", // <-- Dán link ảnh Ga Güterof tại đây
+      imageUrl: "./assets/OPW/Theshowrunner/System/13.png", // <-- Dán link ảnh Ga Güterof tại đây
       sensory: "Đường ray cụt phủ cỏ dại, đầu máy hơi nước mục rỉ, mùi dầu hắc ín tà vẹt, nhựa thông & thuốc lá sợi.",
       desc: "Bãi toa xe chở than bỏ không giáp bìa rừng thông — nơi các nhóm công nhân bãi công của Lotte Loris thường tập kết giữ lửa.",
     },
@@ -196,7 +192,7 @@ window.SHOWRUNNER_CONFIG = {
       region: "north",
       zone: "TÂY BẮC · KRANZHÜGEL",
       title: "Dinh Thự Vanessa (Đồi Kranzhügel)",
-      imageUrl: "", // <-- Dán link ảnh Dinh Thự Vanessa tại đây
+      imageUrl: "./assets/OPW/Theshowrunner/System/11.png", // <-- Dán link ảnh Dinh Thự Vanessa tại đây
       sensory: "Kiến trúc tân cổ điển, tháp chuông đồng 1888, vườn hoa hồng sương lạnh & hương nước hoa Guerlain.",
       desc: "Tư dinh xa hoa sau cổng sắt rèn của góa phụ Traudl Vanessa trên vùng đồi cao tách biệt, gần đây tăng cường vệ sĩ canh gác nghiêm ngặt.",
     },
@@ -206,7 +202,7 @@ window.SHOWRUNNER_CONFIG = {
       region: "north",
       zone: "BẮC · ĐỒI WIGEL",
       title: "Tháp Truyền Hình & Trạm Sóng Đồi Gió Hú",
-      imageUrl: "", // <-- Dán link ảnh Tháp Sóng Đồi Wigel tại đây
+      imageUrl: "./assets/OPW/Theshowrunner/System/14.png", // <-- Dán link ảnh Tháp Sóng Đồi Wigel tại đây
       sensory: "Đỉnh núi đá vôi đóng băng, đèn đỏ chớp tắt, màn hình CRT xanh lè, rít tĩnh điện 15kHz & mùi ozone.",
       desc: "Trạm tiếp sóng của đài K-TV Kênh 8 nơi kỹ thuật viên Ena Sherley trực ca đêm — tâm điểm kỹ thuật sau vụ cướp sóng truyền hình.",
     },
@@ -216,7 +212,7 @@ window.SHOWRUNNER_CONFIG = {
       region: "north",
       zone: "BÌA RỪNG TÂY · NGOẠI Ô",
       title: "Bệnh Viện Tâm Thần Bỏ Hoang St. Nazet",
-      imageUrl: "", // <-- Dán link ảnh Viện St. Nazet tại đây
+      imageUrl: "./assets/OPW/Theshowrunner/System/15.png", // <-- Dán link ảnh Viện St. Nazet tại đây
       sensory: "Hành lang vòm đá Gothic phủ rêu đen, hồ sơ mục nát vung vãi, thoảng mùi cồn & phấn diên vĩ lạnh.",
       desc: "Khu viện cô lập đã giải thể từ năm 1988, nơi Dr. Alis Zola từng công tác trước khi rút về sống ẩn dật.",
     },
@@ -226,7 +222,7 @@ window.SHOWRUNNER_CONFIG = {
       region: "north",
       zone: "ĐẦM LẦY NAM · NGOẠI Ô",
       title: "Phế Tích Trại Trẻ St. Leopold (1974)",
-      imageUrl: "", // <-- Dán link ảnh Phế Tích 1974 tại đây
+      imageUrl: "./assets/OPW/Theshowrunner/System/17.png", // <-- Dán link ảnh Phế Tích 1974 tại đây
       sensory: "Gạch nung cháy đen giữa lau sậy ngập tuyết, khung giường sắt cong vênh & cổng đá khắc số “1974”.",
       desc: "Tàn tích vụ hỏa hoạn lớn hai thập kỷ trước ở rìa đầm lầy ngoại ô — địa danh cũ kỹ hiếm ai còn nhắc tới trong các trang báo hiện tại.",
     },
@@ -236,7 +232,7 @@ window.SHOWRUNNER_CONFIG = {
       region: "north",
       zone: "NGOẠI Ô · VÀNH ĐAI BÊ TÔNG",
       title: "Khu Chung Cư Công Nhân Khối 7–12",
-      imageUrl: "", // <-- Dán link ảnh Chung Cư Khối 7-12 tại đây
+      imageUrl: "./assets/OPW/Theshowrunner/System/18.png", // <-- Dán link ảnh Chung Cư Khối 7-12 tại đây
       sensory: "Khối bê tông Brutalist 12 tầng, dây phơi chằng chịt, ăng-ten râu thỏ & tivi trùm chăn sau khung cửa kính.",
       desc: "Nơi ở của hàng vạn lao động nghèo và tân binh Ian Alix; không khí luôn sục sôi bức xúc mỗi khi còi hú đổi ca hay cắt lương.",
     },

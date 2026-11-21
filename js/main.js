@@ -741,7 +741,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 ---
 
-**Ngoại hình & Giác quan (1994 Noir):**
+**Ngoại hình (1994 Noir):**
 * Vóc dáng & Diện mạo: ${val("pf-physique", "[Chiều cao, dáng người, màu mắt, kiểu tóc, vết sẹo...]")}
 * Phong cách ăn mặc: ${val("pf-attire", "[Áo măng tô dạ, suit cũ, áo da, váy nhung...]")}
 * Mùi hương đặc trưng: ${val("pf-scent", "[Mùi cà phê đắng, thuốc lá, mưa bùn than...]")}

@@ -2251,3 +2251,82 @@ body[data-theme="relic"] .location-sensory strong {
     grid-template-columns: 1fr;
   }
 }
+/* =========================================================
+   VIDEO TỐI — BÓNG NGƯỜI MÀU ĐỎ (3.8 GIÂY)
+   ========================================================= */
+
+.sim-red-shadow-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 44%, #1e0306 0%, #090304 58%, #030202 100%);
+}
+
+/* Chế độ biến ảnh cắt nền bất kỳ thành bóng đỏ phát sáng */
+.sim-tint-red-shadow {
+  filter: brightness(0) saturate(100%) invert(14%) sepia(95%) saturate(5800%) hue-rotate(351deg) brightness(88%) drop-shadow(0 0 18px rgba(255, 24, 46, 0.72));
+}
+
+.sim-red-silhouette-svg {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.tape-sim-stage.is-playing .red-body-breathe {
+  transform-origin: 200px 260px;
+  animation: redBodyStruggle 3.8s ease-in-out forwards;
+}
+
+.tape-sim-stage.is-playing .red-arms-slide {
+  animation: redArmsSlideDown 3.8s ease-in-out forwards;
+}
+
+.tape-sim-stage.is-playing .red-chair-swing {
+  transform-origin: 200px 0px;
+  animation: redChairPendulum 3.8s ease-in-out forwards;
+}
+
+.tape-sim-stage.is-playing .red-cocoon-drop {
+  animation: redCocoonDescend 3.8s ease-in-out forwards;
+}
+
+.tape-sim-stage.is-playing .red-rider-flicker {
+  animation: redRiderBlink 3.8s steps(1, end) forwards;
+}
+
+@keyframes redBodyStruggle {
+  0%   { transform: scale(0.96) translateY(6px); opacity: 0.78; }
+  30%  { transform: scale(1.01) translate(-2px, 0px); opacity: 0.96; }
+  58%  { transform: scale(1.05) translate(2px, -3px); opacity: 1; }
+  80%  { transform: scale(1.07) translate(-1px, 2px); opacity: 0.94; }
+  100% { transform: scale(1.08) translateY(5px); opacity: 0.88; }
+}
+
+@keyframes redArmsSlideDown {
+  0%   { transform: translateY(4px); }
+  40%  { transform: translateY(-6px); }
+  100% { transform: translateY(14px); }
+}
+
+@keyframes redChairPendulum {
+  0%   { transform: rotate(-3.5deg); }
+  50%  { transform: rotate(3.5deg); }
+  100% { transform: rotate(-1.5deg) scale(1.04); }
+}
+
+@keyframes redCocoonDescend {
+  0%   { transform: translateY(-22px); opacity: 0.75; }
+  100% { transform: translateY(18px); opacity: 0.98; }
+}
+
+@keyframes redRiderBlink {
+  0%, 34%   { opacity: 0; }
+  36%, 44%  { opacity: 0.92; }
+  46%, 68%  { opacity: 0.12; }
+  70%, 84%  { opacity: 1; }
+  86%, 100% { opacity: 0.25; }
+}

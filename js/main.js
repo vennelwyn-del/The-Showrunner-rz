@@ -40,13 +40,25 @@ document.addEventListener("DOMContentLoaded", () => {
     (e) => {
       const img = e.target;
       if (!img || img.tagName !== "IMG") return;
+      img.style.display = "none";
+
+      // Nếu là lớp ảnh trong video mô phỏng thì chỉ ẩn êm, không hiện chữ báo lỗi đè lên video
+      if (
+        img.classList.contains("sim-layer-flower") ||
+        img.classList.contains("sim-layer-bg") ||
+        img.classList.contains("sim-layer-overlay") ||
+        img.classList.contains("sim-layer-person")
+      ) {
+        return;
+      }
+
       const box = img.parentElement;
       if (!box) return;
-      img.style.display = "none";
       if (!box.querySelector(".img-fallback-box")) {
+        const failedSrc = img.getAttribute("src") || "";
         const fb = document.createElement("div");
         fb.className = "location-photo-empty img-fallback-box";
-        fb.innerHTML = `<span>LINK ẢNH LỖI HOẶC CHƯA TẢI ĐƯỢC</span><strong>${escapeHtml(img.alt || "SWEZAN 1994")}</strong>`;
+        fb.innerHTML = `<span>KHÔNG TÌM THẤY FILE: ${escapeHtml(failedSrc)}</span><strong>${escapeHtml(img.alt || "SWEZAN 1994")}</strong>`;
         box.prepend(fb);
       }
     },
@@ -458,68 +470,157 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let simRafId = null;
 
+  function buildRedSilhouetteSvg(tapeId) {
+    const commonDefs = `
+      <defs>
+        <linearGradient id="redBodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#ff2e43" />
+          <stop offset="45%" stop-color="#b80d1e" />
+          <stop offset="100%" stop-color="#3a0308" />
+        </linearGradient>
+        <radialGradient id="redAura" cx="50%" cy="46%" r="54%">
+          <stop offset="0%" stop-color="rgba(220, 20, 38, 0.34)" />
+          <stop offset="65%" stop-color="rgba(110, 4, 14, 0.14)" />
+          <stop offset="100%" stop-color="rgba(5, 2, 3, 0)" />
+        </radialGradient>
+        <filter id="redGlowFilter" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="3.5" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+    `;
+
+    if (tapeId === "tape-2") {
+      return `
+      <svg class="sim-red-silhouette-svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        ${commonDefs}
+        <rect width="400" height="300" fill="#060203" />
+        <ellipse cx="200" cy="146" rx="145" ry="125" fill="url(#redAura)" />
+        <!-- Viền buồng kính quả trứng mờ -->
+        <ellipse cx="200" cy="150" rx="112" ry="132" fill="none" stroke="rgba(255, 70, 88, 0.25)" stroke-width="2" />
+        <!-- Bóng người nữ màu đỏ giữa màn đêm -->
+        <g class="red-body-breathe" filter="url(#redGlowFilter)">
+          <!-- Đầu & tóc xõa dài -->
+          <path d="M180,68 C182,45 218,45 220,68 C224,90 232,108 228,128 C218,120 182,120 172,128 C168,108 176,90 180,68 Z" fill="#6e050f" />
+          <ellipse cx="200" cy="70" rx="19" ry="24" fill="url(#redBodyGrad)" />
+          <!-- Cổ, vai, eo & hông váy dài -->
+          <path d="M192,90 L208,90 L212,108 C236,112 248,124 252,146 L236,188 C230,206 238,236 254,300 L146,300 C162,236 170,206 164,188 L148,146 C152,124 164,112 188,108 Z" fill="url(#redBodyGrad)" />
+          <!-- Hai cánh tay giơ lên áp vào mặt kính -->
+          <g class="red-arms-slide">
+            <path d="M154,126 C132,142 124,158 134,174 L152,138 L166,112 L152,100 L132,112 L134,94 L144,90 L148,104 Z" fill="url(#redBodyGrad)" />
+            <path d="M148,162 L132,126 C126,114 134,100 144,102 L158,136 Z" fill="url(#redBodyGrad)" />
+            <path d="M246,126 C268,142 276,158 266,174 L248,138 L234,112 L248,100 L268,112 L266,94 L256,90 L252,104 Z" fill="url(#redBodyGrad)" />
+            <path d="M252,162 L268,126 C274,114 266,100 256,102 L242,136 Z" fill="url(#redBodyGrad)" />
+            <!-- Bàn tay 5 ngón áp sát kính -->
+            <ellipse cx="144" cy="108" rx="9" ry="12" fill="#ff2e43" opacity="0.88" />
+            <ellipse cx="256" cy="108" rx="9" ry="12" fill="#ff2e43" opacity="0.88" />
+          </g>
+        </g>
+      </svg>`;
+    }
+
+    if (tapeId === "tape-3a") {
+      return `
+      <svg class="sim-red-silhouette-svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        ${commonDefs}
+        <rect width="400" height="300" fill="#050203" />
+        <ellipse cx="200" cy="145" rx="140" ry="118" fill="url(#redAura)" />
+        <!-- Mặt nước tối phản chiếu đỏ bên dưới -->
+        <rect x="0" y="232" width="400" height="68" fill="#040102" />
+        <line x1="60" y1="242" x2="340" y2="242" stroke="rgba(220, 20, 38, 0.38)" stroke-width="1.5" stroke-dasharray="16 8" />
+        <line x1="110" y1="256" x2="290" y2="256" stroke="rgba(220, 20, 38, 0.24)" stroke-width="1" />
+        <!-- Ghế sắt treo & bóng người đỏ bị trói -->
+        <g class="red-chair-swing" filter="url(#redGlowFilter)">
+          <line x1="200" y1="0" x2="200" y2="74" stroke="rgba(255, 60, 76, 0.55)" stroke-width="3" stroke-dasharray="6 4" />
+          <!-- Đầu cúi + thân người ngồi ghế -->
+          <ellipse cx="200" cy="86" rx="17" ry="21" fill="url(#redBodyGrad)" />
+          <path d="M172,110 C184,104 216,104 228,110 L224,174 L176,174 Z" fill="url(#redBodyGrad)" />
+          <!-- Hai chân thõng xuống -->
+          <path d="M176,174 L170,224 L184,224 L190,174 Z" fill="url(#redBodyGrad)" />
+          <path d="M210,174 L216,224 L230,224 L224,174 Z" fill="url(#redBodyGrad)" />
+          <!-- Khung ghế sắt -->
+          <rect x="164" y="170" width="72" height="8" fill="#5e050d" />
+          <rect x="168" y="102" width="64" height="68" fill="none" stroke="#8c0814" stroke-width="4" />
+        </g>
+        <!-- Bóng bàn tay găng lướt ngang -->
+        <g class="sim-glove-pass">
+          <path d="M-40,300 L22,155 C32,138 52,144 48,162 L24,300 Z" fill="#030102" stroke="#9c0412" stroke-width="1.5" />
+        </g>
+      </svg>`;
+    }
+
+    if (tapeId === "tape-1") {
+      return `
+      <svg class="sim-red-silhouette-svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        ${commonDefs}
+        <rect width="400" height="300" fill="#060203" />
+        <ellipse cx="200" cy="145" rx="135" ry="110" fill="url(#redAura)" />
+        <g class="red-cocoon-drop" filter="url(#redGlowFilter)">
+          <line x1="200" y1="-40" x2="200" y2="85" stroke="rgba(255, 65, 80, 0.5)" stroke-width="4" stroke-dasharray="8 4" />
+          <path d="M200,82 C222,82 232,126 226,176 C222,208 212,226 200,226 C188,226 178,208 174,176 C168,126 178,82 200,82 Z" fill="url(#redBodyGrad)" />
+        </g>
+      </svg>`;
+    }
+
+    // Tập 4: Bóng Kỵ Sĩ đỏ chớp tắt trong bóng tối
+    return `
+      <svg class="sim-red-silhouette-svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        ${commonDefs}
+        <rect width="400" height="300" fill="#050203" />
+        <ellipse cx="200" cy="150" rx="125" ry="115" fill="url(#redAura)" />
+        <g class="red-rider-flicker" filter="url(#redGlowFilter)">
+          <ellipse cx="200" cy="96" rx="22" ry="27" fill="url(#redBodyGrad)" />
+          <path d="M132,300 C140,185 164,132 200,132 C236,132 260,185 268,300 Z" fill="url(#redBodyGrad)" />
+        </g>
+      </svg>`;
+  }
+
   function buildCutoutSimHtml(tape) {
     const sim = tape.sim || {};
-    const hasCustomCutouts = Boolean(
-      sim.bgUrl || sim.personUrl || sim.flowerUrl || sim.flowerRightUrl || sim.overlayUrl
-    );
+    const motionClass = `motion-${tape.id}`;
 
-    const tintClass =
+    // Nếu người tạo có gắn personUrl riêng -> dùng ảnh đó (hỗ trợ biến thành bóng đỏ hoặc đen trắng)
+    const personTint =
       sim.tintMode === "shadow"
         ? "sim-tint-shadow"
         : sim.tintMode === "original"
         ? "sim-tint-original"
-        : "sim-tint-noir";
+        : "sim-tint-red-shadow";
 
-    const motionClass = `motion-${tape.id}`;
-
-    // Nếu người tạo chưa chèn link ảnh cắt nền nào thì giữ thông báo + khung chờ gọn
-    if (!hasCustomCutouts) {
-      return `
-        <div class="sim-cutout-stage">
-          <div class="sim-fog-band sim-fog-back"></div>
-          <div class="sim-empty-cutout-hint">
-            <strong>${escapeHtml(tape.status)}</strong>
-            <span>Chèn link ảnh người &amp; hoa cắt nền (.PNG) vào mục <code>videos → sim</code> trong <code>js/config.js</code> để phát hoạt ảnh.</span>
-          </div>
-          <div class="sim-noise-grain"></div>
-          <div class="sim-tracking-band"></div>
-          <div class="sim-flash-glitch"></div>
-        </div>
-      `;
-    }
+    const personLayerHtml = sim.personUrl
+      ? `<img class="sim-layer-person ${personTint} ${motionClass}" src="${escapeHtml(normalizeImageUrl(sim.personUrl))}" alt="" />`
+      : buildRedSilhouetteSvg(tape.id);
 
     const bgHtml = sim.bgUrl
-      ? `<img class="sim-layer-bg ${tintClass}" src="${escapeHtml(sim.bgUrl)}" alt="" />`
-      : "";
-
-    const personHtml = sim.personUrl
-      ? `<img class="sim-layer-person ${tintClass} ${motionClass}" src="${escapeHtml(sim.personUrl)}" alt="${escapeHtml(tape.title)}" />`
+      ? `<img class="sim-layer-bg sim-tint-noir" src="${escapeHtml(normalizeImageUrl(sim.bgUrl))}" alt="" />`
       : "";
 
     let flowerHtml = "";
     if (sim.flowerUrl && sim.flowerRightUrl) {
       flowerHtml = `
-        <img class="sim-layer-flower is-left ${tintClass}" src="${escapeHtml(sim.flowerUrl)}" alt="" />
-        <img class="sim-layer-flower is-right ${tintClass}" src="${escapeHtml(sim.flowerRightUrl)}" alt="" />
+        <img class="sim-layer-flower is-left sim-tint-noir" src="${escapeHtml(normalizeImageUrl(sim.flowerUrl))}" alt="" />
+        <img class="sim-layer-flower is-right sim-tint-noir" src="${escapeHtml(normalizeImageUrl(sim.flowerRightUrl))}" alt="" />
       `;
     } else if (sim.flowerUrl) {
-      flowerHtml = `<img class="sim-layer-flower is-center ${tintClass}" src="${escapeHtml(sim.flowerUrl)}" alt="" />`;
+      flowerHtml = `<img class="sim-layer-flower is-center sim-tint-noir" src="${escapeHtml(normalizeImageUrl(sim.flowerUrl))}" alt="" />`;
     } else if (sim.flowerRightUrl) {
-      flowerHtml = `<img class="sim-layer-flower is-right ${tintClass}" src="${escapeHtml(sim.flowerRightUrl)}" alt="" />`;
+      flowerHtml = `<img class="sim-layer-flower is-right sim-tint-noir" src="${escapeHtml(normalizeImageUrl(sim.flowerRightUrl))}" alt="" />`;
     }
 
     const overlayHtml = sim.overlayUrl
-      ? `<img class="sim-layer-overlay ${motionClass}" src="${escapeHtml(sim.overlayUrl)}" alt="" />`
+      ? `<img class="sim-layer-overlay ${motionClass}" src="${escapeHtml(normalizeImageUrl(sim.overlayUrl))}" alt="" />`
       : tape.id === "tape-2"
       ? `<div class="sim-egg-glass-rim"></div>`
       : "";
 
     return `
-      <div class="sim-cutout-stage">
+      <div class="sim-red-shadow-stage">
         ${bgHtml}
         <div class="sim-fog-band sim-fog-back"></div>
-        ${personHtml}
+        ${personLayerHtml}
         <div class="sim-fog-band sim-fog-front"></div>
         ${flowerHtml}
         ${overlayHtml}

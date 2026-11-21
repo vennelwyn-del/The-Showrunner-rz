@@ -449,5 +449,4 @@
     togglePlay() {
       return radioPlaying ? this.stop() : this.play();
     },
-  };
 })();

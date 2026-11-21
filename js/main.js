@@ -38,6 +38,13 @@ document.addEventListener("DOMContentLoaded", () => {
       p.hidden = !match;
       p.classList.toggle("is-active", match);
     });
+
+    if (tabKey === "tapes") {
+      const activeTape = videos.find((v) => v.id === activeTapeId) || videos[0];
+      if (activeTape) playTapeSimulation(activeTape);
+    } else if (window.Tape3DSim) {
+      window.Tape3DSim.destroy();
+    }
   }
 
   tabBtns.forEach((btn) => btn.addEventListener("click", () => switchTab(btn.dataset.tab)));
@@ -323,60 +330,78 @@ document.addEventListener("DOMContentLoaded", () => {
       </svg>`;
   }
 
-  function playTapeSimulation(tape) {
+     function playTapeSimulation(tape) {
     if (!tapeCrtMedia || !tape) return;
     if (simRafId) {
       cancelAnimationFrame(simRafId);
       simRafId = null;
     }
-
+    if (window.Tape3DSim) window.Tape3DSim.destroy();
     if (tape.videoUrl) {
       tapeCrtMedia.innerHTML = `<video src="${escapeHtml(tape.videoUrl)}" ${tape.thumbnailUrl ? `poster="${escapeHtml(tape.thumbnailUrl)}"` : ""} controls autoplay playsinline></video>`;
       if (tapeCrtTimer) tapeCrtTimer.textContent = "▶ VIDEO";
       if (tapeSimProgress) tapeSimProgress.style.width = "100%";
       return;
     }
-
-    tapeCrtMedia.innerHTML = `
+    if (window.AnalogAudio && typeof window.AnalogAudio.playTapeStaticBurst === "function") {
+      window.AnalogAudio.playTapeStaticBurst(3.8);
+    }
+    // Tạo khung sân khấu 3D
+     tapeCrtMedia.innerHTML = `
       <div id="tape-sim-stage" class="tape-sim-stage is-playing">
+        <div id="tape-3d-mount" style="width:100%;height:100%;position:relative;"></div>
+        <div class="sim-end-stamp">■ END OF PREVIEW // BẤM PHÁT LẠI</div>
+      </div>
+    `;
+    const mountEl = document.getElementById("tape-3d-mount");
+    const used3D =
+      window.Tape3DSim &&
+      window.Tape3DSim.isSupported() &&
+      window.Tape3DSim.mount(
+        mountEl,
+        tape.id,
+        (ratio) => {
+          const sec = Math.min(4, Math.floor(ratio * 4));
+          if (tapeSimProgress) tapeSimProgress.style.width = `${(ratio * 100).toFixed(1)}%`;
+          if (tapeCrtTimer) tapeCrtTimer.textContent = ratio < 1 ? `▶ PLAY 00:0${sec}` : "■ STOP 00:04";
+        },
+        () => {
+          const stage = document.getElementById("tape-sim-stage");
+          if (stage) {
+            stage.classList.remove("is-playing");
+            stage.classList.add("is-ended");
+          }
+        }
+      );
+
+    // Dự phòng nếu máy mất mạng không tải được Three.js -> chạy SVG bóng mờ 2D
+    if (!used3D) {
+      mountEl.innerHTML = `
         ${buildTapeSilhouetteSvg(tape.id)}
         <div class="sim-noise-grain"></div>
         <div class="sim-tracking-band"></div>
         <div class="sim-flash-glitch"></div>
-        <div class="sim-end-stamp">■ END OF PREVIEW // BẤM PHÁT LẠI</div>
-      </div>
-    `;
-
-    if (window.AnalogAudio && typeof window.AnalogAudio.playTapeStaticBurst === "function") {
-      window.AnalogAudio.playTapeStaticBurst(3.8);
-    }
-
-    const durationMs = 3800;
-    const startAt = performance.now();
-
-    function step(now) {
-      const elapsed = now - startAt;
-      const ratio = Math.min(1, elapsed / durationMs);
-      const sec = Math.min(4, Math.floor(ratio * 4));
-
-      if (tapeSimProgress) tapeSimProgress.style.width = `${(ratio * 100).toFixed(1)}%`;
-      if (tapeCrtTimer) {
-        tapeCrtTimer.textContent = ratio < 1 ? `▶ PLAY 00:0${sec}` : "■ STOP 00:04";
-      }
-
-      if (ratio < 1) {
-        simRafId = requestAnimationFrame(step);
-      } else {
-        const stage = document.getElementById("tape-sim-stage");
-        if (stage) {
-          stage.classList.remove("is-playing");
-          stage.classList.add("is-ended");
+      `;
+      const durationMs = 3800;
+      const startAt = performance.now();
+      function stepFallback(now) {
+        const ratio = Math.min(1, (now - startAt) / durationMs);
+        const sec = Math.min(4, Math.floor(ratio * 4));
+        if (tapeSimProgress) tapeSimProgress.style.width = `${(ratio * 100).toFixed(1)}%`;
+        if (tapeCrtTimer) tapeCrtTimer.textContent = ratio < 1 ? `▶ PLAY 00:0${sec}` : "■ STOP 00:04";
+        if (ratio < 1) {
+          simRafId = requestAnimationFrame(stepFallback);
+        } else {
+          const stage = document.getElementById("tape-sim-stage");
+          if (stage) {
+            stage.classList.remove("is-playing");
+            stage.classList.add("is-ended");
+          }
+          simRafId = null;
         }
-        simRafId = null;
       }
+      simRafId = requestAnimationFrame(stepFallback);
     }
-
-    simRafId = requestAnimationFrame(step);
   }
 
   function selectTape(tapeId) {

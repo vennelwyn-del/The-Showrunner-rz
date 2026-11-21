@@ -1444,3 +1444,28 @@ body[data-theme="relic"] .end-rule-box strong { color: var(--faded-silver); }
   75%  { opacity: 0.65; transform: translate(-50%, -40%) rotate(var(--splat-rot, 0deg)) scale(1.04); }
   100% { opacity: 0;    transform: translate(-50%, -34%) rotate(var(--splat-rot, 0deg)) scale(1.08); }
 }
+/* =========================================================
+   KHUNG CANVAS 3D TRONG MÀN HÌNH CRT
+   ========================================================= */
+
+.tape-sim-stage canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  position: relative;
+  z-index: 2;
+}
+
+.sim-webgl-hud {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.tape-sim-stage.is-ended .sim-end-stamp {
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 12px;
+  background: linear-gradient(to top, rgba(9, 9, 9, 0.72), transparent 36%);
+}

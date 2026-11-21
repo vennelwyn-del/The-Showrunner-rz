@@ -264,6 +264,7 @@
         </div>
 
         <nav class="desk-tabs" aria-label="Mục giới thiệu tác phẩm">
+          <button class="desk-tab" type="button" data-tab="backstory">00. BACKSTORY</button>
           <button class="desk-tab is-active" type="button" data-tab="overview">01. TỔNG QUAN</button>
           <button class="desk-tab" type="button" data-tab="world">02. THẾ GIỚI &amp; KHU VỰC</button>
           <button class="desk-tab" type="button" data-tab="tapes">03. BĂNG VIDEO CÔNG BỐ</button>
@@ -280,6 +281,7 @@
       </header>
 
       <!-- TAB 1: TỔNG QUAN -->
+      <section id="tab-backstory" class="desk-panel" hidden>
       <section id="tab-overview" class="desk-panel is-active">
         <div class="evidence-desk-grid">
           <div class="polaroid-cluster">
@@ -679,7 +681,65 @@
         </div>
       </footer>
     </div>
+    <!-- =========================================================
+       BẢNG GHI CHÚ THÔNG TIN CÔNG KHAI KHI ẤN VÀO NHÂN VẬT
+       ========================================================= -->
+  <div id="char-note-modal" class="char-note-modal" hidden role="dialog" aria-modal="true" aria-labelledby="note-char-name">
+    <div class="char-note-sheet">
+      <span class="pushpin" aria-hidden="true"></span>
+
+      <div class="char-note-topbar">
+        <div class="char-note-id-row">
+          <span id="note-code">ARCHIVE // 1994</span>
+          <span id="note-stamp" class="char-stamp">PUBLIC</span>
+        </div>
+        <div class="char-note-nav">
+          <button id="note-prev-btn" class="studio-btn" type="button" title="Nhân vật trước">&lsaquo; TRƯỚC</button>
+          <button id="note-next-btn" class="studio-btn" type="button" title="Nhân vật tiếp theo">SAU &rsaquo;</button>
+          <button id="note-close-btn" class="studio-btn studio-btn-red" type="button">&times; ĐÓNG GHI CHÚ</button>
+        </div>
+      </div>
+
+      <div class="char-note-grid">
+        <div class="char-note-photo-col">
+          <div class="char-note-polaroid">
+            <div id="note-photo-box" class="char-photo-box"></div>
+            <div class="char-note-caption">
+              <strong id="note-char-name">Tên nhân vật</strong>
+              <span id="note-meta">Tuổi | Giới tính</span>
+            </div>
+          </div>
+          <blockquote id="note-quote" class="char-note-quote"></blockquote>
+        </div>
+
+        <div class="char-note-info-col">
+          <div id="note-role" class="char-note-role">Chức danh / Vai trò</div>
+
+          <div class="char-note-block">
+            <h4>01 // NGOẠI HÌNH &amp; TRANG PHỤC (1994)</h4>
+            <p id="note-appearance"></p>
+          </div>
+
+          <div class="char-note-block">
+            <h4>02 // MÙI HƯƠNG &amp; DẤU ẤN GIÁC QUAN</h4>
+            <p id="note-sensory"></p>
+          </div>
+
+          <div class="char-note-block">
+            <h4>03 // PHONG THÁI THƯỜNG NHẬT</h4>
+            <p id="note-demeanor"></p>
+          </div>
+
+          <div class="char-note-block is-highlight">
+            <h4>04 // GHI CHÚ CÔNG KHAI TẠI SWEZAN</h4>
+            <p id="note-public"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   </section>
+  
 
   <!-- MÀN HÌNH DỪNG BĂNG THE END -->
   <div id="end-curtain-overlay" class="end-curtain-overlay" hidden>

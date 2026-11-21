@@ -1469,3 +1469,278 @@ body[data-theme="relic"] .end-rule-box strong { color: var(--faded-silver); }
   padding: 12px;
   background: linear-gradient(to top, rgba(9, 9, 9, 0.72), transparent 36%);
 }
+/* =========================================================
+   TAB 0 (BACKSTORY + ẢNH) & BẢNG GHI CHÚ NHÂN VẬT KHI CLICK
+   ========================================================= */
+
+.desk-tab {
+  padding: 6px 9px;
+  font-size: 10px;
+}
+
+/* Tab 0: Backstory */
+.backstory-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.92fr) minmax(320px, 1.25fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.backstory-photo-card {
+  position: relative;
+  padding: 14px 14px 18px;
+  background: #ded6c8;
+  color: #161212;
+  transform: rotate(-1.4deg);
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.68), inset 0 0 26px rgba(80, 50, 26, 0.22);
+}
+
+.backstory-photo-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #1a0709;
+  border: 1px solid #352a26;
+  overflow: hidden;
+}
+
+.backstory-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(35%) contrast(1.12);
+}
+
+.backstory-photo-empty {
+  width: 100%;
+  height: 100%;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: radial-gradient(circle at 45% 40%, rgba(184, 16, 32, 0.48), #140709 85%);
+  color: rgba(255, 224, 224, 0.78);
+  font-family: var(--font-mono);
+}
+
+.backstory-photo-empty span { font-size: 10px; letter-spacing: 0.14em; }
+.backstory-photo-empty strong { font-size: 14px; color: #ffffff; }
+
+.backstory-photo-caption {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: #3f3530;
+}
+
+.backstory-story-card {
+  padding: clamp(20px, 3vw, 30px);
+  background: var(--surface-panel);
+  border: 1px solid var(--border-line);
+  border-left: 4px solid var(--red-signal);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 40px rgba(9, 9, 9, 0.65);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.backstory-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.7rem, 3.2vw, 2.5rem);
+  color: #ffffff;
+  line-height: 1.1;
+}
+
+.backstory-quote {
+  padding: 10px 14px;
+  background: rgba(156, 4, 18, 0.16);
+  border-left: 2px solid #ff6b78;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 16px;
+  color: #f4dede;
+}
+
+.backstory-paragraphs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.backstory-paragraphs p {
+  font-size: 14px;
+  line-height: 1.72;
+  color: var(--text-main);
+  text-align: justify;
+}
+
+/* Gợi ý bấm trên thẻ Polaroid nhân vật */
+.char-polaroid-card { cursor: pointer; }
+
+.char-open-hint {
+  margin-top: 4px;
+  align-self: flex-end;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: #9C0412;
+  font-weight: 700;
+}
+
+/* Bảng Modal Ghi Chú Nhân Vật */
+.char-note-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 75;
+  background: rgba(9, 6, 7, 0.78);
+  backdrop-filter: blur(6px);
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  overflow-y: auto;
+  animation: verticalHoldSettle 0.25s ease forwards;
+}
+
+.char-note-sheet {
+  position: relative;
+  width: min(880px, 100%);
+  padding: clamp(18px, 3vw, 28px);
+  background: #d8cfc0;
+  color: #161212;
+  border: 1px solid #8a7b6c;
+  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.9), inset 0 0 50px rgba(80, 50, 26, 0.22);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.char-note-topbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #161212;
+}
+
+.char-note-id-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: #463a36;
+}
+
+.char-note-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.char-note-grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.8fr) minmax(260px, 1.35fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.char-note-photo-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.char-note-polaroid {
+  padding: 10px 10px 14px;
+  background: #ece5d8;
+  border: 1px solid #b8ab9a;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.28);
+  transform: rotate(-1.5deg);
+}
+
+.char-note-caption {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.char-note-caption strong {
+  font-family: var(--font-serif);
+  font-size: 23px;
+  line-height: 1.1;
+  color: #161212;
+}
+
+.char-note-caption span {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: #544640;
+}
+
+.char-note-quote {
+  padding: 10px 12px;
+  border-left: 3px solid #9C0412;
+  background: rgba(156, 4, 18, 0.08);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #292220;
+}
+
+.char-note-info-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.char-note-role {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: #9C0412;
+  letter-spacing: 0.06em;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed rgba(22, 18, 18, 0.3);
+}
+
+.char-note-block {
+  padding: 9px 12px;
+  background: rgba(255, 255, 255, 0.38);
+  border: 1px solid rgba(22, 18, 18, 0.16);
+}
+
+.char-note-block.is-highlight {
+  background: rgba(156, 4, 18, 0.08);
+  border-color: rgba(156, 4, 18, 0.42);
+}
+
+.char-note-block h4 {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: #740107;
+  margin-bottom: 4px;
+}
+
+.char-note-block p {
+  font-size: 13px;
+  line-height: 1.58;
+  color: #1e1918;
+}
+
+@media (max-width: 860px) {
+  .backstory-layout,
+  .char-note-grid {
+    grid-template-columns: 1fr;
+  }
+}

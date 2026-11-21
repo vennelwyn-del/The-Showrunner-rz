@@ -28,6 +28,42 @@ document.addEventListener("DOMContentLoaded", () => {
   /* -------------------------------------------------------
      2. CHUYỂN TAB GIAO DIỆN 2
      ------------------------------------------------------- */
+     /* -------------------------------------------------------
+     2B. TAB 0: BACKSTORY & 1 KHUNG ẢNH MỞ ĐẦU (TỪ config.js)
+     ------------------------------------------------------- */
+  const backstoryEl = document.getElementById("backstory-content");
+  const bs = cfg.backstory || {};
+
+  if (backstoryEl) {
+    const bsPhoto = bs.imageUrl
+      ? `<img src="${escapeHtml(bs.imageUrl)}" alt="${escapeHtml(bs.title || "Swezan Backstory")}" />`
+      : `<div class="backstory-photo-empty">
+           <span>ARCHIVE PHOTO // SWEZAN 1994</span>
+           <strong>[CHÈN 1 ẢNH BACKSTORY TRONG config.js]</strong>
+         </div>`;
+
+    const bsParagraphs = Array.isArray(bs.paragraphs)
+      ? bs.paragraphs.map((p) => `<p>${escapeHtml(p)}</p>`).join("")
+      : "";
+
+    backstoryEl.innerHTML = `
+      <figure class="backstory-photo-card">
+        <span class="pushpin" aria-hidden="true"></span>
+        <div class="backstory-photo-frame">${bsPhoto}</div>
+        <figcaption class="backstory-photo-caption">
+          <span>${escapeHtml(bs.imageCaption || "SWEZAN VALLEY · 1994")}</span>
+          <span>FILE // 00</span>
+        </figcaption>
+      </figure>
+
+      <article class="backstory-story-card">
+        <p class="panel-kicker">${escapeHtml(bs.kicker || "PROLOGUE // 1994")}</p>
+        <h2 class="backstory-title">${escapeHtml(bs.title || "THUNG LŨNG SWEZAN TRƯỚC GIỜ G")}</h2>
+        ${bs.quote ? `<blockquote class="backstory-quote">${escapeHtml(bs.quote)}</blockquote>` : ""}
+        <div class="backstory-paragraphs">${bsParagraphs}</div>
+      </article>
+    `;
+  }
   const tabBtns = document.querySelectorAll(".desk-tab");
   const deskPanels = document.querySelectorAll(".desk-panel");
 
@@ -454,21 +490,82 @@ document.addEventListener("DOMContentLoaded", () => {
 
     selectTape(activeTapeId);
   }
-
-  /* -------------------------------------------------------
-     5. TAB 4: NHÂN VẬT (ĐỌC TỪ characters.js, KHÔNG CÓ NÚT SỬA)
+/* -------------------------------------------------------
+     5. TAB 4: NHÂN VẬT & BẢNG GHI CHÚ THÔNG TIN CÔNG KHAI
      ------------------------------------------------------- */
   const characters = Array.isArray(window.SHOWRUNNER_CHARACTERS) ? window.SHOWRUNNER_CHARACTERS : [];
   let castFilter = "all";
+  let currentFilteredList = characters;
+  let activeCharIndex = -1;
+
   const castGrid = document.getElementById("cast-grid");
   const castFilterBtns = document.querySelectorAll("[data-cast-filter]");
 
+  const charNoteModal = document.getElementById("char-note-modal");
+  const noteCloseBtn = document.getElementById("note-close-btn");
+  const notePrevBtn = document.getElementById("note-prev-btn");
+  const noteNextBtn = document.getElementById("note-next-btn");
+
+  function openCharacterNote(charId) {
+    const idx = currentFilteredList.findIndex((c) => c.id === charId);
+    if (idx === -1 || !charNoteModal) return;
+
+    const c = currentFilteredList[idx];
+    if (c.classified) return; // Hồ sơ đang niêm phong sẽ không mở chi tiết
+    activeCharIndex = idx;
+
+    const setText = (id, txt) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = txt || "";
+    };
+
+    setText("note-code", c.code);
+    setText("note-stamp", c.stamp);
+    setText("note-char-name", c.name);
+    setText("note-meta", c.ageGender || "Nhân vật tại Swezan");
+    setText("note-role", c.role);
+    setText("note-appearance", c.appearance || c.desc);
+    setText("note-sensory", c.sensory || "Chưa ghi nhận thêm chi tiết cảm quan.");
+    setText("note-demeanor", c.demeanor || c.desc);
+    setText("note-public", c.publicNotes || c.desc);
+    setText("note-quote", c.quote);
+
+    const notePhotoBox = document.getElementById("note-photo-box");
+    if (notePhotoBox) {
+      notePhotoBox.innerHTML = c.imageUrl
+        ? `<img class="char-photo-img" src="${escapeHtml(c.imageUrl)}" alt="${escapeHtml(c.name)}" /><span class="char-cam-tag">FILE // PUBLIC</span>`
+        : `<div class="char-photo-placeholder">
+             <span class="q-mark">?</span>
+             <span class="q-hint">SWEZAN 1994</span>
+           </div><span class="char-cam-tag">FILE // PUBLIC</span>`;
+    }
+
+    charNoteModal.hidden = false;
+  }
+
+  function closeCharacterNote() {
+    if (charNoteModal) charNoteModal.hidden = true;
+    activeCharIndex = -1;
+  }
+
+  function stepCharacterNote(dir) {
+    if (currentFilteredList.length === 0 || activeCharIndex === -1) return;
+    for (let step = 1; step <= currentFilteredList.length; step++) {
+      const nextIdx =
+        (activeCharIndex + dir * step + currentFilteredList.length) % currentFilteredList.length;
+      if (!currentFilteredList[nextIdx].classified) {
+        openCharacterNote(currentFilteredList[nextIdx].id);
+        break;
+      }
+    }
+  }
+
   function renderCast() {
     if (!castGrid) return;
-    const list =
+    currentFilteredList =
       castFilter === "all" ? characters : characters.filter((c) => c.group === castFilter);
 
-    castGrid.innerHTML = list
+    castGrid.innerHTML = currentFilteredList
       .map((c, i) => {
         const tilt = ((i % 5) - 2) * 1.1;
         const isClassified = Boolean(c.classified);
@@ -480,7 +577,7 @@ document.addEventListener("DOMContentLoaded", () => {
              </div>`;
 
         return `
-        <article class="char-polaroid-card ${isClassified ? "is-classified" : ""}" style="--card-tilt: ${tilt}deg">
+        <article class="char-polaroid-card ${isClassified ? "is-classified" : ""}" style="--card-tilt: ${tilt}deg" data-char-id="${escapeHtml(c.id)}" tabindex="0" role="button">
           <span class="pushpin" aria-hidden="true"></span>
           <div class="char-card-head">
             <span>${escapeHtml(c.code)}</span>
@@ -496,10 +593,41 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="char-role">${escapeHtml(c.role)}</div>
           <p class="char-desc">${escapeHtml(c.desc)}</p>
           <p class="char-quote">${escapeHtml(c.quote)}</p>
+          ${isClassified ? "" : `<span class="char-open-hint">[BẤM MỞ GHI CHÚ &#8599;]</span>`}
         </article>`;
       })
       .join("");
   }
+
+  if (castGrid) {
+    castGrid.addEventListener("click", (e) => {
+      const card = e.target.closest("[data-char-id]");
+      if (card) openCharacterNote(card.dataset.charId);
+    });
+    castGrid.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        const card = e.target.closest("[data-char-id]");
+        if (card) {
+          e.preventDefault();
+          openCharacterNote(card.dataset.charId);
+        }
+      }
+    });
+  }
+
+  if (noteCloseBtn) noteCloseBtn.addEventListener("click", closeCharacterNote);
+  if (notePrevBtn) notePrevBtn.addEventListener("click", () => stepCharacterNote(-1));
+  if (noteNextBtn) noteNextBtn.addEventListener("click", () => stepCharacterNote(1));
+  if (charNoteModal) {
+    charNoteModal.addEventListener("click", (e) => {
+      if (e.target === charNoteModal) closeCharacterNote();
+    });
+  }
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && charNoteModal && !charNoteModal.hidden) {
+      closeCharacterNote();
+    }
+  });
 
   castFilterBtns.forEach((btn) => {
     btn.addEventListener("click", () => {

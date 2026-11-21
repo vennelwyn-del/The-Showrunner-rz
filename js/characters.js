@@ -1,8 +1,8 @@
 /* =========================================================
-   THE SHOWRUNNER — DANH SÁCH NHÂN VẬT CÔNG KHAI
+   THE SHOWRUNNER — DANH SÁCH NHÂN VẬT CÔNG KHAI (CÓ GHI CHÚ CHI TIẾT)
    Chỉ người tạo sửa trực tiếp trong file này:
    - imageUrl: Dán link ảnh nhân vật ("assets/..." hoặc "https://...")
-   - classified: Đặt true nếu muốn ẩn mặt/niêm phong hồ sơ nhân vật đó
+   - classified: Đặt true nếu muốn niêm phong/ẩn hồ sơ nhân vật đó
    ========================================================= */
 
 window.SHOWRUNNER_CHARACTERS = [
@@ -13,9 +13,14 @@ window.SHOWRUNNER_CHARACTERS = [
     code: "CASE 00 // UNKNOWN",
     stamp: "WANTED",
     name: "The Rider",
+    ageGender: "Không rõ danh tính | Bí ẩn",
     role: "Kẻ tự xưng “Biên Kịch” trên sóng K-TV Kênh 08",
-    imageUrl: "", // <-- Dán link ảnh The Rider tại đây
+    imageUrl: "",
     desc: "Chưa từng lộ mặt. Chỉ xuất hiện qua băng VHS 4:3 đen trắng cùng đôi găng tay da đen và giọng nói biến âm tần số thấp.",
+    appearance: "Luôn đứng ngược sáng hoặc bị nhiễu sọc từ tính làm nhòe khuôn mặt trên màn ảnh 4:3; chỉ để lộ đôi găng tay da cừu đen thao tác chậm rãi, chuẩn xác.",
+    sensory: "Tiếng rít trắng 50Hz của băng từ VHS, giọng nói trầm đục qua bộ biến âm tần số thấp 100Hz và tiếng tách lửa khẽ.",
+    demeanor: "Ngữ điệu kịch nghệ cổ điển, điềm tĩnh, châm biếm sâu cay và tự xem bản thân là đạo diễn của một vở bi kịch truyền hình.",
+    publicNotes: "Gây chấn động toàn thị trấn sau vụ chiếm sóng đài Swan Terof Kênh 8 vào lúc 00:00 đêm Chủ nhật tuần trước. Hiện vẫn hoàn toàn bặt vô âm tín ngoài đời thực.",
     quote: "“Hãy ngồi xuống trước màn hình và cùng xem vở kịch của thung lũng này.”",
   },
   {
@@ -24,10 +29,15 @@ window.SHOWRUNNER_CHARACTERS = [
     classified: false,
     code: "CASE 03 // 30-11-1994",
     stamp: "MISSING",
-    name: "Matthäus August (52t)",
+    name: "Matthäus August",
+    ageGender: "52 tuổi | Nam",
     role: "Phó Cảnh Sát Trưởng Đồn Altstadt",
-    imageUrl: "", // <-- Dán link ảnh Matthäus August tại đây
-    desc: "Biến mất bí ẩn bên bờ hồ câu ngoại ô từ trưa Chủ nhật. Sáng 30/11, cuộn băng thách thức đầu tiên về ông xuất hiện giữa thị trấn.",
+    imageUrl: "",
+    desc: "Biến mất bí ẩn bên bờ hồ câu ngoại ô từ trưa Chủ nhật. Sáng 30/11, cuộn băng thách thức mới xuất hiện giữa thị trấn.",
+    appearance: "Trung niên vạm vỡ, mặc thường phục đi câu ven hồ vào trưa Chủ nhật; hiện trường chỉ để lại chiếc cần câu carbon gãy đôi, dép lê và tẩu thuốc rơi vãi.",
+    sensory: "Mùi thuốc tẩu nặng, hơi ẩm hồ nước ven rừng và làn khói thuốc quen thuộc nơi hành lang Đồn Cảnh sát.",
+    demeanor: "Kín tiếng, cứng rắn và là cánh tay phải lâu năm của Cảnh sát trưởng Heckler, sắp đến hạn nhận sổ hưu vào tháng tới.",
+    publicNotes: "Mất tích 12 tiếng trước thời điểm 06:15 sáng Thứ Hai. Cuộn băng A (Tập 3/4) mới thu giữ cho thấy ông đang bị giữ lại với thời hạn 7 ngày đến 23:59 Chủ Nhật.",
     quote: "Hồ sơ báo động đỏ tại Đồn Cảnh Sát Trung Tâm Swezan.",
   },
   {
@@ -36,10 +46,15 @@ window.SHOWRUNNER_CHARACTERS = [
     classified: false,
     code: "ARCHIVE 11 // CITY HALL",
     stamp: "PROSECUTOR",
-    name: "Julian Viktor von Brandt (31t)",
+    name: "Julian Viktor von Brandt",
+    ageGender: "31 tuổi | Nam",
     role: "Công Tố Viên Đặc Biệt · Tòa Thị Chính",
-    imageUrl: "", // <-- Dán link ảnh Julian von Brandt tại đây
+    imageUrl: "",
     desc: "Sắc lạnh trong bộ âu phục xanh than, cặp kính nửa viền và đồng hồ bỏ túi bạch kim. Người nắm quyền giám sát pháp lý toàn thung lũng.",
+    appearance: "Cao 1m86, tóc đen vuốt ngược gọn gàng, mắt màu hổ phách sau kính gọng bạc nửa viền. Luôn mặc âu phục 3 mảnh may đo, măng tô cashmere đen và giày Oxford bóng loáng.",
+    sensory: "Mùi nước hoa gỗ đàn hương đắt tiền, thuốc lá tẩm rượu rum Đan Mạch và tiếng bật nắp “tách” sắc lạnh của chiếc đồng hồ bỏ túi.",
+    demeanor: "Kiêu ngạo, điềm tĩnh đến tàn nhẫn; không bao giờ quát tháo mà dùng giọng trầm chậm rãi và điều khoản luật để ép đối phương vào thế bí.",
+    publicNotes: "Làm việc tại văn phòng ốp gỗ gụ tầng trên Tòa Thị chính. Trực tiếp gây sức ép lên Cảnh sát trưởng Heckler và đòi kiểm soát toàn bộ tiến độ điều tra trước đêm Chủ Nhật.",
     quote: "“Công lý ở thung lũng này nằm dưới ngòi bút ký lệnh truy tố của tôi.”",
   },
   {
@@ -48,10 +63,15 @@ window.SHOWRUNNER_CHARACTERS = [
     classified: false,
     code: "ARCHIVE 19 // PRECINCT",
     stamp: "CHIEF",
-    name: "Jaxson Heckler (58t)",
+    name: "Jaxson Heckler",
+    ageGender: "58 tuổi | Nam",
     role: "Cảnh Sát Trưởng Đồn Altstadt",
-    imageUrl: "", // <-- Dán link ảnh Jaxson Heckler tại đây
+    imageUrl: "",
     desc: "Bảo thủ, nóng nảy trong làn khói thuốc Chesterfield đặc quánh, luôn tìm cách giữ chặt trật tự và quyền lực trong địa hạt của mình.",
+    appearance: "To béo, khuôn mặt vuông đỏ gay gắt, tóc muối tiêu cắt húi cua, ria mép ám vàng khói thuốc. Đeo chiếc kẹp cà vạt đồng hình tháp canh cũ.",
+    sensory: "Khói thuốc lá Chesterfield rẻ tiền đặc quánh, mùi rượu gin thoang thoảng quanh bàn làm việc và mùi da thuộc ẩm mốc.",
+    demeanor: "Độc đoán, bảo thủ, mang nặng tư duy điều tra thời cũ và cực kỳ thù ghét người ngoài chen chân vào địa bàn đồn cảnh sát.",
+    publicNotes: "Đang chịu áp lực bị Tòa thị chính cách chức sau sự cố Kênh 8 và vụ mất tích của August. Vừa ra lệnh phong tỏa các cây cầu vào phố cổ Altstadt.",
     quote: "“Ở cái thị trấn này, luật pháp là tao!”",
   },
   {
@@ -60,10 +80,15 @@ window.SHOWRUNNER_CHARACTERS = [
     classified: false,
     code: "ARCHIVE 13 // PRECINCT",
     stamp: "ROOKIE",
-    name: "Ian Alix (22t)",
+    name: "Ian Alix",
+    ageGender: "22 tuổi | Nam",
     role: "Tân Binh Đồn Cảnh Sát Swezan",
-    imageUrl: "", // <-- Dán link ảnh Ian Alix tại đây
+    imageUrl: "",
     desc: "Dáng người gầy còng trong chiếc áo măng tô vàng mù tạt quá khổ, nhút nhát trước máu me nhưng hay vô tình để ý những chi tiết nhỏ nhặt.",
+    appearance: "Loắt choắt, tóc hung đỏ bù xù, mắt nâu tròn xoe, mũi lấm tấm tàn nhang. Hay mang theo một con quay gỗ sồi cũ trong túi áo dạ rộng thùng thình.",
+    sensory: "Mùi bánh mì kẹp xúc xích rẻ tiền, kẹo cao su hương quế và tiếng lạch cạch vụng về mỗi lần làm rơi sổ tay.",
+    demeanor: "Nhút nhát, sợ bóng tối và sợ bị cấp trên quát tháo, nhưng cực kỳ nhiệt tình, chân thật và hay buột miệng nói ra những nhận xét đời thường đáng chú ý.",
+    publicNotes: "Đang bị giáng xuống làm chân chạy việc vặt và trực bàn giấy tại Đồn Cảnh sát Altstadt sau vài sự cố lóng ngóng trong lúc thu giữ vật chứng.",
     quote: "“S-sếp... em thề là em không cố ý làm rơi cuộn băng đâu!”",
   },
   {
@@ -72,10 +97,15 @@ window.SHOWRUNNER_CHARACTERS = [
     classified: false,
     code: "ARCHIVE 08 // MORGUE",
     stamp: "CORONER",
-    name: "Bác sĩ Eva Livingston (34t)",
+    name: "Bác sĩ Eva Livingston",
+    ageGender: "34 tuổi | Nữ",
     role: "Chuyên Viên Pháp Y · Hầm Tòa Án Cũ",
-    imageUrl: "", // <-- Dán link ảnh Eva Livingston tại đây
+    imageUrl: "",
     desc: "Lạnh lùng và chuẩn xác tuyệt đối dưới ánh đèn huỳnh quang tầng hầm, mái tóc vàng cắt ngắn, áo blouse ám mùi formol và bạc hà.",
+    appearance: "Cao gầy, da trắng nhợt do làm việc lâu năm dưới hầm, tóc vàng pixie kẹp gọn, quầng mắt thâm sâu. Luôn đeo mặt dây chuyền bạc hình chiếc hộp rỗng trên cổ.",
+    sensory: "Mùi dung dịch bảo quản formol, tinh dầu bạc hà cay nồng (bôi dưới cánh mũi) và xà phòng than hoạt tính.",
+    demeanor: "Lãnh đạm, nói năng ngắn gọn và chính xác đến tàn nhẫn; ghét suy diễn cảm tính, chỉ tin vào những gì kính hiển vi và dao giải phẫu chỉ ra.",
+    publicNotes: "Phụ trách toàn bộ công tác khám nghiệm tử thi và xét nghiệm mẫu phẩm tại Nhà xác dưới hầm Tòa án Cũ Swezan.",
     quote: "“Chỉ có những kẻ nằm trên bàn thép này là chưa từng biết bịa đặt một lời nào.”",
   },
   {
@@ -84,10 +114,15 @@ window.SHOWRUNNER_CHARACTERS = [
     classified: false,
     code: "ARCHIVE 14 // PRESS",
     stamp: "TAGBLATT",
-    name: "Isabel Werner (29t)",
+    name: "Isabel Werner",
+    ageGender: "29 tuổi | Nữ",
     role: "Phóng Viên Điều Tra · Nhật Báo Tagblatt",
-    imageUrl: "", // <-- Dán link ảnh Isabel Werner tại đây
+    imageUrl: "",
     desc: "Tham vọng và sắc sảo trong chiếc áo da lộn vàng cát, luôn mang theo máy ghi âm Sony Walkman và mùi khói thuốc lá vani Black Devil.",
+    appearance: "Gầy, sắc sảo, mắt xanh lục quan sát nhạy bén, tóc đen uốn xoăn ngang vai, son đỏ thẫm. Dùng bật lửa Zippo chạm nổi hình con cáo và đi bốt da lấm bùn.",
+    sensory: "Mùi nước hoa xạ hương nồng, mực in báo mới từ tòa soạn tầng áp mái và khói thuốc lá thơm vị vani Black Devil.",
+    demeanor: "Thực dụng, táo bạo và sắc bén; sẵn sàng luồn lách vào mọi ngóc ngách để săn ảnh độc quyền và đổi chác tin tức.",
+    publicNotes: "Cây bút chủ lực của tờ Swezan Tagblatt; là người tung bài báo sáng sớm về vụ mất tích của Phó Cảnh sát trưởng trước cả khi đồn cảnh sát họp báo.",
     quote: "“Cảnh sát cần báo cáo, còn tôi cần sự thật để bán báo.”",
   },
   {
@@ -96,10 +131,15 @@ window.SHOWRUNNER_CHARACTERS = [
     classified: false,
     code: "ARCHIVE 03 // HARBOR",
     stamp: "BLACK MARKET",
-    name: "Lukas “Raven” Kováč (29t)",
+    name: "Lukas “Raven” Kováč",
+    ageGender: "29 tuổi | Nam",
     role: "Chủ Tiệm Cầm Đồ “Tổ Quạ” · Schwarzhaven",
-    imageUrl: "", // <-- Dán link ảnh Lukas Kováč tại đây
+    imageUrl: "",
     desc: "Cựu lính bắn tỉa phong trần với vết sẹo ngang chân mày trái, tấm thẻ Dog-tag bạc trên ngực và mùi dầu súng quyện thuốc lá Lucky Strike.",
+    appearance: "Cao 1m85, thân hình rắn chắc, tóc nâu sẫm hơi dài, mắt xanh xám nheo lại dưới làn khói thuốc. Mặc sơ mi flannel đen dưới áo khoác da phi công sờn cũ.",
+    sensory: "Mùi thuốc lá Lucky Strike không đầu lọc, rượu Bourbon, dầu lau súng Ballistol và gió lạnh ẩm của sông Schwarze.",
+    demeanor: "Bất cần đời, thực dụng và miệng lưỡi sắc bén hay trêu chọc nửa đùa nửa thật, nhưng giữ chữ tín với những ai giao dịch sòng phẳng.",
+    publicNotes: "Quản lý tiệm cầm đồ kiêm xưởng sửa chữa cơ khí “Tổ Quạ” tại Bến Cảng Sông Đen — tụ điểm quen thuộc của dân sà lan và giới buôn đồ cũ.",
     quote: "“Ở bến sông đen ngòm này, lòng tốt không mua được đạn đâu.”",
   },
   {
@@ -108,10 +148,15 @@ window.SHOWRUNNER_CHARACTERS = [
     classified: false,
     code: "ARCHIVE 32 // LOUNGE",
     stamp: "NIGHTLIFE",
-    name: "Clara Evelyne Moreau (26t)",
+    name: "Clara Evelyne Moreau",
+    ageGender: "26 tuổi | Nữ",
     role: "Nữ Danh Ca Jazz · Phòng Trà Thiên Nga Đen",
-    imageUrl: "", // <-- Dán link ảnh Clara Moreau tại đây
+    imageUrl: "",
     desc: "Mái tóc đỏ rượu vang uốn sóng, trâm cài trăng lưỡi liềm và găng tay lụa dài; giọng hát trầm khàn làm say lòng giới thượng lưu mỗi đêm mưa.",
+    appearance: "Tóc đỏ rượu vang cổ điển cài trâm bạc hình trăng lưỡi liềm, mắt tím than, nốt ruồi nhỏ dưới khóe môi trái. Diện đầm nhung xẻ đùi và khăn lông cáo trắng.",
+    sensory: "Hương nước hoa hoa nhài đêm ngọt ngào, mùi rượu vang đỏ Bordeaux và khói thuốc lá mảnh tẩm bạc hà.",
+    demeanor: "Ngọt ngào, từng trải và biết lắng nghe; luôn giữ phong thái quý cô bí ẩn dưới ánh nến phòng trà.",
+    publicNotes: "Chủ nhân kiêm ca sĩ chính của Câu lạc bộ đêm “Thiên Nga Đen” ở rìa Phố Cổ Altstadt — nơi quan chức và giới tư sản thường lui tới giải khuây giữa thời kỳ giới nghiêm.",
     quote: "“Ngồi xuống đây đi, để tôi rót cho một ly Bordeaux, đêm nay ngoài kia lạnh lắm.”",
   },
   {
@@ -120,10 +165,15 @@ window.SHOWRUNNER_CHARACTERS = [
     classified: false,
     code: "ARCHIVE // ALTSTADT",
     stamp: "BOOKSHOP",
-    name: "Alistair Cassius (28t)",
+    name: "Alistair Cassius",
+    ageGender: "28 tuổi | Nam",
     role: "Chủ Tiệm Cà Phê Sách “Cassius & Co.”",
-    imageUrl: "", // <-- Dán link ảnh Alistair Cassius tại đây
+    imageUrl: "",
     desc: "Thiếu gia trầm lặng của dòng họ thương nhân Cassius, thích đọc bi kịch cổ Hy Lạp, pha trà Earl Grey và hầu như ít khi rời khỏi hiệu sách.",
+    appearance: "Cao 1m88, tóc vàng cát mềm mại, mắt xám nhạt như đá băng. Y phục quý tộc cắt may tinh xảo, áo đuôi tôm lụa, và đôi găng tay da cừu non đen không bao giờ tháo ra. Mùi giấy cổ, cà phê rang mộc và hương cam bergamot đắt tiền.",
+    sensory: "Mùi giấy sách cổ, cà phê rang mộc, trà Earl Grey, sáp ong đánh bóng gỗ sồi và hương cam bergamot nhẹ.",
+    demeanor: "Nhã nhặn, tôn trọng lễ nghi tuyệt đối và hơi lười biếng kiểu quý tộc cổ điển; thường ngồi đọc sách bên lò sưởi hoặc lau tách trà sứ.",
+    publicNotes: "Sở hữu tiệm cà phê sách yên tĩnh tại ngã tư bờ kênh Phố Cổ Altstadt, nơi đặt chiếc tivi CRT 21-inch cho khách vãng lai ghé xem tin tức buổi sáng.",
     quote: "“Ở đây, ít nhất các trang sách không biết làm tổn thương ai bao giờ.”",
   },
   {
@@ -132,10 +182,15 @@ window.SHOWRUNNER_CHARACTERS = [
     classified: false,
     code: "ARCHIVE 15 // HÜT IV",
     stamp: "INDUSTRY",
-    name: "Kurt Denholm (52t)",
+    name: "Kurt Denholm",
+    ageGender: "52 tuổi | Nam",
     role: "Chủ Tổ Hợp Lò Luyện Kim & Dệt May Hüt IV",
-    imageUrl: "", // <-- Dán link ảnh Kurt Denholm tại đây
-    desc: "Vóc dáng hộ pháp, bàn tay đầy vết sẹo nhiệt và chiếc tẩu gỗ hồ đào. Nắm giữ quyền kiểm soát chuỗi nhà xưởng cũ tại vành đai công nghiệp.",
+    imageUrl: "",
+    desc: " Vóc dáng hộ pháp như gấu đá, râu quai nón rậm rạp ám khói, bàn tay chai sần sẹo bỏng nhiệt, đeo nhẫn vàng mặt đá mã não đen, luôn phì phèo xì gà Havana. Mùi xì gà ẩm mốc và quặng sắt han gỉ.",
+    appearance: "To lớn như bức tường gạch, râu quai nón rậm, đeo nhẫn vàng mặt đá mã não đen ở ngón cái phải và bộ suit dạ dày xám chuột đã hơi sờn cổ tay.",
+    sensory: "Mùi xì gà Havana ẩm mốc, rượu cognac nặng độ và mùi quặng sắt han gỉ.",
+    demeanor: "Độc tài, tàn bạo, nóng nảy, quen giải quyết mọi việc bằng tiền mặt hoặc bạo lực; coi thường tầng lớp lao động.",
+    publicNotes: "Đang đối đầu gay gắt với nghiệp đoàn công nhân bãi công và gánh áp lực nợ nần giữa thời kỳ suy thoái của khu liên hợp Hüt IV.",
     quote: "“Ở cái thung lũng này, tao giải quyết rắc rối bằng cơm áo và lò sưởi.”",
   },
   {
@@ -144,10 +199,15 @@ window.SHOWRUNNER_CHARACTERS = [
     classified: false,
     code: "ARCHIVE 36 // GÜTEROF",
     stamp: "UNION",
-    name: "Lotte Loris (45t)",
+    name: "Lotte Loris",
+    ageGender: "45 tuổi | Nữ",
     role: "Thủ Lĩnh Nghiệp Đoàn Công Nhân Swezan",
-    imageUrl: "", // <-- Dán link ảnh Lotte Loris tại đây
+    imageUrl: "",
     desc: "Người đàn bà đanh thép của phân xưởng dệt suốt 30 năm, đứng đầu những cuộc bãi công bên thùng phuy đốt lửa giữa trời mưa tuyết.",
+    appearance: "Cao lớn, khắc khổ, tóc hoa râm búi bằng then sắt, mặc áo khoác công nhân chần bông sờn rách và ủng lội bùn; cổ đeo thánh giá sắt đúc thô.",
+    sensory: "Mùi xà phòng than công nghiệp, thuốc lá sợi tự cuốn cay nồng và khói củi ẩm từ các điểm tập kết bãi công.",
+    demeanor: "Cứng rắn, quyết liệt, nói năng vang dội; đứng về phía thợ thuyền nghèo và phản đối gay gắt bộ máy công quyền.",
+    publicNotes: "Đang dẫn đầu phong trào đình công rầm rộ tại khu Khối 7, Bến Cảng và bãi ga hàng hóa cũ Güterof đòi quyền lợi cho công nhân.",
     quote: "“Bọn tao đã đổ máu cho từng tấc đất ở Swezan này!”",
   },
   {
@@ -156,10 +216,15 @@ window.SHOWRUNNER_CHARACTERS = [
     classified: false,
     code: "ARCHIVE 25 // WIGEL",
     stamp: "BROADCAST",
-    name: "Ena Sherley (27t)",
+    name: "Ena Sherley",
+    ageGender: "27 tuổi | Nữ",
     role: "Kỹ Thuật Viên Ca Đêm · Đài K-TV Kênh 8",
-    imageUrl: "", // <-- Dán link ảnh Ena Sherley tại đây
+    imageUrl: "",
     desc: "Lập dị bên những cuộn băng từ và mỏ hàn điện tử tại tháp tiếp sóng Đồi Gió Hú, ít giao tiếp nhưng am hiểu mọi dải tần phát thanh.",
+    appearance: "Gầy gò, da trắng bệch, tóc nhuộm xanh rêu phai màu, mặc áo Parka quân đội quá khổ; cổ đeo tai nghe cách âm và vòng tay bện từ ruột băng VHS.",
+    sensory: "Mùi nhựa thông cháy từ mỏ hàn điện tử, khói thuốc lá Marlboro bạc hà và mùi kim loại linh kiện.",
+    demeanor: "Lầm lì, tránh né giao tiếp bằng mắt nhưng lại tỏ ra say mê kỳ lạ mỗi khi nhắc đến sóng vô tuyến và màn hình CRT.",
+    publicNotes: "Phụ trách ca đêm tại trạm tiếp sóng truyền hình Đồi Wigel — nơi vừa xảy ra sự cố gián đoạn tín hiệu K-TV Kênh 8.",
     quote: "“Tín hiệu không bao giờ nói dối... chỉ có âm thanh là chứa đầy tạp âm.”",
   },
   {
@@ -168,10 +233,15 @@ window.SHOWRUNNER_CHARACTERS = [
     classified: false,
     code: "ARCHIVE 06 // ST. NAZET",
     stamp: "CLINICAL",
-    name: "Dr. Alis Zola (33t)",
+    name: "Dr. Alis Zola",
+    ageGender: "33 tuổi | Nữ",
     role: "Cựu Bác Sĩ Tâm Thần · Viện St. Nazet",
-    imageUrl: "", // <-- Dán link ảnh Dr. Alis Zola tại đây
+    imageUrl: "",
     desc: "Diện mạo nhợt nhạt với cặp mắt dị sắc vô cảm và chiếc váy nhung đen dài, giọng nói thì thầm ám mùi thuốc gây mê Ether.",
+    appearance: "Mảnh khảnh, tóc bạch kim buông rũ che nửa mặt, đôi mắt dị sắc (một bên xanh lơ, một bên nâu hạt dẻ) tĩnh lặng như búp bê sứ, luôn mang hộp thuốc lá bạc chạm hình mây mù.",
+    sensory: "Mùi cồn sát trùng 90 độ, thuốc gây mê Ether ngòn ngọt và phấn rôm hoa diên vĩ thoang thoảng.",
+    demeanor: "Giọng nói thì thầm, hay dùng những ẩn dụ triết học lạnh gáy về ranh giới giữa thể xác và ý thức.",
+    publicNotes: "Từng công tác tại Bệnh viện Tâm thần St. Nazet trước khi viện giải thể năm 1988; là đối thủ học thuật cũ của Bác sĩ Eva Livingston.",
     quote: "“Cái chết cũng giống như đám mây vậy, làm nhòa đi ranh giới của cơ thể.”",
   },
   {
@@ -180,10 +250,15 @@ window.SHOWRUNNER_CHARACTERS = [
     classified: false,
     code: "ARCHIVE 24 // KRANZHÜGEL",
     stamp: "HIGH SOCIETY",
-    name: "Traudl Vanessa (45t)",
+    name: "Traudl Vanessa",
+    ageGender: "45 tuổi | Nữ",
     role: "Góa Phụ Quý Tộc · Đồi Kranzhügel",
-    imageUrl: "", // <-- Dán link ảnh Traudl Vanessa tại đây
+    imageUrl: "",
     desc: "Cổ đông chuỗi spa nghỉ dưỡng cao cấp trên Đồi Kranzhügel, sống khép kín sau cánh cổng sắt rèn giữa mê cung hoa hồng.",
+    appearance: "Quý phái trong trang phục lụa tối màu và son môi đỏ thẫm đắt tiền, luôn giữ vẻ ngoài lộng lẫy tách biệt khỏi bụi than thị trấn.",
+    sensory: "Hương nước hoa Guerlain Shalimar sang trọng, phấn trang điểm cổ điển và hương hoa hồng lạnh trong vườn biệt thự.",
+    demeanor: "Kiêu kỳ, khép kín và đặc biệt lo lắng trước các cuộc đình công làm gián đoạn hoạt động kinh doanh nghỉ dưỡng tại Kranzhügel.",
+    publicNotes: "Góa phụ của cố Nam tước Heinrich Vanessa; vừa tăng cường thuê vệ sĩ canh gác nghiêm ngặt quanh Dinh thự Vanessa sau các bản tin bất ổn ở trung tâm.",
     quote: "“Sự sang trọng của Kranzhügel không dành cho những đôi ủng dính bùn.”",
   },
 ];

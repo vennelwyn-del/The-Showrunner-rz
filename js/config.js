@@ -5,6 +5,28 @@
    ========================================================= */
 
 window.SHOWRUNNER_CONFIG = {
+    /* -------------------------------------------------------
+     0. TAB 00 — BACKSTORY & LINK CHÈN 1 ẢNH MỞ MÀN
+     ------------------------------------------------------- */
+  backstory: {
+    kicker: "PROLOGUE // HỒ SƠ MỞ ĐẦU (1994)",
+    title: "THUNG LŨNG SWEZAN TRƯỚC GIỜ G",
+    imageUrl: "", // <-- Dán link 1 ảnh Backstory của bạn tại đây (VD: "assets/backstory.jpg" hoặc "https://...")
+    imageCaption: "SWEZAN VALLEY · THÁNG 11 NĂM 1994 · -3°C",
+    quote:
+      "“Có những thị trấn không sụp đổ vì bom đạn, mà mục ruỗng từ bên trong dưới lớp bụi than và những màn hình tivi bật sáng lúc nửa đêm.”",
+    paragraphs: [
+      "Thung lũng Swezan vào mùa đông năm 1994 chưa từng nhìn thấy mặt trời. Nằm lọt thỏm giữa những rặng thông già đen sẫm và dòng sông Schwarze ngập ngụa váng dầu công nghiệp, thị trấn này đang thoi thóp trong cuộc chuyển mình tàn nhẫn của thời đại: những lò luyện cán thép rỉ sét, những ống khói nhả tro than đá đen kịt của thế kỷ cũ đang bị bóp nghẹt bởi sự trỗi dậy của máy tính, tháp truyền hình và kỷ nguyên nghe nhìn sơ khai. Một xã hội phân rã, nơi giới tài phiệt quý tộc sống trong nhung lụa trên Đồi Kranzhügel, mặc kệ hàng vạn công nhân thất nghiệp co quắp trong các khối chung cư bê tông ẩm mốc.",
+      "Và rồi, The Rider xuất hiện.",
+      "Hắn không giết người trong bóng tối; hắn biến tội ác thành một chương trình truyền hình nhiều tập. Bằng những cuộn băng từ VHS-C đen trắng tỉ lệ 4:3 và những cỗ máy hành quyết cơ học tinh vi, hắn gõ cửa từng nhà để tuyên án sự mục rỗng của thị trấn:",
+      "Hồi 1 (Tập 1): Ottomar Burchard — gã chủ quán ăn bẩn thỉu bị bọc trong cái kén băng keo, thả rơi tự động xuống bể xút ăn da NaOH để xà phòng hóa cơ thể.",
+      "Hồi 2 (Tập 2): Malia Isabel Ariane — nàng thiên kim đá quý từ thiện giả cầy bị hấp chín bởi hơi nước 100 độ C và khí độc lưu huỳnh trong lồng kính cùng hàng trăm cành hoa loa kèn. Đoạn băng ghi lại cái chết co giật của cô đã bị cướp sóng đài K-TV Kênh 8 vào đúng nửa đêm Chủ nhật tuần trước, phát thẳng vào phòng ngủ của hàng vạn cư dân, gieo rắc hội chứng \"sợ màn hình tivi\" lên toàn bộ Swezan.",
+      "Và sáng nay, Hồi thứ 3 chính thức mở màn.",
+      "Mười hai tiếng trước, Phó Cảnh sát trưởng Matthäus August — cánh tay phải nắm giữ mọi hồ sơ đen của đồn cảnh sát — đã biến mất bí ẩn bên bờ hồ sau tư gia. Rạng sáng Thứ Hai, người ta vớt được một con cá chép lai đột biến bụng trương phềnh trên mặt hồ nước đen; bên trong nội tạng của nó là cuộn Băng A (Tập 3) bọc trong bao cao su dính đầy dịch tanh tưởi.",
+      "Đồng hồ tử thần 7 ngày đã bắt đầu gõ nhịp. Hạn chót là 23:59 đêm Chủ nhật tới, trước khi chiếc ghế sắt treo August lao xuống đáy bể cá ăn thịt tại Bến Cảng Sông Đen. ",
+      "Swezan rúng động. Còi xe cảnh sát xé toạc màn sương sớm, và ở một góc nào đó của thung lũng bùn than này, bạn đang chuẩn bị bước vào vòng xoáy định mệnh..."
+    ],
+  },
   /* -------------------------------------------------------
      1. ẢNH NỀN (BACKGROUND) CỦA GIAO DIỆN 2
      ------------------------------------------------------- */

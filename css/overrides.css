@@ -1,0 +1,216 @@
+/* =========================================================
+   THE SHOWRUNNER — FIX FULL ẢNH + TAB NẠN NHÂN + MOBILE (v24)
+   ========================================================= */
+
+/* 1. ÉP TOÀN BỘ ẢNH HIỆN ĐỦ 100% KHỔ GỐC, KHÔNG BỊ CẮT ĐẦU/MẮT */
+.char-photo-box,
+.location-photo-box,
+.backstory-photo-frame,
+.victim-photo-box {
+  aspect-ratio: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  background: #120c0c;
+}
+
+.char-photo-img,
+.location-photo-img,
+.backstory-photo-frame img,
+.tape-thumb-img,
+.victim-photo-box img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  filter: none !important;
+  transform: none !important;
+  display: block !important;
+}
+
+.location-card:hover .location-photo-img {
+  filter: none !important;
+  transform: scale(1.02) !important;
+}
+
+.cast-board-grid,
+.locations-photo-grid,
+.victims-grid {
+  align-items: start;
+}
+
+.char-note-polaroid .char-photo-box {
+  max-height: 70dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.char-note-polaroid .char-photo-img {
+  max-height: 70dvh !important;
+  width: auto !important;
+  max-width: 100% !important;
+  margin: 0 auto;
+}
+
+.char-photo-placeholder,
+.location-photo-empty,
+.backstory-photo-empty,
+.img-fallback-box {
+  min-height: 200px;
+}
+
+/* 2. GIAO DIỆN HỒ SƠ CŨ CHO TAB 04: NẠN NHÂN & TIN ĐỒN */
+.victims-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(460px, 1fr));
+  gap: 20px;
+}
+
+.victim-dossier-card {
+  position: relative;
+  padding: 18px;
+  background: #d8ccb8;
+  color: #181310;
+  border: 1px solid #96856d;
+  border-top: 5px solid #4a3d34;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.58), inset 0 0 32px rgba(80, 50, 22, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.victim-dossier-card.is-deceased { border-top-color: #6b0811; }
+.victim-dossier-card.is-active-case {
+  border-top-color: #b80f1e;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.68), 0 0 22px rgba(200, 16, 32, 0.32);
+}
+.victim-dossier-card.is-teaser {
+  background: #cfc3ae;
+  border-style: dashed;
+  opacity: 0.94;
+}
+
+.victim-card-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1.5px solid rgba(24, 19, 16, 0.28);
+  font-family: var(--font-mono);
+}
+
+.victim-case-code { font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; color: #463a33; }
+
+.victim-status-stamp {
+  padding: 2px 8px;
+  border: 2px solid #9c0412;
+  color: #9c0412;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  transform: rotate(-2deg);
+}
+
+.victim-dossier-card.is-active-case .victim-status-stamp {
+  background: #9c0412;
+  color: #ffffff;
+}
+
+.victim-card-body {
+  display: grid;
+  grid-template-columns: 185px 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.victim-photo-col { display: flex; flex-direction: column; gap: 6px; }
+
+.victim-photo-box {
+  position: relative;
+  width: 100%;
+  border: 1px solid #352a26;
+  overflow: hidden;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+
+.victim-time-note {
+  padding: 5px 7px;
+  background: rgba(24, 19, 16, 0.08);
+  border-left: 2px solid #8c0612;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  line-height: 1.45;
+  color: #3d322c;
+}
+
+.victim-info-col { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.victim-name { font-family: var(--font-serif); font-size: 24px; font-weight: 700; line-height: 1.1; color: #140f0d; }
+.victim-role { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; color: #8c0612; }
+
+.victim-section-box,
+.victim-rumors-box {
+  padding: 8px 10px;
+  background: rgba(255, 252, 245, 0.45);
+  border: 1px solid rgba(24, 19, 16, 0.16);
+}
+
+.victim-rumors-box { background: rgba(140, 6, 18, 0.06); border-left: 3px solid #8c0612; }
+
+.victim-section-box h4,
+.victim-rumors-box h4 {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  color: #7d0611;
+  margin-bottom: 4px;
+}
+
+.victim-section-box p { font-size: 12.5px; line-height: 1.56; color: #211a17; }
+.victim-rumor-list { list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 12px; line-height: 1.5; color: #2b221e; }
+.rumor-src { display: inline-block; margin-right: 4px; font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: #8c0612; }
+
+.victim-card-foot {
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(24, 19, 16, 0.25);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* 3. TỐI ƯU MOBILE (ANDROID & iOS) */
+@media (max-width: 768px) {
+  .desk-shell,
+  .desk-panel,
+  .board-cork-column { min-width: 0; }
+
+  .field-box input,
+  .field-box select,
+  .field-box textarea,
+  .bbs-field input,
+  .bbs-field select,
+  .bbs-field textarea,
+  .board-reply-box input,
+  .board-reply-box textarea {
+    font-size: 16px !important;
+  }
+
+  .desk-tabs {
+    order: 3;
+    width: 100%;
+    max-width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 5px;
+  }
+  .desk-tabs::-webkit-scrollbar { display: none; }
+  .desk-tab { flex: 0 0 auto; white-space: nowrap; padding: 8px 11px; }
+
+  .victims-grid,
+  .victim-card-body { grid-template-columns: 1fr; }
+}

@@ -1,5 +1,5 @@
 /* =========================================================
-   THE SHOWRUNNER — GIAO DIỆN 2 (BẢN GỘP HOÀN CHỈNH v15)
+   THE SHOWRUNNER — GIAO DIỆN 2 (FIX ẢNH + CASE FILE v17)
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
       .replace(/\*([^\s*][^*]*?)\*/g, "<em>$1</em>");
   }
+
   function normalizeImageUrl(raw) {
     const url = String(raw || "").trim();
     if (!url) return "";
@@ -25,9 +26,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (ghMatch) {
       return `https://raw.githubusercontent.com/${ghMatch[1]}/${ghMatch[2]}/${ghMatch[3]}/${ghMatch[4]}`;
     }
-    const gdMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
+    const gdMatch = url.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?.*id=)([^/&?#]+)/i);
     if (gdMatch) {
       return `https://lh3.googleusercontent.com/d/${gdMatch[1]}`;
+    }
+    if (/dropbox\.com/i.test(url) && /[?&]dl=0/i.test(url)) {
+      return url.replace(/([?&])dl=0/i, "$1raw=1");
     }
     return url;
   }
@@ -35,10 +39,31 @@ document.addEventListener("DOMContentLoaded", () => {
   function getCandidateUrls(raw) {
     const url = normalizeImageUrl(raw);
     if (!url) return [];
-    if (/^(https?:|data:|blob:|\/|\.\.)/i.test(url)) return [url];
-    const clean = url.replace(/^\.\//, "");
-    // Tự động thử nếu thư mục assets nằm cùng cấp hoặc lùi 1-2 cấp / gốc server
-    return [url, `assets/${url}`, `../${url}`, `../../${url}`, `/${url}`];
+    if (/^(https?:|data:|blob:)/i.test(url)) return [url];
+
+    const list = [url];
+    const clean = url.replace(/^\.\//, "").replace(/^\/+/, "");
+    if (clean && clean !== url) list.push(clean);
+
+    // Tự động sửa nếu lỡ gõ lặp "assets/assets/..." -> thử thêm bản 1 lớp "assets/..."
+    const withoutDupAssets = clean.replace(/^assets\/assets\//i, "assets/");
+    if (withoutDupAssets !== clean) {
+      list.push(withoutDupAssets, `./${withoutDupAssets}`);
+    }
+
+    if (/^assets\//i.test(withoutDupAssets)) {
+      const noAssets = withoutDupAssets.replace(/^assets\//i, "");
+      if (noAssets) list.push(noAssets);
+    } else if (clean) {
+      list.push(`assets/${clean}`);
+    }
+
+    [clean, withoutDupAssets].forEach((v) => {
+      if (!v) return;
+      list.push(`../${v}`, `../../${v}`, `/${v}`);
+    });
+
+    return [...new Set(list)];
   }
 
   function applySmartBackground(el, rawUrl) {
@@ -60,7 +85,6 @@ document.addEventListener("DOMContentLoaded", () => {
     tryNext();
   }
 
-  // Tự động thử các đường dẫn lùi cấp khi <img> báo lỗi trước khi hiện khung dự phòng
   document.addEventListener(
     "error",
     (e) => {
@@ -81,6 +105,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       img.style.display = "none";
 
+      if (img.classList.contains("tape-thumb-img")) {
+        if (img.parentElement) img.parentElement.style.display = "none";
+        return;
+      }
+
       if (
         img.classList.contains("sim-layer-flower") ||
         img.classList.contains("sim-layer-bg") ||
@@ -95,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!box.querySelector(".img-fallback-box")) {
         const fb = document.createElement("div");
         fb.className = "location-photo-empty img-fallback-box";
-        fb.innerHTML = `<span>KHÔNG TÌM THẤY FILE: ${escapeHtml(rawSrc)}</span><strong>${escapeHtml(img.alt || "SWEZAN 1994")}</strong>`;
+        fb.innerHTML = `<span>MISSING FILE // ${escapeHtml(rawSrc)}</span><strong>${escapeHtml(img.alt || "SWEZAN 1994")}</strong>`;
         box.prepend(fb);
       }
     },
@@ -108,12 +137,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const bgLayer = document.getElementById("main-bg-layer");
   const wireframeSvg = document.getElementById("forensic-wireframe");
   const bgCfg = cfg.background || {};
-  const bgImg = bgCfg.imageUrl || bgCfg.img;
-  if (bgImg) applySmartBackground(bgLayer, bgImg);
+
   if (bgLayer) {
-    if (bgCfg.imageUrl) {
-      applySmartBackground(bgLayer, bgCfg.imageUrl);
-    }
+    const bgImg = bgCfg.imageUrl || bgCfg.img;
+    if (bgImg) applySmartBackground(bgLayer, bgImg);
     const useBw = bgCfg.bwAndWireframe !== false;
     bgLayer.classList.toggle("has-bw-filter", useBw);
     if (wireframeSvg) wireframeSvg.classList.toggle("is-hidden", !useBw);
@@ -124,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* -------------------------------------------------------
-     2. HỆ THỐNG CHUYỂN TAB (MẶC ĐỊNH VÀO 00. BACKSTORY)
+     2. HỆ THỐNG CHUYỂN TAB
      ------------------------------------------------------- */
   const tabBtns = document.querySelectorAll(".desk-tab");
   const deskPanels = document.querySelectorAll(".desk-panel");
@@ -142,7 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tabKey === "tapes") {
       const activeTape = videos.find((v) => v.id === activeTapeId) || videos[0];
       if (activeTape) playTapeSimulation(activeTape);
-    } else if (window.Tape3DSim) {
+    } else if (window.Tape3DSim && typeof window.Tape3DSim.destroy === "function") {
       window.Tape3DSim.destroy();
     }
   }
@@ -156,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* -------------------------------------------------------
-     2B. TAB 00: BACKSTORY & 1 KHUNG ẢNH MỞ ĐẦU
+     2B. TAB 00: BACKSTORY
      ------------------------------------------------------- */
   const backstoryEl = document.getElementById("backstory-content");
   const bs = cfg.backstory || {};
@@ -164,7 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (backstoryEl) {
     const bsPhoto = bs.imageUrl || bs.img;
     const bsPhotoMarkup = bsPhoto
-  ? `<img src="${escapeHtml(normalizeImageUrl(bsPhoto))}" alt="${escapeHtml(bs.title || "Swezan Backstory")}" />`
+      ? `<img src="${escapeHtml(normalizeImageUrl(bsPhoto))}" alt="${escapeHtml(bs.title || "Swezan Backstory")}" />`
       : `<div class="backstory-photo-empty">
            <span>ARCHIVE PHOTO // SWEZAN 1994</span>
            <strong>[CHÈN 1 ẢNH BACKSTORY TRONG config.js]</strong>
@@ -177,14 +204,17 @@ document.addEventListener("DOMContentLoaded", () => {
     backstoryEl.innerHTML = `
       <figure class="backstory-photo-card">
         <span class="pushpin" aria-hidden="true"></span>
+        <span class="tape-corner tl" aria-hidden="true"></span>
+        <span class="tape-corner br" aria-hidden="true"></span>
         <div class="backstory-photo-frame">${bsPhotoMarkup}</div>
         <figcaption class="backstory-photo-caption">
           <span>${escapeHtml(bs.imageCaption || "SWEZAN VALLEY · 1994")}</span>
-          <span>FILE // 00</span>
+          <span>EXHIBIT // 00</span>
         </figcaption>
       </figure>
 
       <article class="backstory-story-card">
+        <span class="rubber-stamp stamp-dossier">CONFIDENTIAL // CASE 08</span>
         <p class="panel-kicker">${escapeHtml(bs.kicker || "PROLOGUE // 1994")}</p>
         <h2 class="backstory-title">${escapeHtml(bs.title || "THUNG LŨNG SWEZAN TRƯỚC GIỜ G")}</h2>
         ${bs.quote ? `<blockquote class="backstory-quote">${formatRichText(bs.quote)}</blockquote>` : ""}
@@ -192,9 +222,8 @@ document.addEventListener("DOMContentLoaded", () => {
       </article>
     `;
   }
-
   /* -------------------------------------------------------
-     3. TAB 02: THẾ GIỚI SWEZAN, TIMELINE, KHU VỰC & NGUYÊN TẮC
+     3. TAB 02: THẾ GIỚI SWEZAN, TIMELINE & 18 KHU VỰC
      ------------------------------------------------------- */
   const WORLD_TIMELINE = [
     {
@@ -231,120 +260,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const WORLD_LIVE_STATE = [
     {
-      tag: "📻 RADIO & TRUYỀN HÌNH ĐANG PHÁT GÌ?",
+      tag: "EXHIBIT R-01 // RADIO & TRUYỀN HÌNH",
       title: "Sóng Ngắn Căng Thẳng · K-TV Tạm Ngừng",
       body: "Đài Swan Terof Kênh 8 đã tạm ngưng phát sóng ban đêm sau sự cố nhiễu 50Hz. Trên các băng tần Radio địa phương, Tòa thị chính liên tục phát thông báo giới nghiêm, lệnh kiểm soát các cây cầu vào Altstadt và cảnh báo người dân nộp lại mọi cuộn băng lạ.",
     },
     {
-      tag: "👁️ NGƯỜI DÂN ĐANG NHƯ THẾ NÀO?",
+      tag: "EXHIBIT P-02 // TÌNH HÌNH DÂN CHÚNG",
       title: "Hội Chứng Sợ Màn Hình CRT (Hoảng Loạn 75%)",
       body: "Nhiều hộ dân dùng chăn dạ hoặc báo cũ trùm kín tivi vào ban đêm, trẻ em bật khóc khi thấy đèn LED đầu máy VCR. Tại Bến cảng và Khối 7, công nhân đốt lửa trong thùng phuy bãi công; còn giới thượng lưu trên Đồi Kranzhügel đóng chặt cổng thuê vệ sĩ gác đêm.",
     },
     {
-      tag: "⚖️ ĐỒN CẢNH SÁT & TÒA THỊ CHÍNH",
+      tag: "EXHIBIT G-03 // ĐỒN CẢNH SÁT & TÒA THỊ CHÍNH",
       title: "Bộ Máy Công Quyền Hỗn Loạn",
       body: "Cảnh sát trưởng Heckler giam mình trong phòng cùng mùi rượu gin và thuốc lá Chesterfield trước nguy cơ bị Tòa thị chính cách chức. Tuần tra địa phương tăng cường vây ráp ngoài phố, trong khi Công tố viên Julian von Brandt trực tiếp siết chặt giám sát hồ sơ.",
     },
   ];
 
-  const WORLD_PRINCIPLES = [
-    {
-      tag: "NGUYÊN TẮC 01 · TỰ DO & KHÔNG LỐI MÒN",
-      title: "Thế Giới Độc Lập — Không “Plot Armor”",
-      body: "Swezan không phải sân khấu xoay quanh riêng bạn. Bạn có quyền bỏ qua vụ án để uống rượu ở phòng trà, lặn ngụp dưới chợ đen hay lục kho lưu trữ — nhưng đồng hồ thị trấn vẫn chạy và không ai cứu bạn nếu bạn tự bước vào cạm bẫy.",
-    },
-    {
-      tag: "NGUYÊN TẮC 02 · ĐỒNG HỒ 2 TẦNG",
-      title: "Hạn Chót 7 Ngày & Giới Hạn Sinh Học",
-      body: "Mỗi hành động đều tiêu tốn thời gian thực: khám nghiệm (+4 giờ), thẩm vấn (+2–3 giờ), di chuyển giữa các khu (+30–60 phút). Thức quá 24–30 giờ liên tục sẽ gây run tay và ảo giác. Đến 23:59 Chủ Nhật, kết cục sẽ tự động chốt.",
-    },
-    {
-      tag: "NGUYÊN TẮC 03 · TỰ SUY LUẬN",
-      title: "Dữ Kiện Thô & Ranh Giới Tri Thức",
-      body: "Không có lời nhắc bài sẵn. Các nhân vật chỉ biết trong phạm vi nghề nghiệp của họ, giữ định kiến giai cấp riêng và sẵn sàng nói dối để che giấu việc làm ăn bất chính. Kết nối manh mối hoàn toàn nằm ở bạn.",
-    },
-    {
-      tag: "NGUYÊN TẮC 04 · CÁI GIÁ CỦA SAI LẦM",
-      title: "Bắt Oan & Thương Tật Vĩnh Viễn",
-      body: "Bắt nhầm nghi phạm khi thiếu bằng chứng vật lý sẽ khiến dư luận bùng nổ (+15% hoảng loạn), châm ngòi bạo loạn hoặc bị tước quyền điều tra. Xông vào khu vực nguy hiểm thiếu chuẩn bị sẽ để lại thương tật vĩnh viễn.",
-    },
-  ];
-
-  const WORLD_ECONOMY = [
-    "<strong>Đơn vị tiền tệ:</strong> Mark Swezan (M)",
-    "<strong>Thu nhập công nhân:</strong> 800 – 1.200 M/tháng",
-    "<strong>Bao thuốc lá:</strong> 4 – 6 M",
-    "<strong>Cà phê / Ly rượu:</strong> 8 – 20 M",
-    "<strong>Mua tin vỉa hè:</strong> 50 – 100 M",
-    "<strong>Trang bị chợ đen / Mặt nạ:</strong> 150 – 300 M",
-    "<strong>Súng lậu không số hiệu:</strong> 800 – 1.500 M",
-  ];
-
-  const WORLD_ROLES = [
-    {
-      tag: "THÂN PHẬN 01 · 1.200 MARK",
-      title: "Thanh Tra Cấp Cao / Đặc Phái Viên",
-      body: "Mang lệnh trưng dụng từ thủ đô và súng công vụ. Có quyền vào hiện trường phong tỏa và triệu tập người, nhưng bị cảnh sát địa phương dè chừng và công nhân thù địch.",
-    },
-    {
-      tag: "THÂN PHẬN 02 · 300 MARK",
-      title: "Thám Tử Tư / Cựu Sĩ Quan",
-      body: "Không có quyền lực pháp lý, nhưng hoàn toàn tự do lặn ngụp dưới bến cảng đêm, giao dịch chợ đen và lần theo những ngõ tối ngoài giờ giới nghiêm.",
-    },
-    {
-      tag: "THÂN PHẬN 03 · 1.500 MARK",
-      title: "Bác Sĩ Pháp Y Độc Lập",
-      body: "Làm chủ phòng giải phẫu dưới hầm Tòa án Cũ. Tiếng nói khoa học mang tính quyết định trước tòa, nhưng thiếu quyền cưỡng chế và dễ gặp áp lực bưng bít.",
-    },
-    {
-      tag: "THÂN PHẬN 04 · 600 MARK",
-      title: "Phóng Viên Điều Tra",
-      body: "Sở hữu thẻ nhà báo, máy ảnh 35mm và mạng lưới tin đồn khắp thung lũng. Ngòi bút có thể xoay chuyển dư luận nhưng dễ bị cả cảnh sát lẫn tội phạm nhắm tới.",
-    },
-    {
-      tag: "THÂN PHẬN 05 · LINH HOẠT ĐỊA VỊ",
-      title: "Dân Thường Tự Do (Ngoài 4 Nhóm Trên)",
-      body: "Bao gồm mọi thân phận không nằm trong 4 ngành điều tra trên. Bạn có thể là thợ cơ khí bãi than, thân nhân nạn nhân, chủ tiệm, nghệ sĩ cho đến quý tộc / bá tước — tài chính và quyền thế tùy thuộc vào Nghề nghiệp & Địa vị bạn chọn.",
-    },
-  ];
-
   const worldTimelineEl = document.getElementById("world-timeline");
   const worldLiveGrid = document.getElementById("world-live-grid");
-  const worldRulesGrid = document.getElementById("world-rules-grid");
-  const worldEconomyStrip = document.getElementById("world-economy-strip");
-  const worldRolesGrid = document.getElementById("world-roles-grid");
   const worldDistrictsGrid = document.getElementById("world-districts-grid");
 
   if (worldTimelineEl) {
     worldTimelineEl.innerHTML = WORLD_TIMELINE.map(
-      (item) => `
+      (item, idx) => `
       <article class="timeline-item ${item.now ? "is-now" : ""}">
-        <div class="timeline-time">${item.time}</div>
-        <h4 class="timeline-title">${item.title}</h4>
-        <p class="timeline-desc">${item.desc}</p>
+        <div class="timeline-time">LOG #0${idx + 1} // ${escapeHtml(item.time)}</div>
+        <h4 class="timeline-title">${escapeHtml(item.title)}</h4>
+        <p class="timeline-desc">${escapeHtml(item.desc)}</p>
       </article>`
     ).join("");
   }
 
   if (worldLiveGrid) {
     worldLiveGrid.innerHTML = WORLD_LIVE_STATE.map(
-      (s) => `<article class="dossier-card"><div class="card-badge-row"><span>${s.tag}</span></div><h3 class="card-h3">${s.title}</h3><p class="card-body">${s.body}</p></article>`
-    ).join("");
-  }
-
-  if (worldRulesGrid) {
-    worldRulesGrid.innerHTML = WORLD_PRINCIPLES.map(
-      (p) => `<article class="dossier-card"><div class="card-badge-row"><span>${p.tag}</span></div><h3 class="card-h3">${p.title}</h3><p class="card-body">${p.body}</p></article>`
-    ).join("");
-  }
-
-  if (worldEconomyStrip) {
-    worldEconomyStrip.innerHTML = WORLD_ECONOMY.map((item) => `<span>${item}</span>`).join("");
-  }
-
-  if (worldRolesGrid) {
-    worldRolesGrid.innerHTML = WORLD_ROLES.map(
-      (r) => `<article class="dossier-card"><div class="card-badge-row"><span>${r.tag}</span></div><h3 class="card-h3">${r.title}</h3><p class="card-body">${r.body}</p></article>`
+      (s) => `
+      <article class="dossier-card">
+        <div class="card-badge-row"><span>${escapeHtml(s.tag)}</span></div>
+        <h3 class="card-h3">${escapeHtml(s.title)}</h3>
+        <p class="card-body">${escapeHtml(s.body)}</p>
+      </article>`
     ).join("");
   }
 
@@ -357,13 +311,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const mapInspectorEl = document.getElementById("swezan-map-inspector");
   const locFilterBtns = document.querySelectorAll("[data-loc-filter]");
   const mapCfg = cfg.map || {};
-  const mapImg = mapCfg.imageUrl || mapCfg.img;
-  if (mapImg) applySmartBackground(mapBgEl, mapImg);
 
   if (mapBgEl) {
-    if (mapCfg.imageUrl) {
-      applySmartBackground(mapBgEl, mapCfg.imageUrl);
-    }
+    const mapImg = mapCfg.imageUrl || mapCfg.img;
+    if (mapImg) applySmartBackground(mapBgEl, mapImg);
     mapBgEl.classList.toggle("has-bw", mapCfg.bwFilter !== false);
   }
 
@@ -372,7 +323,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const loc = locations.find((l) => l.id === selectedLocId) || locations[0];
     if (!loc) return;
 
-    const imgUrl = normalizeImageUrl(loc.imageUrl);
+    const imgUrl = normalizeImageUrl(loc.imageUrl || loc.img);
     const photoHtml = imgUrl
       ? `<img class="location-photo-img" src="${escapeHtml(imgUrl)}" alt="${escapeHtml(loc.title)}" />`
       : `<div class="location-photo-empty">
@@ -383,6 +334,7 @@ document.addEventListener("DOMContentLoaded", () => {
     mapInspectorEl.innerHTML = `
       <div class="card-badge-row">
         <span>GHIM ${escapeHtml(loc.num || "--")} // ${escapeHtml(loc.zone)}</span>
+        <span class="mini-stamp">SITE LOG</span>
       </div>
       <div class="location-photo-box">${photoHtml}</div>
       <h3 class="card-h3">${escapeHtml(loc.title)}</h3>
@@ -421,8 +373,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     worldDistrictsGrid.innerHTML = list
       .map((loc) => {
-        const numLabel = loc.num ? `${loc.num} // ` : "";
-        const imgUrl = normalizeImageUrl(loc.imageUrl);
+        const numLabel = loc.num ? `SITE ${loc.num} // ` : "";
+        const imgUrl = normalizeImageUrl(loc.imageUrl || loc.img);
         const photoHtml = imgUrl
           ? `<img class="location-photo-img" src="${escapeHtml(imgUrl)}" alt="${escapeHtml(loc.title)}" />`
           : `<div class="location-photo-empty">
@@ -434,10 +386,13 @@ document.addEventListener("DOMContentLoaded", () => {
           : "";
 
         return `
-        <article class="location-card" data-card-loc-id="${escapeHtml(loc.id)}" style="cursor:pointer;">
-          <div class="location-photo-box">${photoHtml}</div>
+        <article class="location-card ${loc.id === selectedLocId ? "is-selected" : ""}" data-card-loc-id="${escapeHtml(loc.id)}" style="cursor:pointer;">
+          <div class="location-photo-box">
+            ${photoHtml}
+            <span class="char-cam-tag">FILE // ${escapeHtml(loc.num || "--")}</span>
+          </div>
           <div class="location-body">
-            <div class="card-badge-row"><span>${numLabel}${escapeHtml(loc.zone)}</span></div>
+            <div class="card-badge-row"><span>${escapeHtml(numLabel + loc.zone)}</span></div>
             <h3 class="card-h3">${escapeHtml(loc.title)}</h3>
             <p class="card-body">${escapeHtml(loc.desc)}</p>
             ${sensoryHtml}
@@ -454,6 +409,7 @@ document.addEventListener("DOMContentLoaded", () => {
       selectedLocId = pin.dataset.pinId;
       renderMapPins();
       renderMapInspector();
+      renderLocations();
     });
   }
 
@@ -464,6 +420,7 @@ document.addEventListener("DOMContentLoaded", () => {
       selectedLocId = card.dataset.cardLocId;
       renderMapPins();
       renderMapInspector();
+      renderLocations();
       if (mapInspectorEl) {
         mapInspectorEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
@@ -483,18 +440,8 @@ document.addEventListener("DOMContentLoaded", () => {
   renderMapInspector();
   renderLocations();
 
-  locFilterBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      locFilter = btn.dataset.locFilter;
-      locFilterBtns.forEach((b) => b.classList.toggle("is-active", b === btn));
-      renderLocations();
-    });
-  });
-
-  renderLocations();
-
   /* -------------------------------------------------------
-     4. TAB 03: CÁC BĂNG VIDEO ĐÃ CÔNG BỐ (3D MODEL & 2D FALLBACK)
+     4. TAB 03: CÁC BĂNG VIDEO ĐÃ CÔNG BỐ
      ------------------------------------------------------- */
   const tapesListGrid = document.getElementById("tapes-list-grid");
   const tapeCrtMedia = document.getElementById("tape-crt-media");
@@ -539,22 +486,14 @@ document.addEventListener("DOMContentLoaded", () => {
         ${commonDefs}
         <rect width="400" height="300" fill="#060203" />
         <ellipse cx="200" cy="146" rx="145" ry="125" fill="url(#redAura)" />
-        <!-- Viền buồng kính quả trứng mờ -->
         <ellipse cx="200" cy="150" rx="112" ry="132" fill="none" stroke="rgba(255, 70, 88, 0.25)" stroke-width="2" />
-        <!-- Bóng người nữ màu đỏ giữa màn đêm -->
         <g class="red-body-breathe" filter="url(#redGlowFilter)">
-          <!-- Đầu & tóc xõa dài -->
           <path d="M180,68 C182,45 218,45 220,68 C224,90 232,108 228,128 C218,120 182,120 172,128 C168,108 176,90 180,68 Z" fill="#6e050f" />
           <ellipse cx="200" cy="70" rx="19" ry="24" fill="url(#redBodyGrad)" />
-          <!-- Cổ, vai, eo & hông váy dài -->
           <path d="M192,90 L208,90 L212,108 C236,112 248,124 252,146 L236,188 C230,206 238,236 254,300 L146,300 C162,236 170,206 164,188 L148,146 C152,124 164,112 188,108 Z" fill="url(#redBodyGrad)" />
-          <!-- Hai cánh tay giơ lên áp vào mặt kính -->
           <g class="red-arms-slide">
-            <path d="M154,126 C132,142 124,158 134,174 L152,138 L166,112 L152,100 L132,112 L134,94 L144,90 L148,104 Z" fill="url(#redBodyGrad)" />
             <path d="M148,162 L132,126 C126,114 134,100 144,102 L158,136 Z" fill="url(#redBodyGrad)" />
-            <path d="M246,126 C268,142 276,158 266,174 L248,138 L234,112 L248,100 L268,112 L266,94 L256,90 L252,104 Z" fill="url(#redBodyGrad)" />
             <path d="M252,162 L268,126 C274,114 266,100 256,102 L242,136 Z" fill="url(#redBodyGrad)" />
-            <!-- Bàn tay 5 ngón áp sát kính -->
             <ellipse cx="144" cy="108" rx="9" ry="12" fill="#ff2e43" opacity="0.88" />
             <ellipse cx="256" cy="108" rx="9" ry="12" fill="#ff2e43" opacity="0.88" />
           </g>
@@ -568,26 +507,16 @@ document.addEventListener("DOMContentLoaded", () => {
         ${commonDefs}
         <rect width="400" height="300" fill="#050203" />
         <ellipse cx="200" cy="145" rx="140" ry="118" fill="url(#redAura)" />
-        <!-- Mặt nước tối phản chiếu đỏ bên dưới -->
         <rect x="0" y="232" width="400" height="68" fill="#040102" />
         <line x1="60" y1="242" x2="340" y2="242" stroke="rgba(220, 20, 38, 0.38)" stroke-width="1.5" stroke-dasharray="16 8" />
-        <line x1="110" y1="256" x2="290" y2="256" stroke="rgba(220, 20, 38, 0.24)" stroke-width="1" />
-        <!-- Ghế sắt treo & bóng người đỏ bị trói -->
         <g class="red-chair-swing" filter="url(#redGlowFilter)">
           <line x1="200" y1="0" x2="200" y2="74" stroke="rgba(255, 60, 76, 0.55)" stroke-width="3" stroke-dasharray="6 4" />
-          <!-- Đầu cúi + thân người ngồi ghế -->
           <ellipse cx="200" cy="86" rx="17" ry="21" fill="url(#redBodyGrad)" />
           <path d="M172,110 C184,104 216,104 228,110 L224,174 L176,174 Z" fill="url(#redBodyGrad)" />
-          <!-- Hai chân thõng xuống -->
           <path d="M176,174 L170,224 L184,224 L190,174 Z" fill="url(#redBodyGrad)" />
           <path d="M210,174 L216,224 L230,224 L224,174 Z" fill="url(#redBodyGrad)" />
-          <!-- Khung ghế sắt -->
           <rect x="164" y="170" width="72" height="8" fill="#5e050d" />
           <rect x="168" y="102" width="64" height="68" fill="none" stroke="#8c0814" stroke-width="4" />
-        </g>
-        <!-- Bóng bàn tay găng lướt ngang -->
-        <g class="sim-glove-pass">
-          <path d="M-40,300 L22,155 C32,138 52,144 48,162 L24,300 Z" fill="#030102" stroke="#9c0412" stroke-width="1.5" />
         </g>
       </svg>`;
     }
@@ -605,7 +534,6 @@ document.addEventListener("DOMContentLoaded", () => {
       </svg>`;
     }
 
-    // Tập 4: Bóng Kỵ Sĩ đỏ chớp tắt trong bóng tối
     return `
       <svg class="sim-red-silhouette-svg" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         ${commonDefs}
@@ -627,9 +555,14 @@ document.addEventListener("DOMContentLoaded", () => {
         ? "sim-tint-shadow"
         : sim.tintMode === "original"
         ? "sim-tint-original"
+        : sim.tintMode === "noir"
+        ? "sim-tint-noir"
         : "sim-tint-red-shadow";
 
-    // Nếu người tạo có gắn personUrl riêng -> dùng ảnh PNG đó, ngược lại bật Canvas Croquis 2D bóng đỏ
+    const bgHtml = sim.bgUrl
+      ? `<img class="sim-layer-bg" src="${escapeHtml(normalizeImageUrl(sim.bgUrl))}" alt="" />`
+      : "";
+
     const personLayerHtml = sim.personUrl
       ? `<img class="sim-layer-person ${personTint} ${motionClass}" src="${escapeHtml(normalizeImageUrl(sim.personUrl))}" alt="" />`
       : `<div id="tape-croquis-mount" style="position:absolute;inset:0;z-index:2;"></div>`;
@@ -646,11 +579,20 @@ document.addEventListener("DOMContentLoaded", () => {
       flowerHtml = `<img class="sim-layer-flower is-right" src="${escapeHtml(normalizeImageUrl(sim.flowerRightUrl))}" alt="" />`;
     }
 
+    const overlayHtml = sim.overlayUrl
+      ? `<img class="sim-layer-overlay ${motionClass}" src="${escapeHtml(normalizeImageUrl(sim.overlayUrl))}" alt="" />`
+      : tape.id === "tape-2"
+      ? `<div class="sim-egg-glass-rim"></div>`
+      : "";
+
     return `
       <div class="sim-red-shadow-stage">
+        ${bgHtml}
+        <div class="sim-fog-band sim-fog-back"></div>
         ${personLayerHtml}
         <div class="sim-fog-band sim-fog-front"></div>
         ${flowerHtml}
+        ${overlayHtml}
         <div class="sim-noise-grain"></div>
         <div class="sim-tracking-band"></div>
         <div class="sim-flash-glitch"></div>
@@ -664,10 +606,13 @@ document.addEventListener("DOMContentLoaded", () => {
       cancelAnimationFrame(simRafId);
       simRafId = null;
     }
-    if (window.Tape3DSim) window.Tape3DSim.destroy();
+    if (window.Tape3DSim && typeof window.Tape3DSim.destroy === "function") {
+      window.Tape3DSim.destroy();
+    }
 
+    const poster = normalizeImageUrl(tape.thumbnailUrl || tape.img);
     if (tape.videoUrl) {
-      tapeCrtMedia.innerHTML = `<video src="${escapeHtml(normalizeImageUrl(tape.videoUrl))}" ${tape.thumbnailUrl ? `poster="${escapeHtml(normalizeImageUrl(tape.thumbnailUrl))}"` : ""} controls autoplay playsinline></video>`;
+      tapeCrtMedia.innerHTML = `<video src="${escapeHtml(normalizeImageUrl(tape.videoUrl))}" ${poster ? `poster="${escapeHtml(poster)}"` : ""} controls autoplay playsinline></video>`;
       if (tapeCrtTimer) tapeCrtTimer.textContent = "▶ VIDEO";
       if (tapeSimProgress) tapeSimProgress.style.width = "100%";
       return;
@@ -685,7 +630,7 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
     const croquisMount = document.getElementById("tape-croquis-mount");
-    if (croquisMount && window.Tape3DSim) {
+    if (croquisMount && window.Tape3DSim && typeof window.Tape3DSim.mount === "function") {
       window.Tape3DSim.mount(
         croquisMount,
         tape.id,
@@ -705,7 +650,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Trường hợp dùng ảnh personUrl cắt nền riêng -> chạy thanh tiến trình 3.8s
+    if (croquisMount) {
+      croquisMount.innerHTML = buildRedSilhouetteSvg(tape.id);
+    }
+
     const durationMs = 3800;
     const startAt = performance.now();
     function step(now) {
@@ -757,17 +705,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (tapesListGrid && videos.length > 0) {
     tapesListGrid.innerHTML = videos
-      .map(
-        (v) => `
+      .map((v) => {
+        const thumb = normalizeImageUrl(v.thumbnailUrl || v.img);
+        const thumbHtml = thumb
+          ? `<div class="tape-card-thumb"><img class="tape-thumb-img" src="${escapeHtml(thumb)}" alt="${escapeHtml(v.title)}" /></div>`
+          : "";
+        return `
       <button class="tape-card-btn ${v.id === activeTapeId ? "is-active" : ""}" type="button" data-tape-id="${escapeHtml(v.id)}">
-        <div class="tape-card-top">
-          <span>${escapeHtml(v.code)}</span>
-          <span>${escapeHtml(v.duration)}</span>
+        <div class="tape-card-row">
+          ${thumbHtml}
+          <div class="tape-card-info">
+            <div class="tape-card-top">
+              <span>${escapeHtml(v.code)}</span>
+              <span>${escapeHtml(v.duration)}</span>
+            </div>
+            <h4>${escapeHtml(v.title)}</h4>
+            <div class="tape-card-meta">${escapeHtml(v.status)} · ${escapeHtml(v.date)}</div>
+          </div>
         </div>
-        <h4>${escapeHtml(v.title)}</h4>
-        <div class="tape-card-meta">${escapeHtml(v.status)} · ${escapeHtml(v.date)}</div>
-      </button>`
-      )
+      </button>`;
+      })
       .join("");
 
     tapesListGrid.addEventListener("click", (e) => {
@@ -777,12 +734,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     selectTape(activeTapeId, false);
   }
-
   /* -------------------------------------------------------
      5. TAB 04: NHÂN VẬT & BẢNG GHI CHÚ THÔNG TIN CÔNG KHAI
      ------------------------------------------------------- */
   const characters = Array.isArray(window.SHOWRUNNER_CHARACTERS) ? window.SHOWRUNNER_CHARACTERS : [];
-  const charImg = normalizeImageUrl(c.imageUrl || c.img);
   let castFilter = "all";
   let currentFilteredList = characters;
   let activeCharIndex = -1;
@@ -819,10 +774,11 @@ document.addEventListener("DOMContentLoaded", () => {
     setText("note-public", c.publicNotes || c.desc);
     setText("note-quote", c.quote);
 
+    const charImg = normalizeImageUrl(c.imageUrl || c.img);
     const notePhotoBox = document.getElementById("note-photo-box");
     if (notePhotoBox) {
-      notePhotoBox.innerHTML = c.imageUrl
-        ? `<img class="char-photo-img" src="${escapeHtml(c.imageUrl)}" alt="${escapeHtml(c.name)}" /><span class="char-cam-tag">FILE // PUBLIC</span>`
+      notePhotoBox.innerHTML = charImg
+        ? `<img class="char-photo-img" src="${escapeHtml(charImg)}" alt="${escapeHtml(c.name)}" /><span class="char-cam-tag">FILE // PUBLIC</span>`
         : `<div class="char-photo-placeholder">
              <span class="q-mark">?</span>
              <span class="q-hint">SWEZAN 1994</span>
@@ -858,8 +814,9 @@ document.addEventListener("DOMContentLoaded", () => {
       .map((c, i) => {
         const tilt = ((i % 5) - 2) * 1.1;
         const isClassified = Boolean(c.classified);
-        const photoHtml = c.imageUrl
-          ? `<img class="char-photo-img" src="${escapeHtml(c.imageUrl)}" alt="${escapeHtml(c.name)}" />`
+        const charImg = normalizeImageUrl(c.imageUrl || c.img);
+        const photoHtml = charImg
+          ? `<img class="char-photo-img" src="${escapeHtml(charImg)}" alt="${escapeHtml(c.name)}" />`
           : `<div class="char-photo-placeholder">
                <span class="q-mark">?</span>
                <span class="q-hint">${isClassified ? "CLASSIFIED" : "SWEZAN 1994"}</span>
@@ -882,7 +839,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="char-role">${escapeHtml(c.role)}</div>
           <p class="char-desc">${escapeHtml(c.desc)}</p>
           <p class="char-quote">${escapeHtml(c.quote)}</p>
-          ${isClassified ? "" : `<span class="char-open-hint">[BẤM MỞ GHI CHÚ &#8599;]</span>`}
+          ${isClassified ? "" : `<span class="char-open-hint">[MỞ TẬP HỒ SƠ &#8599;]</span>`}
         </article>`;
       })
       .join("");
@@ -959,7 +916,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const ROLE_HINTS = {
     "Thanh Tra Cấp Cao":
-      "Nhóm Điều Tra Nhà Nước: Có lệnh trưng dụng từ Bộ Nội vụ và vũ khí công vụ (khởi điểm ~1.200 M), nhưng bị cảnh sát địa phương dè chừng và công nhân thù địch.",
+      "Nhóm Điều Tra Nhà Nước: Có lệnh trưng dụng từ Bộ Nội vụ và súng công vụ (khởi điểm ~1.200 M), nhưng bị cảnh sát địa phương dè chừng và công nhân thù địch.",
     "Thám Tử Tư":
       "Nhóm Điều Tra Tự Do: Không có thẩm quyền pháp lý chính thức (~300 M), bù lại tự do đi lại ngoài giới nghiêm và giao dịch dưới bến cảng đêm.",
     "Bác Sĩ Pháp Y":
@@ -1071,7 +1028,7 @@ document.addEventListener("DOMContentLoaded", () => {
     copyProfileBtn.addEventListener("click", () => {
       const text = buildProfileText();
       const showCopied = () => {
-        if (copyFeedback) copyFeedback.textContent = "ĐÃ COPY!";
+        if (copyFeedback) copyFeedback.textContent = "ĐÃ COPY HỒ SƠ!";
         setTimeout(() => {
           if (copyFeedback) copyFeedback.textContent = "";
         }, 2200);
@@ -1103,14 +1060,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function openEndCurtain() {
     if (!endCurtainOverlay) return;
-    if (window.AnalogAudio) window.AnalogAudio.playPowerOffSound();
-    if (window.AnalogNoise) window.AnalogNoise.setMode("standby");
+    if (window.AnalogAudio && typeof window.AnalogAudio.playPowerOffSound === "function") {
+      window.AnalogAudio.playPowerOffSound();
+    }
+    if (window.AnalogNoise && typeof window.AnalogNoise.setMode === "function") {
+      window.AnalogNoise.setMode("standby");
+    }
     endCurtainOverlay.hidden = false;
   }
 
   function closeEndCurtain() {
     if (!endCurtainOverlay) return;
-    if (window.AnalogNoise) window.AnalogNoise.setMode("calm");
+    if (window.AnalogNoise && typeof window.AnalogNoise.setMode === "function") {
+      window.AnalogNoise.setMode("calm");
+    }
     endCurtainOverlay.hidden = true;
   }
 
@@ -1118,6 +1081,5 @@ document.addEventListener("DOMContentLoaded", () => {
   if (footerEndBtn) footerEndBtn.addEventListener("click", openEndCurtain);
   if (replayTapeBtn) replayTapeBtn.addEventListener("click", closeEndCurtain);
 
-  // Mặc định khi bước vào Giao diện 2 sẽ mở thẳng Tab 00. BACKSTORY
   switchTab("backstory");
 });

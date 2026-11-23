@@ -12,9 +12,9 @@
     rel="stylesheet"
   />
 
-  <link rel="stylesheet" href="css/palette.css?v=16" />
-  <link rel="stylesheet" href="css/gate.css?v=16" />
-  <link rel="stylesheet" href="css/main.css?v=16" />
+  <link rel="stylesheet" href="css/palette.css?v=18" />
+  <link rel="stylesheet" href="css/gate.css?v=18" />
+  <link rel="stylesheet" href="css/main.css?v=18" />
 </head>
 <body class="is-standby" data-theme="red">
 
@@ -254,7 +254,7 @@
       <header class="desk-topbar">
         <div class="desk-brand">
           <span class="play-badge">&#9654; THE SHOWRUNNER // 1994</span>
-          <span class="desk-date">PRIVATE COLLECTION · ANALOG NOIR</span>
+          <span class="desk-date">CASE FILE #94-08 · SWEZAN ARCHIVE</span>
         </div>
 
         <nav class="desk-tabs" aria-label="Mục giới thiệu tác phẩm">
@@ -275,7 +275,7 @@
       </header>
 
       <!-- TAB 0: BACKSTORY (MẶC ĐỊNH MỞ ĐẦU TIÊN) -->
-       <section id="tab-backstory" class="desk-panel is-active">
+      <section id="tab-backstory" class="desk-panel is-active">
         <div id="backstory-content" class="backstory-layout"></div>
       </section>
 
@@ -307,7 +307,7 @@
               </div>
               <div class="polaroid-meta">
                 <strong>I. THẾ GIỚI &amp; KHU VỰC</strong>
-                <span>Timeline sự kiện · Radio · 5 khu vực</span>
+                <span>Timeline sự kiện · Radio · 18 địa danh</span>
               </div>
             </article>
 
@@ -446,11 +446,11 @@
         </div>
       </section>
 
-      <!-- TAB 2: THẾ GIỚI, KHU VỰC (CÓ ẢNH), TIMELINE & NGUYÊN TẮC -->
+      <!-- TAB 2: THẾ GIỚI, KHU VỰC, TIMELINE -->
       <section id="tab-world" class="desk-panel" hidden>
         <div class="panel-header-strip">
           <div>
-            <p class="panel-kicker">PUBLIC DOSSIER &amp; RULEBOOK // SWEZAN 1994</p>
+            <p class="panel-kicker">PUBLIC DOSSIER &amp; CASE LOG // SWEZAN 1994</p>
             <h2 class="panel-title">BỐI CẢNH, TIMELINE SỰ KIỆN &amp; KHU VỰC</h2>
           </div>
         </div>
@@ -482,17 +482,13 @@
               <div id="swezan-map-stage" class="swezan-map-stage">
                 <div id="swezan-map-bg" class="swezan-map-bg"></div>
 
-                <!-- Lưới địa hình & trục dòng sông Schwarze mặc định -->
                 <svg class="swezan-map-svg" viewBox="0 0 1000 580" preserveAspectRatio="none" aria-hidden="true">
-                  <!-- Sông Schwarze uốn giữa Bến Cảng (Tây) và Phố Cổ (Đông) -->
                   <path d="M 380,0 C 350,140 430,260 365,390 C 310,490 360,540 330,580" fill="none" stroke="rgba(184, 16, 32, 0.35)" stroke-width="26" />
                   <path d="M 380,0 C 350,140 430,260 365,390 C 310,490 360,540 330,580" fill="none" stroke="rgba(255, 190, 195, 0.2)" stroke-width="1.5" stroke-dasharray="8 6" />
-                  <!-- Trục giao lộ Đông-Tây / Bắc-Nam -->
                   <line x1="0" y1="295" x2="1000" y2="295" stroke="rgba(220, 40, 56, 0.28)" stroke-dasharray="6 6" />
                   <line x1="485" y1="0" x2="485" y2="580" stroke="rgba(220, 40, 56, 0.28)" stroke-dasharray="6 6" />
                 </svg>
 
-                <!-- Nhãn chữ các khu vực trên bản đồ -->
                 <span class="map-zone-stamp" style="left: 50%; top: 4%;">[BẮC: ĐỒI GIÓ HÚ WIGEL]</span>
                 <span class="map-zone-stamp" style="left: 8%; top: 5%;">[TÂY BẮC: ĐỒI KRANZHÜGEL]</span>
                 <span class="map-zone-stamp" style="left: 4%; top: 26%;">[TÂY: BẾN CẢNG SÔNG ĐEN]</span>
@@ -500,12 +496,10 @@
                 <span class="map-zone-stamp" style="left: 33%; top: 62%;">[NAM: VÀNH ĐAI HÜT IV &amp; GÜTEROF]</span>
                 <span class="map-zone-stamp" style="left: 72%; top: 67%;">[NGOẠI Ô: BÊ TÔNG &amp; ĐẦM LẦY]</span>
 
-                <!-- 18 điểm ghim chỉ điểm khu vực -->
                 <div id="swezan-map-pins" class="swezan-map-pins"></div>
               </div>
             </div>
 
-            <!-- Ô hiển thị thông tin điểm vừa chỉ trên bản đồ -->
             <aside id="swezan-map-inspector" class="swezan-map-inspector" aria-live="polite"></aside>
           </div>
           <div id="world-districts-grid" class="locations-photo-grid"></div>
@@ -570,7 +564,7 @@
         <div id="cast-grid" class="cast-board-grid"></div>
       </section>
 
-      <!-- TAB 5: TẠO HỒ SƠ NHẬP TỊCH (KHỚP 100% TEMPLATE 1994) -->
+      <!-- TAB 5: TẠO HỒ SƠ NHẬP TỊCH -->
       <section id="tab-profile" class="desk-panel" hidden>
         <div class="panel-header-strip">
           <div>
@@ -799,7 +793,7 @@
     </div>
   </section>
 
-  <!-- BẢNG GHI CHÚ THÔNG TIN CÔNG KHAI KHI ẤN VÀO NHÂN VẬT (NẰM NGOÀI #main-app) -->
+  <!-- BẢNG GHI CHÚ THÔNG TIN CÔNG KHAI KHI ẤN VÀO NHÂN VẬT -->
   <div id="char-note-modal" class="char-note-modal" hidden role="dialog" aria-modal="true" aria-labelledby="note-char-name">
     <div class="char-note-sheet">
       <span class="pushpin" aria-hidden="true"></span>
@@ -872,13 +866,12 @@
     </div>
   </div>
 
-  <!-- NẠP DUY NHẤT 1 LẦN CÁC FILE JS -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js" defer></script>
-  <script src="js/config.js?v=15" defer></script>
-  <script src="js/characters.js?v=15" defer></script>
-  <script src="js/static-noise.js?v=15" defer></script>
-  <script src="js/gate.js?v=15" defer></script>
-  <script src="js/tape3d.js?v=15" defer></script>
-  <script src="js/main.js?v=15" defer></script>
+  <script src="js/config.js?v=18" defer></script>
+  <script src="js/characters.js?v=18" defer></script>
+  <script src="js/static-noise.js?v=18" defer></script>
+  <script src="js/gate.js?v=18" defer></script>
+  <script src="js/tape3d.js?v=18" defer></script>
+  <script src="js/main.js?v=18" defer></script>
 </body>
 </html>

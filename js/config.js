@@ -389,4 +389,12 @@ window.SHOWRUNNER_CONFIG = {
       transcript: "“Vở kịch gồm bốn hồi. Hồi cuối cùng vẫn chưa kéo màn.”",
     },
   ],
+  /* -------------------------------------------------------
+     5. KẾT NỐI FIREBASE CHO TAB THẢO LUẬN THỊ TRẤN
+     ------------------------------------------------------- */
+  firebase: {
+    url: "https://baoungdoinhau-default-rtdb.asia-southeast1.firebasedatabase.app",
+    boardNode: "showrunner_board", // Lưu nhánh riêng, không ảnh hưởng dữ liệu Baoungdoinhau
+    gmPin: "1994", // Mã GM để bạn bật quyền xóa bất kỳ comment nào khi cần
+  },
 };

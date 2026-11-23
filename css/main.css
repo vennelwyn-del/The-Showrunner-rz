@@ -2228,3 +2228,294 @@ body[data-theme="relic"] .wf-coord { fill: rgba(232, 230, 228, 0.72); }
   .newspaper-sheet { transform: none; }
   .tape-yellow { display: none; }
 }
+/* =========================================================
+   TAB 06: SWEZAN-NET BBS & BẢNG TIN CƯ DÂN (KẾT HỢP 1994)
+   ========================================================= */
+
+.board-sync-badge {
+  padding: 5px 10px;
+  background: rgba(18, 12, 12, 0.9);
+  border: 1px solid #9c0412;
+  color: #ff9da6;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.board-sync-badge.is-online {
+  border-color: #36b368;
+  color: #82f2ad;
+  box-shadow: 0 0 12px rgba(54, 179, 104, 0.28);
+}
+
+.board-workspace {
+  display: grid;
+  grid-template-columns: minmax(290px, 0.88fr) minmax(320px, 1.32fr);
+  gap: 20px;
+  align-items: start;
+}
+
+/* Màn hình BBS quay số 1994 bên trái */
+.board-bbs-terminal {
+  position: sticky;
+  top: 16px;
+  padding: 16px;
+  background: #0b110d;
+  border: 2px solid #35473a;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.78), inset 0 0 36px rgba(42, 168, 86, 0.12);
+  color: #9ff0b8;
+  font-family: var(--font-mono);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bbs-screen-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  color: #5ee68a;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(94, 230, 138, 0.35);
+}
+
+.bbs-form { display: flex; flex-direction: column; gap: 10px; }
+.bbs-field { display: flex; flex-direction: column; gap: 4px; }
+.bbs-field label { font-size: 9.5px; letter-spacing: 0.1em; color: #7cd499; }
+
+.bbs-field input,
+.bbs-field select,
+.bbs-field textarea {
+  width: 100%;
+  padding: 8px 10px;
+  background: #060a07;
+  border: 1px solid #2b4a35;
+  color: #c6ffd7;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  outline: none;
+}
+
+.bbs-field input:focus,
+.bbs-field select:focus,
+.bbs-field textarea:focus {
+  border-color: #5ee68a;
+  box-shadow: 0 0 10px rgba(94, 230, 138, 0.25);
+}
+
+.bbs-checkbox-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 10.5px;
+  color: #9ff0b8;
+}
+
+.bbs-checkbox-row label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+
+.bbs-mini-btn {
+  padding: 4px 8px;
+  background: #14261a;
+  border: 1px solid #3f734f;
+  color: #9ff0b8;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  cursor: pointer;
+}
+
+.bbs-mini-btn:hover { background: #1e3b28; color: #ffffff; }
+
+.bbs-submit-btn {
+  padding: 10px 12px;
+  background: #1a542d;
+  border: 1px solid #63eb8f;
+  color: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bbs-submit-btn:hover {
+  background: #23733d;
+  box-shadow: 0 0 16px rgba(99, 235, 143, 0.45);
+}
+
+.bbs-terminal-note { font-size: 10px; line-height: 1.5; color: #679c78; }
+
+/* Bảng ghim phiếu giấy cũ bên phải */
+.board-cork-column { display: flex; flex-direction: column; gap: 14px; }
+
+.board-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #231c1a;
+  border: 1px solid rgba(190, 170, 140, 0.35);
+}
+
+.board-posts-list { display: flex; flex-direction: column; gap: 16px; }
+
+.board-note-card {
+  position: relative;
+  padding: 16px 18px 14px;
+  background: #d8ccb8;
+  color: #181310;
+  border: 1px solid #96856d;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.52), inset 0 0 28px rgba(80, 50, 22, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.board-note-card.is-npc {
+  border-left: 5px solid #8c0612;
+  background: #dfd4c1;
+}
+
+.board-note-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #54463d;
+  border-bottom: 1px dashed rgba(24, 19, 16, 0.25);
+  padding-bottom: 5px;
+}
+
+.board-tag-stamp {
+  padding: 1px 7px;
+  border: 1.5px solid #9c0412;
+  color: #9c0412;
+  font-weight: 700;
+  font-size: 9.5px;
+  transform: rotate(-2deg);
+}
+
+.board-note-author {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.board-note-author strong {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  color: #140f0d;
+}
+
+.board-role-pill {
+  padding: 2px 8px;
+  background: rgba(24, 19, 16, 0.1);
+  border: 1px solid rgba(24, 19, 16, 0.24);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #463a33;
+}
+
+.board-note-body {
+  font-size: 13.5px;
+  line-height: 1.62;
+  color: #211a17;
+  white-space: pre-wrap;
+}
+
+.board-replies-wrap {
+  margin-top: 4px;
+  padding-left: 14px;
+  border-left: 2px solid rgba(140, 6, 18, 0.45);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.board-reply-item {
+  padding: 8px 10px;
+  background: rgba(255, 252, 245, 0.45);
+  border: 1px solid rgba(24, 19, 16, 0.16);
+}
+
+.board-reply-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #4f4138;
+  margin-bottom: 3px;
+}
+
+.board-reply-head strong { color: #8c0612; }
+.board-reply-item p { font-size: 12.5px; line-height: 1.5; color: #211a17; white-space: pre-wrap; }
+
+.board-note-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(24, 19, 16, 0.2);
+}
+
+.board-act-btn {
+  padding: 4px 9px;
+  background: rgba(24, 19, 16, 0.08);
+  border: 1px solid rgba(24, 19, 16, 0.28);
+  color: #2b221e;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.board-act-btn:hover,
+.board-act-btn.is-liked { background: #8c0612; border-color: #8c0612; color: #ffffff; }
+.board-act-btn.is-del:hover { background: #140f0d; color: #ff8c96; }
+
+.board-reply-box {
+  margin-top: 6px;
+  padding: 10px;
+  background: rgba(24, 19, 16, 0.08);
+  border: 1px dashed #8a7862;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.board-reply-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+.board-reply-box input,
+.board-reply-box textarea {
+  width: 100%;
+  padding: 7px 9px;
+  background: #fbf5ea;
+  border: 1px solid #8a7862;
+  color: #16110e;
+  font-family: var(--font-sans);
+  font-size: 12px;
+}
+
+.board-reply-actions { display: flex; gap: 8px; }
+
+.board-empty-note {
+  padding: 24px;
+  text-align: center;
+  background: #d8ccb8;
+  color: #3a2f2a;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+@media (max-width: 920px) {
+  .board-workspace,
+  .board-reply-inputs { grid-template-columns: 1fr; }
+  .board-bbs-terminal { position: static; }
+}

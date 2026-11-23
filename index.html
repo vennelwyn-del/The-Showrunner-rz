@@ -264,7 +264,8 @@
           <button class="desk-tab" type="button" data-tab="tapes">03. BĂNG VIDEO CÔNG BỐ</button>
           <button class="desk-tab" type="button" data-tab="cast">04. NHÂN VẬT</button>
           <button class="desk-tab" type="button" data-tab="profile">05. NHẬP VAI</button>
-          <button class="desk-tab" type="button" data-tab="end">06. HẠ MÀN</button>
+          <button class="desk-tab" type="button" data-tab="board">06. THẢO LUẬN VỤ ÁN</button>
+          <button class="desk-tab" type="button" data-tab="end">07. HẠ MÀN</button>
         </nav>
 
         <div class="desk-actions">
@@ -727,8 +728,19 @@
           </div>
         </div>
       </section>
+      <!-- TAB 06: THẢO LUẬN VỤ ÁN (BBS 1994 + BẢNG TIN GIẤY CŨ) -->
+      <section id="tab-board" class="desk-panel" hidden>
+        <div class="panel-header-strip">
+          <div>
+            <p class="panel-kicker">SWEZAN-NET BBS &amp; TOWN BOARD // 1994</p>
+            <h2 class="panel-title">BẢNG TIN &amp; THẢO LUẬN CƯ DÂN SWEZAN</h2>
+          </div>
+          <div id="board-sync-status" class="board-sync-badge">MODEM // ĐANG KẾT NỐI...</div>
+        </div>
 
-      <!-- TAB 6: PHẦN KẾT / HẠ MÀN (THE END) -->
+        <div id="board-workspace" class="board-workspace"></div>
+      </section>
+      <!-- TAB 07: PHẦN KẾT / HẠ MÀN (THE END) -->
       <section id="tab-end" class="desk-panel" hidden>
         <div class="end-stage-card">
           <div class="end-tape-head">
@@ -873,5 +885,6 @@
   <script src="js/gate.js?v=18" defer></script>
   <script src="js/tape3d.js?v=18" defer></script>
   <script src="js/main.js?v=18" defer></script>
+  <script src="js/board.js?v=18" defer></script>
 </body>
 </html>

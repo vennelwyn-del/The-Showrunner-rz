@@ -424,9 +424,21 @@
       if (customTrackUrl) {
         stopRadioNodes();
         const el = ensureCustomAudio();
-        el.src = customTrackUrl;
-        el.volume = radioVolume;
-        el.play().catch(() => {});
+        const candidates = [
+          customTrackUrl,
+          customTrackUrl.replace(/^\.\/assets\/assets\//i, "./assets/"),
+          customTrackUrl.replace(/^assets\/assets\//i, "assets/"),
+        ].filter((v, i, a) => v && a.indexOf(v) === i);
+
+        let idx = 0;
+        const tryPlay = () => {
+          if (!radioPlaying || idx >= candidates.length) return;
+          el.src = candidates[idx++];
+          el.volume = radioVolume;
+          el.onerror = tryPlay;
+          el.play().catch(() => {});
+        };
+        tryPlay();
       } else {
         if (customAudioEl) customAudioEl.pause();
         startRadioStation();
@@ -436,12 +448,11 @@
     stop() {
       radioPlaying = false;
       stopRadioNodes();
-      if (customAudioEl) customAudioEl.pause();
+      if (customAudioEl) {
+        customAudioEl.onerror = null;
+        customAudioEl.pause();
+      }
       return false;
     },
-    togglePlay() {
-      return radioPlaying ? this.stop() : this.play();
-    },
   };
-
 })();

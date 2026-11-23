@@ -2704,3 +2704,66 @@ body[data-theme="relic"] .wf-coord { fill: rgba(232, 230, 228, 0.72); }
     aspect-ratio: 16 / 9;
   }
 }
+/* =========================================================
+   FIX ẢNH RÕ NÉT 100% & HIỂN THỊ ĐỦ FULL KHỔ ẢNH GỐC
+   ========================================================= */
+
+.char-photo-img,
+.location-photo-img,
+.backstory-photo-frame img,
+.tape-thumb-img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  filter: none !important;
+  transform: none !important;
+  display: block;
+}
+
+.location-card:hover .location-photo-img {
+  filter: none !important;
+  transform: scale(1.02) !important;
+}
+
+.char-photo-box:has(img),
+.location-photo-box:has(img),
+.backstory-photo-frame:has(img),
+.victim-photo-box:has(img) {
+  aspect-ratio: auto !important;
+  height: auto !important;
+  background: #120c0c;
+}
+
+.cast-board-grid,
+.locations-photo-grid,
+.victims-grid {
+  align-items: start;
+}
+
+.char-note-polaroid .char-photo-box:has(img) {
+  max-height: 72vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.char-note-polaroid .char-photo-img {
+  max-height: 72vh !important;
+  width: auto !important;
+  max-width: 100% !important;
+  margin: 0 auto;
+}
+
+.char-photo-placeholder,
+.img-fallback-box {
+  min-height: 220px;
+}
+
+.location-photo-box:not(:has(img)) {
+  aspect-ratio: 16 / 9;
+}
+
+.victim-photo-box:not(:has(img)) {
+  aspect-ratio: 3 / 4;
+}

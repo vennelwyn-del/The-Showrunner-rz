@@ -15,9 +15,16 @@ body.is-main-active .main-fx-backdrop {
   z-index: 20;
   width: 100%;
   height: 100%;
+  height: 100dvh;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: clamp(60px, 6.5vw, 74px) clamp(14px, 3vw, 34px) 78px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  padding:
+    calc(clamp(60px, 6.5vw, 74px) + env(safe-area-inset-top))
+    max(12px, env(safe-area-inset-right))
+    calc(78px + env(safe-area-inset-bottom))
+    max(12px, env(safe-area-inset-left));
   background: transparent !important;
   opacity: 0;
 }
@@ -297,7 +304,7 @@ body[data-theme="relic"] .wf-coord { fill: rgba(232, 230, 228, 0.72); }
   background: rgba(24, 19, 17, 0.92);
   border: 1px solid rgba(168, 146, 114, 0.35);
   border-bottom: 3px solid #b5a385;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 14px 32px rgba(0, 0, 0, 0.62);
 }
 
@@ -1019,6 +1026,7 @@ body[data-theme="relic"] .wf-coord { fill: rgba(232, 230, 228, 0.72); }
   border: 2px solid #8a7860;
   background: #140c0d;
   box-shadow: 0 14px 32px rgba(0, 0, 0, 0.65);
+  -webkit-overflow-scrolling: touch;
 }
 
 .swezan-map-stage {
@@ -1506,7 +1514,7 @@ body[data-theme="relic"] .wf-coord { fill: rgba(232, 230, 228, 0.72); }
   inset: 0;
   z-index: 75;
   background: rgba(9, 6, 7, 0.78);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(10px);
   display: grid;
   place-items: center;
   padding: 22px;
@@ -1731,10 +1739,8 @@ body[data-theme="relic"] .wf-coord { fill: rgba(232, 230, 228, 0.72); }
   line-height: 1.55;
   white-space: pre-wrap;
   overflow-y: auto;
-}
-
-/* =========================================================
-   TAB 06 & FOOTER: HẠ MÀN (THE END)
+  -webkit-overflow-scrolling: touch;
+  /* TAB 06 & FOOTER: HẠ MÀN (THE END)
    ========================================================= */
 
 .end-stage-card {
@@ -1906,7 +1912,6 @@ body[data-theme="relic"] .wf-coord { fill: rgba(232, 230, 228, 0.72); }
     rgba(216, 20, 36, 0.25) 55%,
     transparent
   );
-  backdrop-filter: blur(2px);
 }
 
 .tape-sim-stage.is-playing .sim-tracking-band {
@@ -2520,13 +2525,14 @@ body[data-theme="relic"] .wf-coord { fill: rgba(232, 230, 228, 0.72); }
   .board-bbs-terminal { position: static; }
 }
 /* =========================================================
-   TAB 04: HỒ SƠ NẠN NHÂN CÔNG KHAI & TIN ĐỒN THỊ TRẤN
+   TAB 04: HỒ SƠ NẠN NHÂN CÔNG KHAI & TIN ĐỒN THỊ TRẤN (CLEAN)
    ========================================================= */
 
 .victims-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(460px, 1fr));
   gap: 20px;
+  align-items: start;
 }
 
 .victim-dossier-card {
@@ -2542,14 +2548,15 @@ body[data-theme="relic"] .wf-coord { fill: rgba(232, 230, 228, 0.72); }
   gap: 12px;
 }
 
+.victim-dossier-card.is-deceased { border-top-color: #6b0811; }
 .victim-dossier-card.is-active-case {
   border-top-color: #b80f1e;
   box-shadow: 0 16px 34px rgba(0, 0, 0, 0.68), 0 0 22px rgba(200, 16, 32, 0.32);
 }
-
 .victim-dossier-card.is-teaser {
   background: #cfc3ae;
   border-style: dashed;
+  opacity: 0.94;
 }
 
 .victim-card-top {
@@ -2563,12 +2570,7 @@ body[data-theme="relic"] .wf-coord { fill: rgba(232, 230, 228, 0.72); }
   font-family: var(--font-mono);
 }
 
-.victim-case-code {
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: #463a33;
-}
+.victim-case-code { font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; color: #463a33; }
 
 .victim-status-stamp {
   padding: 2px 8px;
@@ -2576,35 +2578,28 @@ body[data-theme="relic"] .wf-coord { fill: rgba(232, 230, 228, 0.72); }
   color: #9c0412;
   font-size: 9.5px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   transform: rotate(-2deg);
 }
 
-.victim-dossier-card.is-active-case .victim-status-stamp {
-  background: #9c0412;
-  color: #ffffff;
-}
+.victim-dossier-card.is-active-case .victim-status-stamp { background: #9c0412; color: #ffffff; }
 
 .victim-card-body {
   display: grid;
-  grid-template-columns: 165px 1fr;
+  grid-template-columns: 175px 1fr;
   gap: 14px;
   align-items: start;
 }
 
-.victim-photo-col {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
+.victim-photo-col { display: flex; flex-direction: column; gap: 6px; }
 
 .victim-photo-box {
   position: relative;
   width: 100%;
-  aspect-ratio: 3 / 4;
-  background: #1a0709;
+  background: #120c0c;
   border: 1px solid #352a26;
   overflow: hidden;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
 }
 
 .victim-time-note {
@@ -2617,26 +2612,9 @@ body[data-theme="relic"] .wf-coord { fill: rgba(232, 230, 228, 0.72); }
   color: #3d322c;
 }
 
-.victim-info-col {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.victim-name {
-  font-family: var(--font-serif);
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 1.1;
-  color: #140f0d;
-}
-
-.victim-role {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  font-weight: 700;
-  color: #8c0612;
-}
+.victim-info-col { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.victim-name { font-family: var(--font-serif); font-size: 24px; font-weight: 700; line-height: 1.1; color: #140f0d; }
+.victim-role { font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; color: #8c0612; }
 
 .victim-section-box,
 .victim-rumors-box {
@@ -2645,10 +2623,7 @@ body[data-theme="relic"] .wf-coord { fill: rgba(232, 230, 228, 0.72); }
   border: 1px solid rgba(24, 19, 16, 0.16);
 }
 
-.victim-rumors-box {
-  background: rgba(140, 6, 18, 0.06);
-  border-left: 3px solid #8c0612;
-}
+.victim-rumors-box { background: rgba(140, 6, 18, 0.06); border-left: 3px solid #8c0612; }
 
 .victim-section-box h4,
 .victim-rumors-box h4 {
@@ -2659,30 +2634,9 @@ body[data-theme="relic"] .wf-coord { fill: rgba(232, 230, 228, 0.72); }
   margin-bottom: 4px;
 }
 
-.victim-section-box p {
-  font-size: 12.5px;
-  line-height: 1.56;
-  color: #211a17;
-}
-
-.victim-rumor-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 12px;
-  line-height: 1.5;
-  color: #2b221e;
-}
-
-.rumor-src {
-  display: inline-block;
-  margin-right: 4px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 700;
-  color: #8c0612;
-}
+.victim-section-box p { font-size: 12.5px; line-height: 1.56; color: #211a17; }
+.victim-rumor-list { list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 12px; line-height: 1.5; color: #2b221e; }
+.rumor-src { display: inline-block; margin-right: 4px; font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: #8c0612; }
 
 .victim-card-foot {
   margin-top: auto;
@@ -2694,282 +2648,146 @@ body[data-theme="relic"] .wf-coord { fill: rgba(232, 230, 228, 0.72); }
   gap: 8px;
 }
 
-@media (max-width: 720px) {
+/* =========================================================
+   ẢNH RÕ NÉT 100% & HIỂN THỊ ĐỦ KHỔ (CHẠY TỐT MỌI ĐỜI iOS)
+   ========================================================= */
+
+.char-photo-img,
+.location-photo-img,
+.backstory-photo-frame img,
+.tape-thumb-img,
+.victim-photo-box img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  filter: none !important;
+  transform: none !important;
+  display: block;
+}
+
+.location-card:hover .location-photo-img {
+  filter: none !important;
+  transform: scale(1.02) !important;
+}
+
+.char-photo-box,
+.location-photo-box,
+.backstory-photo-frame,
+.victim-photo-box {
+  aspect-ratio: auto !important;
+  height: auto !important;
+  background: #120c0c;
+}
+
+.cast-board-grid,
+.locations-photo-grid { align-items: start; }
+
+.char-note-polaroid .char-photo-box {
+  max-height: 70dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.char-note-polaroid .char-photo-img {
+  max-height: 70dvh !important;
+  width: auto !important;
+  max-width: 100% !important;
+  margin: 0 auto;
+}
+
+.char-photo-placeholder,
+.location-photo-empty,
+.backstory-photo-empty,
+.img-fallback-box {
+  min-height: 200px;
+}
+
+/* =========================================================
+   TỐI ƯU GIAO DIỆN ĐIỆN THOẠI (ANDROID & iOS SAFARI)
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .desk-shell,
+  .desk-panel,
+  .board-cork-column {
+    min-width: 0;
+  }
+
+  /* Chống iPhone Safari tự zoom màn hình khi chạm ô nhập */
+  .field-box input,
+  .field-box select,
+  .field-box textarea,
+  .bbs-field input,
+  .bbs-field select,
+  .bbs-field textarea,
+  .board-reply-box input,
+  .board-reply-box textarea {
+    font-size: 16px !important;
+  }
+
+  .desk-topbar {
+    padding: 10px 12px 0;
+    gap: 8px;
+  }
+
+  .desk-brand { padding-bottom: 4px; }
+  .desk-actions { padding-bottom: 6px; }
+
+  /* Thanh 9 tab vuốt ngang gọn gàng trên điện thoại */
+  .desk-tabs {
+    order: 3;
+    width: 100%;
+    max-width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 0;
+    gap: 5px;
+  }
+
+  .desk-tabs::-webkit-scrollbar { display: none; }
+
+  .desk-tab {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    padding: 8px 11px;
+  }
+
+  .evidence-desk-grid,
+  .backstory-layout,
   .victims-grid,
   .victim-card-body {
     grid-template-columns: 1fr;
   }
 
-  .victim-photo-box {
-    aspect-ratio: 16 / 9;
+  .desk-props-row { margin-left: 0; flex-wrap: wrap; }
+  .cast-board-grid { overflow-x: clip; }
+  .char-polaroid-card::before { left: 0; right: 0; }
+
+  .tape-red-bottom {
+    font-size: 8.5px;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 4px 10px max(4px, env(safe-area-inset-bottom));
+  }
+
+  .cctv-cam-meta,
+  .cctv-crosshair { display: none; }
+
+  .cctv-rec-tag {
+    bottom: calc(24px + env(safe-area-inset-bottom));
+    font-size: 9px;
+  }
+
+  .char-note-modal {
+    padding: 12px;
+    align-items: start;
+    -webkit-overflow-scrolling: touch;
   }
 }
-/* =========================================================
-   FIX ẢNH RÕ NÉT 100% & HIỂN THỊ ĐỦ FULL KHỔ ẢNH GỐC
-   ========================================================= */
-
-.char-photo-img,
-.location-photo-img,
-.backstory-photo-frame img,
-.tape-thumb-img {
-  width: 100% !important;
-  height: auto !important;
-  max-height: none !important;
-  object-fit: contain !important;
-  filter: none !important;
-  transform: none !important;
-  display: block;
-}
-
-.location-card:hover .location-photo-img {
-  filter: none !important;
-  transform: scale(1.02) !important;
-}
-
-.char-photo-box:has(img),
-.location-photo-box:has(img),
-.backstory-photo-frame:has(img),
-.victim-photo-box:has(img) {
-  aspect-ratio: auto !important;
-  height: auto !important;
-  background: #120c0c;
-}
-
-.cast-board-grid,
-.locations-photo-grid,
-.victims-grid {
-  align-items: start;
-}
-
-.char-note-polaroid .char-photo-box:has(img) {
-  max-height: 72vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.char-note-polaroid .char-photo-img {
-  max-height: 72vh !important;
-  width: auto !important;
-  max-width: 100% !important;
-  margin: 0 auto;
-}
-
-.char-photo-placeholder,
-.img-fallback-box {
-  min-height: 220px;
-}
-
-.location-photo-box:not(:has(img)) {
-  aspect-ratio: 16 / 9;
-}
-
-.victim-photo-box:not(:has(img)) {
-  aspect-ratio: 3 / 4;
-}
-/* =========================================================
-   FIX ẢNH RÕ NÉT 100% & HIỂN THỊ ĐỦ FULL KHỔ ẢNH GỐC
-   ========================================================= */
-
-.char-photo-img,
-.location-photo-img,
-.backstory-photo-frame img,
-.tape-thumb-img {
-  width: 100% !important;
-  height: auto !important;
-  max-height: none !important;
-  object-fit: contain !important;
-  filter: none !important;
-  transform: none !important;
-  display: block;
-}
-
-.location-card:hover .location-photo-img {
-  filter: none !important;
-  transform: scale(1.02) !important;
-}
-
-.char-photo-box:has(img),
-.location-photo-box:has(img),
-.backstory-photo-frame:has(img),
-.victim-photo-box:has(img) {
-  aspect-ratio: auto !important;
-  height: auto !important;
-  background: #120c0c;
-}
-
-.cast-board-grid,
-.locations-photo-grid,
-.victims-grid {
-  align-items: start;
-}
-
-.char-note-polaroid .char-photo-box:has(img) {
-  max-height: 72vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.char-note-polaroid .char-photo-img {
-  max-height: 72vh !important;
-  width: auto !important;
-  max-width: 100% !important;
-  margin: 0 auto;
-}
-
-.char-photo-placeholder,
-.img-fallback-box {
-  min-height: 220px;
-}
-
-.location-photo-box:not(:has(img)) {
-  aspect-ratio: 16 / 9;
-}
-
-.victim-photo-box:not(:has(img)) {
-  aspect-ratio: 3 / 4;
-}
-/* =========================================================
-   TAB 04: HỒ SƠ NẠN NHÂN CÔNG KHAI & TIN ĐỒN (1994)
-   ========================================================= */
-
-.victims-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
-  gap: 20px;
-}
-
-.victim-dossier-card {
-  position: relative;
-  padding: 16px 18px;
-  background: #d8ccb8;
-  color: #181310;
-  border: 1px solid #96856d;
-  border-top: 5px solid #52463d;
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.58), inset 0 0 32px rgba(80, 50, 22, 0.18);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.victim-dossier-card.is-deceased { border-top-color: #6b0811; }
-.victim-dossier-card.is-active-case {
-  border-top-color: #c81020;
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.65), 0 0 22px rgba(200, 16, 32, 0.35);
-}
-.victim-dossier-card.is-teaser { border-top-style: dashed; opacity: 0.94; }
-
-.victim-card-top {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  padding-bottom: 6px;
-  border-bottom: 1px dashed rgba(24, 19, 16, 0.3);
-  font-family: var(--font-mono);
-  font-size: 10px;
-}
-
-.victim-case-code { font-weight: 700; color: #54463d; letter-spacing: 0.08em; }
-
-.victim-status-stamp {
-  padding: 2px 7px;
-  border: 1.5px solid #9c0412;
-  color: #9c0412;
-  font-weight: 700;
-  font-size: 9.5px;
-  transform: rotate(-2deg);
-}
-
-.victim-card-body {
-  display: grid;
-  grid-template-columns: 185px 1fr;
-  gap: 16px;
-  align-items: start;
-}
-
-.victim-photo-col { display: flex; flex-direction: column; gap: 8px; }
-
-.victim-photo-box {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  background: #1a0709;
-  border: 2px solid #4a3c34;
-  overflow: hidden;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
-}
-
-.victim-photo-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.victim-time-note {
-  padding: 6px 8px;
-  background: rgba(24, 19, 16, 0.08);
-  border-left: 2px solid #8c0612;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  line-height: 1.45;
-  color: #3a2e28;
-}
-
-.victim-info-col { display: flex; flex-direction: column; gap: 8px; }
-.victim-name { font-family: var(--font-serif); font-size: 23px; font-weight: 700; color: #140f0d; line-height: 1.1; }
-.victim-role { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; color: #8c0612; }
-
-.victim-section-box,
-.victim-rumors-box {
-  padding: 8px 10px;
-  background: rgba(255, 250, 240, 0.48);
-  border: 1px solid rgba(24, 19, 16, 0.16);
-}
-
-.victim-section-box h4,
-.victim-rumors-box h4 {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: #7d0611;
-  margin-bottom: 4px;
-}
-
-.victim-section-box p { font-size: 12.5px; line-height: 1.55; color: #211a17; }
-
-.victim-rumor-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  font-size: 12px;
-  line-height: 1.48;
-  color: #29211d;
-}
-
-.rumor-src {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 700;
-  color: #8c0612;
-  margin-right: 4px;
-}
-
-.victim-card-foot {
-  margin-top: auto;
-  padding-top: 8px;
-  border-top: 1px dashed rgba(24, 19, 16, 0.25);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 8px;
-}
-
-@media (max-width: 720px) {
-  .victims-grid,
-  .victim-card-body { grid-template-columns: 1fr; }
 }

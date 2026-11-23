@@ -12,14 +12,17 @@
   let height = 0;
   let frameCount = 0;
 
-  const PIXEL_SCALE = 3;
+  const isMobile = window.innerWidth <= 768;
+  const PIXEL_SCALE = isMobile ? 5 : 3;
+  let cachedImgData = null;
 
   function resizeCanvas() {
     if (!canvas) return;
-    width = Math.max(160, Math.floor(window.innerWidth / PIXEL_SCALE));
-    height = Math.max(90, Math.floor(window.innerHeight / PIXEL_SCALE));
+    width = Math.max(120, Math.floor(window.innerWidth / PIXEL_SCALE));
+    height = Math.max(80, Math.floor(window.innerHeight / PIXEL_SCALE));
     canvas.width = width;
     canvas.height = height;
+    cachedImgData = ctx ? ctx.createImageData(width, height) : null;
   }
 
   function getAccentRgb() {
@@ -27,7 +30,7 @@
   }
 
   function renderStandbyFrame() {
-    const imgData = ctx.createImageData(width, height);
+    const imgData = cachedImgData || ctx.createImageData(width, height);
     const data = imgData.data;
     const [ar, ag, ab] = getAccentRgb();
 
@@ -67,7 +70,7 @@
   }
 
   function renderBurstFrame() {
-    const imgData = ctx.createImageData(width, height);
+    const imgData = cachedImgData || ctx.createImageData(width, height);
     const data = imgData.data;
     const [ar, ag, ab] = getAccentRgb();
 
@@ -80,8 +83,8 @@
         data[i + 3] = 255;
       } else if (roll > 0.48) {
         const v = 120 + Math.floor(Math.random() * 115);
-        data[i] = v;
         data[i + 1] = v;
+        data[i] = v;
         data[i + 2] = v;
         data[i + 3] = 245;
       } else {
@@ -111,7 +114,8 @@
   function renderCalmFrame() {
     ctx.clearRect(0, 0, width, height);
     ctx.fillStyle = "rgba(195, 195, 195, 0.2)";
-    for (let i = 0; i < 140; i++) {
+    const dots = isMobile ? 70 : 140;
+    for (let i = 0; i < dots; i++) {
       const x = Math.floor(Math.random() * width);
       const y = Math.floor(Math.random() * height);
       ctx.fillRect(x, y, 1, 1);
@@ -125,13 +129,15 @@
 
   function loop() {
     frameCount++;
-    if (ctx) {
+    if (ctx && !document.hidden) {
       if (mode === "burst") {
         renderBurstFrame();
       } else if (mode === "calm") {
-        if (frameCount % 3 === 0) renderCalmFrame();
+        const step = isMobile ? 5 : 3;
+        if (frameCount % step === 0) renderCalmFrame();
       } else {
-        if (frameCount % 2 === 0) renderStandbyFrame();
+        const step = isMobile ? 3 : 2;
+        if (frameCount % step === 0) renderStandbyFrame();
       }
     }
     requestAnimationFrame(loop);
@@ -174,7 +180,6 @@
     const mainFill = isRelic ? "#7c0814" : "#ad0716";
     const coreFill = isRelic ? "#4a0208" : "#69010a";
 
-    // Tạo 4-6 giọt bắn văng ngẫu nhiên quanh tâm
     const droplets = Array.from({ length: 5 }, () => {
       const ang = Math.random() * Math.PI * 2;
       const dist = 22 + Math.random() * 20;
@@ -201,13 +206,30 @@
     }, 2150);
   }
 
+  let iosAudioUnlocked = false;
+
   document.addEventListener("pointerdown", (e) => {
-    if (e.button === 2) return; // Bỏ qua chuột phải
+    if (!iosAudioUnlocked) {
+      iosAudioUnlocked = true;
+      try {
+        const ctxAudio = ensureAudioContext();
+        if (ctxAudio) {
+          const buf = ctxAudio.createBuffer(1, 1, 22050);
+          const src = ctxAudio.createBufferSource();
+          src.buffer = buf;
+          src.connect(ctxAudio.destination);
+          src.start(0);
+        }
+      } catch (err) {}
+    }
+
+    if (e.button === 2) return;
+    if (e.target && e.target.tagName === "INPUT" && e.target.type === "range") return;
     spawnBloodSplat(e.clientX, e.clientY);
   });
 
   /* =======================================================
-     WEB AUDIO API: ÂM THANH TIVI + RADIO ANALOG 3 KÊNH
+     WEB AUDIO API: ÂM THANH TIVI
      ======================================================= */
   let audioCtx = null;
   let isMuted = false;
@@ -279,7 +301,9 @@
       } catch (err) {}
     },
   };
-
+  /* =======================================================
+     RADIO ANALOG 3 KÊNH + NHẠC CUSTOM (.MP3)
+     ======================================================= */
   let radioPlaying = false;
   let radioStation = "cassius";
   let radioVolume = 0.45;
@@ -288,6 +312,8 @@
   let radioHumOsc = null;
   let radioNoteTimer = null;
   let noteStep = 0;
+  let customAudioEl = null;
+  let customTrackUrl = "";
 
   const CHOPIN_NOTES = [220.0, 261.63, 329.63, 311.13, 246.94, 293.66, 220.0, 196.0];
   const SWAN_CHORDS = [
@@ -295,6 +321,17 @@
     [130.81, 164.81, 196.0, 246.94],
     [110.0, 130.81, 164.81, 196.0],
   ];
+
+  function ensureCustomAudio() {
+    if (!customAudioEl) {
+      customAudioEl = new Audio();
+      customAudioEl.loop = true;
+      customAudioEl.preload = "auto";
+      customAudioEl.setAttribute("playsinline", "");
+      customAudioEl.setAttribute("webkit-playsinline", "");
+    }
+    return customAudioEl;
+  }
 
   function stopRadioNodes() {
     if (radioNoteTimer) { clearInterval(radioNoteTimer); radioNoteTimer = null; }
@@ -375,30 +412,6 @@
   }
 
   window.AnalogRadio = {
-    isPlaying() { return radioPlaying; },
-    setStation(st) { radioStation = st || "cassius"; if (radioPlaying) startRadioStation(); },
-    setVolume(val) {
-      radioVolume = Math.max(0, Math.min(1, Number(val) / 100));
-      if (radioMasterGain && audioCtx) radioMasterGain.gain.setValueAtTime(radioVolume * 0.45, audioCtx.currentTime);
-    },
-    togglePlay() {
-      radioPlaying = !radioPlaying;
-      if (radioPlaying) startRadioStation(); else stopRadioNodes();
-      return radioPlaying;
-    },
-  };
-  let customAudioEl = null;
-  let customTrackUrl = "";
-
-  function ensureCustomAudio() {
-    if (!customAudioEl) {
-      customAudioEl = new Audio();
-      customAudioEl.loop = true;
-    }
-    return customAudioEl;
-  }
-
-  window.AnalogRadio = {
     isPlaying() {
       return radioPlaying;
     },
@@ -417,6 +430,7 @@
       }
       if (customAudioEl) {
         customAudioEl.volume = radioVolume;
+        customAudioEl.muted = radioVolume <= 0.01;
       }
     },
     play() {
@@ -432,11 +446,21 @@
 
         let idx = 0;
         const tryPlay = () => {
-          if (!radioPlaying || idx >= candidates.length) return;
+          if (!radioPlaying) return;
+          if (idx >= candidates.length) {
+            startRadioStation();
+            return;
+          }
           el.src = candidates[idx++];
           el.volume = radioVolume;
+          el.muted = radioVolume <= 0.01;
           el.onerror = tryPlay;
-          el.play().catch(() => {});
+          const p = el.play();
+          if (p && typeof p.catch === "function") {
+            p.catch(() => {
+              if (idx < candidates.length) tryPlay();
+            });
+          }
         };
         tryPlay();
       } else {
@@ -453,6 +477,9 @@
         customAudioEl.pause();
       }
       return false;
+    },
+    togglePlay() {
+      return radioPlaying ? this.stop() : this.play();
     },
   };
 })();

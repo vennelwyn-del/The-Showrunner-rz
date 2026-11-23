@@ -95,8 +95,8 @@ document.addEventListener("DOMContentLoaded", () => {
       radioToggleBtn.setAttribute("aria-expanded", String(willOpen));
     });
 
-    // Bấm ra ngoài thì đóng bảng radio cho gọn màn hình
-    document.addEventListener("click", (e) => {
+    // Bấm ra ngoài thì đóng bảng radio (dùng pointerdown để iPhone Safari nhận chuẩn)
+    document.addEventListener("pointerdown", (e) => {
       if (
         !radioPanel.hidden &&
         !radioPanel.contains(e.target) &&
@@ -156,13 +156,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (radioVolumeInput) {
-    radioVolumeInput.addEventListener("input", () => {
+    const syncVol = () => {
       if (window.AnalogRadio) {
         window.AnalogRadio.setVolume(radioVolumeInput.value);
       }
-    });
+    };
+    radioVolumeInput.addEventListener("input", syncVol);
+    radioVolumeInput.addEventListener("change", syncVol);
   }
-
   syncRadioUI();
 
   /* -------------------------------------------------------
@@ -210,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
     isTransitioning = true;
     clearAllTimers();
 
-    tvPowerBtn.disabled = true;
+    tvPowerBtn.disabled = true; tvPowerBtn.blur();
     tvPowerBtn.classList.add("is-pressing");
 
     if (window.AnalogAudio) window.AnalogAudio.playPowerOnSound();
@@ -250,7 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (window.AnalogNoise) window.AnalogNoise.setMode("calm");
 
-      mainApp.hidden = false;
+      mainApp.hidden = false; mainApp.scrollTop = 0;
       void mainApp.offsetWidth;
       mainApp.classList.add("is-visible");
 

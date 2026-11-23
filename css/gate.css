@@ -18,12 +18,29 @@ html,
 body {
   width: 100%;
   height: 100%;
+  height: 100dvh;
   overflow: hidden;
   background-color: var(--abyss-black);
   color: var(--text-main);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  -webkit-user-select: none;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+input,
+textarea,
+select {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+button,
+a,
+[role="button"] {
+  touch-action: manipulation;
 }
 
 body {
@@ -93,7 +110,7 @@ body.is-main-active #analog-noise-canvas {
     rgba(172, 172, 172, 0.03) 65%,
     transparent 100%
   );
-  backdrop-filter: contrast(1.16);
+  
   animation: vhsTrackingRoll 7.5s linear infinite;
 }
 
@@ -119,16 +136,15 @@ body.is-main-active #analog-noise-canvas {
 
 .top-pill-bar {
   position: fixed;
-  top: clamp(10px, 1.8vw, 18px);
-  left: clamp(14px, 2.2vw, 28px);
-  right: clamp(18px, 2.5vw, 32px);
-  max-width: calc(100vw - 32px);
+  top: max(10px, env(safe-area-inset-top));
+  left: max(14px, env(safe-area-inset-left));
+  right: max(14px, env(safe-area-inset-right));
   z-index: 40;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   pointer-events: none;
 }
 
@@ -155,7 +171,7 @@ body.is-main-active #analog-noise-canvas {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   cursor: pointer;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 6px 20px rgba(9, 9, 9, 0.65);
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
@@ -247,12 +263,16 @@ body[data-theme="relic"] .opt-relic {
 /* Bảng điều khiển Radio mini xổ xuống */
 .radio-panel {
   position: absolute;
-  top: 44px;
+  top: calc(100% + 8px);
   right: 0;
   width: min(310px, calc(100vw - 28px));
+  max-height: 70dvh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 14px;
   border: 1px solid var(--border-line);
   background: var(--surface-panel);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   box-shadow: 0 18px 46px rgba(9, 9, 9, 0.92), 0 0 24px var(--accent-glow);
   pointer-events: auto;
@@ -261,7 +281,6 @@ body[data-theme="relic"] .opt-relic {
   flex-direction: column;
   gap: 10px;
 }
-
 .radio-panel-head {
   display: flex;
   justify-content: space-between;
@@ -385,7 +404,14 @@ body[data-theme="relic"] .opt-relic {
   z-index: 10;
   width: 100%;
   height: 100%;
-  padding: clamp(64px, 7.5vw, 82px) clamp(18px, 3vw, 40px) clamp(18px, 3vw, 36px);
+  min-height: 100dvh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding:
+    calc(clamp(62px, 7.5vw, 82px) + env(safe-area-inset-top))
+    max(16px, env(safe-area-inset-right))
+    calc(clamp(18px, 3vw, 36px) + env(safe-area-inset-bottom))
+    max(16px, env(safe-area-inset-left));
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -860,6 +886,7 @@ body[data-theme="relic"] .opt-relic {
 
 .main-app.is-visible {
   animation: verticalHoldSettle 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  -webkit-overflow-scrolling: touch; overscroll-behavior-y: contain;
 }
 
 .main-shell {
@@ -1100,4 +1127,32 @@ body[data-theme="relic"] .opt-relic {
     transform: scaleY(1.45) translateY(10px);
     opacity: 0;
   }
+}
+@media (max-width: 640px) {
+  .pill-btn {
+    padding: 0 10px;
+    font-size: 10px;
+    height: 31px;
+  }
+
+  .gate-title {
+    font-size: clamp(1.75rem, 8.2vw, 2.6rem);
+    letter-spacing: 0.08em;
+  }
+
+  .osd-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 10px;
+  }
+
+  .osd-right {
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .tv-dial-plate { width: 124px; height: 124px; }
+  .tv-power-btn  { width: 88px; height: 88px; }
+  .btn-bezel     { width: 68px; height: 68px; }
 }

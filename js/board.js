@@ -334,6 +334,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function submitNewPost(e) {
     e.preventDefault();
+    const submitBtn = workspace.querySelector(".bbs-submit-btn");
+    if (submitBtn && submitBtn.disabled) return;
     const anonEl = document.getElementById("bbs-anon");
     const nameEl = document.getElementById("bbs-name");
     const roleEl = document.getElementById("bbs-role");
@@ -364,7 +366,10 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     if (textEl) textEl.value = "";
-
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "ĐANG PHÁT TÍN HIỆU...";
+    }
     if (FB_URL && isOnline) {
       try {
         const res = await fetch(`${FB_URL}/${BOARD_NODE}/posts.json`, {
@@ -380,8 +385,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         await fetchBoardData();
         return;
-      } catch (err) {}
+      } catch (err) {
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = "&#9654; PHÁT TÍN HIỆU LÊN BẢNG TIN";
+        }
+      }
     }
+    
 
     const localId = `loc_${Date.now()}`;
     const myIds = getJsonLS(LS_MY_IDS, []);
@@ -463,6 +475,9 @@ document.addEventListener("DOMContentLoaded", () => {
         rp.replies.push({ id: `r_${Date.now()}`, ...replyObj });
         setJsonLS(LS_POSTS, remotePosts);
       }
+    } else {
+      npcRepliesMap[postId] = npcRepliesMap[postId] || {};
+      npcRepliesMap[postId][`r_${Date.now()}`] = replyObj;
     }
     renderPosts();
   }
@@ -480,6 +495,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   buildShell();
   fetchBoardData();
+  const boardTabBtn = document.querySelector('.desk-tab[data-tab="board"]');
+  if (boardTabBtn) {
+    boardTabBtn.addEventListener("click", () => {
+      fetchBoardData();
+    });
+  }
 
   workspace.addEventListener("submit", (e) => {
     if (e.target && e.target.id === "bbs-post-form") submitNewPost(e);

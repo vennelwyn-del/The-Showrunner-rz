@@ -158,13 +158,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const videos = Array.isArray(cfg.videos) ? cfg.videos : [];
   let activeTapeId = videos[0] ? videos[0].id : "";
 
+  const mainAppEl = document.getElementById("main-app");
+
   function switchTab(tabKey) {
-    tabBtns.forEach((b) => b.classList.toggle("is-active", b.dataset.tab === tabKey));
+    let activeBtn = null;
+    tabBtns.forEach((b) => {
+      const isMatch = b.dataset.tab === tabKey;
+      b.classList.toggle("is-active", isMatch);
+      if (isMatch) activeBtn = b;
+    });
+
     deskPanels.forEach((p) => {
       const match = p.id === `tab-${tabKey}`;
       p.hidden = !match;
       p.classList.toggle("is-active", match);
     });
+
+    if (mainAppEl) mainAppEl.scrollTop = 0;
+    if (activeBtn && typeof activeBtn.scrollIntoView === "function") {
+      activeBtn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    }
 
     if (tabKey === "tapes") {
       const activeTape = videos.find((v) => v.id === activeTapeId) || videos[0];
@@ -180,6 +193,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelectorAll("[data-open-tab]").forEach((card) => {
     card.addEventListener("click", () => switchTab(card.dataset.openTab));
+    card.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        switchTab(card.dataset.openTab);
+      }
+    });
   });
 
   /* -------------------------------------------------------
@@ -1034,18 +1053,26 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 2200);
       };
 
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(showCopied).catch(() => {});
-      } else {
+      const fallbackCopy = () => {
         const tmp = document.createElement("textarea");
         tmp.value = text;
+        tmp.setAttribute("readonly", "");
+        tmp.style.position = "fixed";
+        tmp.style.top = "-9999px";
         document.body.appendChild(tmp);
+        tmp.focus();
         tmp.select();
+        tmp.setSelectionRange(0, text.length);
         try {
-          document.execCommand("copy");
-          showCopied();
+          if (document.execCommand("copy")) showCopied();
         } catch (e) {}
         document.body.removeChild(tmp);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(showCopied).catch(fallbackCopy);
+      } else {
+        fallbackCopy();
       }
     });
   }
@@ -1243,7 +1270,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const jumpBtn = e.target.closest("[data-jump-tab]");
       if (!jumpBtn) return;
       switchTab(jumpBtn.dataset.jumpTab);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (mainAppEl) mainAppEl.scrollTo({ top: 0, behavior: "smooth" });
     });
 
     renderVictimsList();

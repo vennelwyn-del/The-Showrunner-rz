@@ -398,7 +398,7 @@ window.SHOWRUNNER_CONFIG = {
      ------------------------------------------------------- */
   firebase: {
     url: "https://baoungdoinhau-default-rtdb.asia-southeast1.firebasedatabase.app",
-    boardNode: "showrunner_board", // Lưu nhánh riêng, không ảnh hưởng dữ liệu Baoungdoinhau
+    boardNode: "comments/showrunner_board_1994",
     gmPin: "1994", // Mã GM để bạn bật quyền xóa bất kỳ comment nào khi cần
   },
 };

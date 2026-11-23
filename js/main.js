@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!url) return [];
     if (/^(https?:|data:|blob:|\/|\.\.)/i.test(url)) return [url];
     // Tự động thử nếu thư mục assets nằm cùng cấp hoặc lùi 1-2 cấp / gốc server
-    return [url, `../${url}`, `../../${url}`, `/${url}`];
+    return [url, `assets/${url}`, `../${url}`, `../../${url}`, `/${url}`];
   }
 
   function applySmartBackground(el, rawUrl) {

@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
       stamp: "DECEASED // ĐÃ KHÉP ÁN",
       name: "Ottomar Burchard",
       meta: "45 tuổi · Nam · Chủ tiệm ăn bình dân “Lutz”",
-      img: customImages["vic-1"] || "",
+      img: customImages["vic-1"] || "./assets/assets/OPW/Theshowrunner/NPC/ottomar.png",
       timelineInfo: "Mất tích 02:00 sáng (~14 ngày trước) · Tử vong sau 7 ngày",
       publicFacts:
         "Bị bắt cóc tại bãi rác cách tiệm ăn Lutz 3km khi đi đổ rác đêm. Cảnh sát phát hiện thi thể bị quấn kín bằng băng keo công nghiệp trong bể chứa dung dịch kiềm nóng (NaOH) dưới khu xử lý chất thải, xảy ra hiện tượng xà phòng hóa. Hồ sơ từng bị đồn cảnh sát ỉm đi trước truyền thông.",
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
       stamp: "DECEASED // KÊNH 8",
       name: "Malia Isabel Ariane",
       meta: "24 tuổi · Nữ · Ái nữ Nam tước Đá quý Ariane",
-      img: customImages["vic-2"] || "",
+      img: customImages["vic-2"] || "./assets/assets/OPW/Theshowrunner/NPC/malia.png",
       timelineInfo: "Cướp sóng 00:00 Đêm Chủ Nhật tuần trước",
       publicFacts:
         "Xe mui trần bị chặn đầu giữa sương mù trên Đại lộ Duyên Biên (tài xế bị bắn hạ bằng 1 phát đạn súng lục). Cuộn băng mở màn được nhét trong ổ bánh mì gửi một lão ăn mày ở Khối 7. Đúng 00:00 đêm Chủ nhật tuần trước, kẻ tự xưng The Rider cướp sóng K-TV Kênh 8, phát cảnh cô ngạt chết trong buồng kính hơi nước 100°C cùng hàng trăm cành hoa loa kèn trắng.",
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
       stamp: "MISSING // CÒN 7 NGÀY",
       name: "Matthäus August",
       meta: "52 tuổi · Nam · Phó Cảnh Sát Trưởng Swezan",
-      img: customImages["vic-3"] || "",
+      img: customImages["vic-3"] || "./assets/assets/OPW/Theshowrunner/NPC/august.png",
       timelineInfo: "Mất tích ~12:00 trưa Chủ Nhật · Hạn chót 23:59 Chủ Nhật tới",
       publicFacts:
         "Cánh tay phải của Cảnh sát trưởng Heckler, sắp nghỉ hưu vào tháng tới. Mất tích bên hồ nước đen sau tư gia ven rừng, hiện trường chỉ còn cần câu carbon gãy đôi, dép lê và tẩu thuốc. Lúc 06:00 sáng nay, cảnh sát mổ bụng một con cá chép lai dạt bờ hồ và thu được Băng A (Tập 3): hình ảnh ông bị bịt mắt bằng băng dính đen, trói trên ghế sắt treo lơ lửng trên mặt nước tối.",

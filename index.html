@@ -262,10 +262,11 @@
           <button class="desk-tab" type="button" data-tab="overview">01. TỔNG QUAN</button>
           <button class="desk-tab" type="button" data-tab="world">02. THẾ GIỚI &amp; KHU VỰC</button>
           <button class="desk-tab" type="button" data-tab="tapes">03. BĂNG VIDEO CÔNG BỐ</button>
-          <button class="desk-tab" type="button" data-tab="cast">04. NHÂN VẬT</button>
-          <button class="desk-tab" type="button" data-tab="profile">05. NHẬP VAI</button>
-          <button class="desk-tab" type="button" data-tab="board">06. THẢO LUẬN VỤ ÁN</button>
-          <button class="desk-tab" type="button" data-tab="end">07. HẠ MÀN</button>
+          <button class="desk-tab" type="button" data-tab="victims">04. NẠN NHÂN &amp; TIN ĐỒN</button>
+          <button class="desk-tab" type="button" data-tab="cast">05. NHÂN VẬT</button>
+          <button class="desk-tab" type="button" data-tab="profile">06. NHẬP VAI</button>
+          <button class="desk-tab" type="button" data-tab="board">07. THẢO LUẬN VỤ ÁN</button>
+          <button class="desk-tab" type="button" data-tab="end">08. HẠ MÀN</button>
         </nav>
 
         <div class="desk-actions">
@@ -547,7 +548,23 @@
           <div id="tapes-list-grid" class="tapes-list-grid"></div>
         </div>
       </section>
+      <!-- TAB 04: HỒ SƠ NẠN NHÂN CÔNG KHAI & TIN ĐỒN -->
+      <section id="tab-victims" class="desk-panel" hidden>
+        <div class="panel-header-strip">
+          <div>
+            <p class="panel-kicker">PUBLIC VICTIM FILES &amp; STREET RUMORS // 06:15 · 30/11/1994</p>
+            <h2 class="panel-title">HỒ SƠ NẠN NHÂN CÔNG KHAI &amp; TIN ĐỒN</h2>
+          </div>
+          <div class="cast-filter-group">
+            <button class="studio-btn is-active" type="button" data-victim-filter="all">TẤT CẢ (4)</button>
+            <button class="studio-btn" type="button" data-victim-filter="deceased">ĐÃ TỬ VONG (1–2)</button>
+            <button class="studio-btn" type="button" data-victim-filter="missing">ĐANG MẤT TÍCH (3)</button>
+            <button class="studio-btn" type="button" data-victim-filter="teaser">CẢNH BÁO (4)</button>
+          </div>
+        </div>
 
+        <div id="victims-grid" class="victims-grid"></div>
+      </section>
       <!-- TAB 4: NHÂN VẬT -->
       <section id="tab-cast" class="desk-panel" hidden>
         <div class="panel-header-strip">
@@ -879,12 +896,13 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js" defer></script>
-  <script src="js/config.js?v=18" defer></script>
-  <script src="js/characters.js?v=18" defer></script>
-  <script src="js/static-noise.js?v=18" defer></script>
-  <script src="js/gate.js?v=18" defer></script>
-  <script src="js/tape3d.js?v=18" defer></script>
-  <script src="js/main.js?v=18" defer></script>
-  <script src="js/board.js?v=18" defer></script>
+  <script src="js/config.js?v=19" defer></script>
+  <script src="js/characters.js?v=19" defer></script>
+  <script src="js/static-noise.js?v=19" defer></script>
+  <script src="js/gate.js?v=19" defer></script>
+  <script src="js/tape3d.js?v=19" defer></script>
+  <script src="js/main.js?v=19" defer></script>
+  <script src="js/board.js?v=19" defer></script>
+  <script src="js/victims.js?v=19" defer></script>
 </body>
 </html>

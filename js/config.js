@@ -389,6 +389,11 @@ window.SHOWRUNNER_CONFIG = {
       transcript: "“Vở kịch gồm bốn hồi. Hồi cuối cùng vẫn chưa kéo màn.”",
     },
   ],
+  victimsImages: {
+    "vic-1": "./assets/assets/OPW/Theshowrunner/System/ottomar.png",
+    "vic-2": "./assets/assets/OPW/Theshowrunner/System/malia.png",
+    "vic-3": "./assets/assets/OPW/Theshowrunner/System/august.png",
+  },
   /* -------------------------------------------------------
      5. KẾT NỐI FIREBASE CHO TAB THẢO LUẬN THỊ TRẤN
      ------------------------------------------------------- */

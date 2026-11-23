@@ -41,8 +41,7 @@ window.SHOWRUNNER_CONFIG = {
      Dán link file âm thanh trực tiếp (.mp3 / .ogg / .wav)
      ------------------------------------------------------- */
   music: [
-    // Ví dụ (bỏ dấu // ở đầu dòng khi bạn đã có link thật):
-    // { id: "track-1", freq: "TAPE 01", title: "Swezan Rain (Theme)", url: "assets/theme.mp3" },
+    { id: "track-1", freq: "Mad Father", title: "Old Doll", url: "./assets/assets/OPW/Theshowrunner/System/OldDoll.mp3" },
     // { id: "track-2", freq: "TAPE 02", title: "Midnight Jazz", url: "https://.../music.mp3" },
   ],
  /* -------------------------------------------------------

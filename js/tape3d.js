@@ -1,539 +1,394 @@
 /* =========================================================
-   THE SHOWRUNNER — BỘ DỰNG CẢNH 3D MODEL CƠ THỂ NGƯỜI & HOA (3.8s)
-   Sử dụng Three.js (r147 UMD) chạy trực tiếp trong màn hình CRT
+   THE SHOWRUNNER — MÔ PHỎNG VIDEO TỐI & BÓNG NGƯỜI ĐỎ (CHUẨN CROQUIS 2D)
+   Vẽ giải phẫu tỷ lệ người thật + mảng sáng tối (Chiaroscuro) bằng Canvas 2D
    ========================================================= */
 
 (function () {
-  let activeRenderer = null;
-  let activeScene = null;
   let activeRaf = null;
-  let activeCleanup = null;
-
-  function disposeObject(obj) {
-    if (!obj) return;
-    if (obj.geometry) obj.geometry.dispose();
-    if (obj.material) {
-      if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose());
-      else obj.material.dispose();
-    }
-  }
 
   function destroy() {
     if (activeRaf) {
       cancelAnimationFrame(activeRaf);
       activeRaf = null;
     }
-    if (typeof activeCleanup === "function") {
-      activeCleanup();
-      activeCleanup = null;
+  }
+
+  /* -------------------------------------------------------
+     HÀM VẼ NỀN TỐI, HẠT NHIỄU VHS & SỌC TRACKING TRÊN CANVAS
+     ------------------------------------------------------- */
+  function drawDarkBackdrop(ctx, w, h, t, lightX, lightY) {
+    ctx.fillStyle = "#040102";
+    ctx.fillRect(0, 0, w, h);
+
+    // Vầng sáng đỏ hắt từ nguồn sáng lên nền tối
+    const bgGlow = ctx.createRadialGradient(lightX, lightY, 12, w * 0.5, h * 0.48, w * 0.62);
+    bgGlow.addColorStop(0, "rgba(180, 12, 26, 0.28)");
+    bgGlow.addColorStop(0.45, "rgba(88, 4, 12, 0.14)");
+    bgGlow.addColorStop(1, "rgba(4, 1, 2, 0)");
+    ctx.fillStyle = bgGlow;
+    ctx.fillRect(0, 0, w, h);
+  }
+
+  function drawVhsPostFx(ctx, w, h, t) {
+    // Sọc quét ngang CRT mảnh
+    ctx.fillStyle = "rgba(0, 0, 0, 0.28)";
+    for (let y = 0; y < h; y += 4) {
+      ctx.fillRect(0, y, w, 1.4);
     }
-    if (activeScene) {
-      activeScene.traverse(disposeObject);
-      activeScene = null;
+
+    // Dải nhiễu tracking trượt dọc
+    const tearY = ((t * 1.15) % 1.2) * h - 30;
+    const tearGrad = ctx.createLinearGradient(0, tearY, 0, tearY + 42);
+    tearGrad.addColorStop(0, "rgba(255, 40, 58, 0)");
+    tearGrad.addColorStop(0.5, "rgba(255, 45, 65, 0.16)");
+    tearGrad.addColorStop(1, "rgba(255, 40, 58, 0)");
+    ctx.fillStyle = tearGrad;
+    ctx.fillRect(0, tearY, w, 42);
+
+    // Chớp nhiễu ngắn ở giữa đoạn (~2.1s)
+    if (t > 0.54 && t < 0.60) {
+      ctx.fillStyle = "rgba(220, 18, 36, 0.18)";
+      ctx.fillRect(0, Math.random() * h * 0.7, w, 26);
     }
-    if (activeRenderer) {
-      activeRenderer.dispose();
-      if (activeRenderer.domElement && activeRenderer.domElement.parentNode) {
-        activeRenderer.domElement.parentNode.removeChild(activeRenderer.domElement);
-      }
-      activeRenderer = null;
+
+    // Hạt film grain đỏ/tối li ti
+    for (let i = 0; i < 160; i++) {
+      const gx = Math.random() * w;
+      const gy = Math.random() * h;
+      ctx.fillStyle = Math.random() > 0.65 ? "rgba(255, 70, 88, 0.14)" : "rgba(255, 220, 220, 0.06)";
+      ctx.fillRect(gx, gy, 1.5, 1.5);
     }
   }
 
   /* -------------------------------------------------------
-     TẠO CÁC BỘ PHẬN 3D: CƠ THỂ NGƯỜI, HOA LOA KÈN, BUỒNG TRỨNG
+     1. TẬP 2: MODEL NỮ NGHIÊNG 3/4 TRONG BUỒNG KÍNH TRỨNG + MẢNG SÁNG TỐI
      ------------------------------------------------------- */
-  function createHumanArm(bodyMat, side = 1) {
-    const shoulderPivot = new THREE.Group();
-    shoulderPivot.position.set(side * 0.27, 1.38, 0.02);
+  function drawFemaleCroquis(ctx, w, h, t) {
+    const breath = Math.sin(t * 8.5) * 2.2;
+    const swayX = Math.sin(t * 2.6) * 4;
+    const pushScale = 0.96 + t * 0.07;
 
-    const shoulderJoint = new THREE.Mesh(new THREE.SphereGeometry(0.068, 12, 10), bodyMat);
-    shoulderPivot.add(shoulderJoint);
+    // Nguồn sáng đỏ phía trên bên phải quét nhẹ để lộ góc sáng tối cơ thể
+    const lightX = w * 0.68 - Math.sin(t * Math.PI) * 55;
+    const lightY = h * 0.16 + Math.cos(t * 3) * 16;
+    drawDarkBackdrop(ctx, w, h, t, lightX, lightY);
 
-    const upperArm = new THREE.Mesh(new THREE.CylinderGeometry(0.056, 0.046, 0.36, 12), bodyMat);
-    upperArm.position.y = -0.18;
-    shoulderPivot.add(upperArm);
+    ctx.save();
+    ctx.translate(w * 0.5 + swayX, h * 0.98);
+    ctx.scale(pushScale, pushScale);
+    ctx.translate(-w * 0.5, -h * 0.98);
 
-    const elbowPivot = new THREE.Group();
-    elbowPivot.position.set(0, -0.36, 0);
-    shoulderPivot.add(elbowPivot);
+    // Viền buồng kính quả trứng mờ phía sau
+    ctx.save();
+    ctx.strokeStyle = "rgba(255, 58, 76, 0.22)";
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.ellipse(320, 245, 168, 212, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
 
-    const elbowJoint = new THREE.Mesh(new THREE.SphereGeometry(0.048, 10, 8), bodyMat);
-    elbowPivot.add(elbowJoint);
-
-    const forearm = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.032, 0.34, 12), bodyMat);
-    forearm.position.y = -0.17;
-    elbowPivot.add(forearm);
-
-    const handGroup = new THREE.Group();
-    handGroup.position.set(0, -0.35, 0);
-    elbowPivot.add(handGroup);
-
-    const palm = new THREE.Mesh(new THREE.BoxGeometry(0.075, 0.09, 0.024), bodyMat);
-    palm.position.y = -0.04;
-    handGroup.add(palm);
-
-    // 5 ngón tay tách rõ ràng
-    for (let f = 0; f < 5; f++) {
-      const finger = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.006, 0.075, 6), bodyMat);
-      finger.position.set((f - 2) * 0.015, -0.11, 0);
-      finger.rotation.z = (f - 2) * -0.06;
-      handGroup.add(finger);
+    // Hàm tạo Path hình dáng giải phẫu nữ nghiêng 3/4 (Đầu, cổ, vai, eo, hông)
+    function traceTorsoAndHead() {
+      ctx.beginPath();
+      // Đỉnh đầu -> trán -> sống mũi -> môi -> cằm -> cổ trước (nghiêng phải 3/4)
+      ctx.moveTo(304, 70 + breath * 0.5);
+      ctx.bezierCurveTo(334, 66 + breath * 0.5, 352, 86, 353, 108); // Trán & thái dương
+      ctx.lineTo(360, 121); // Sống mũi
+      ctx.lineTo(354, 125); // Nhân trung
+      ctx.bezierCurveTo(357, 130, 355, 135, 352, 138); // Môi
+      ctx.bezierCurveTo(354, 145, 349, 151, 338, 152); // Cằm & hàm dưới
+      ctx.bezierCurveTo(333, 162, 332, 174, 338, 184); // Cổ trước vào hõm cổ
+      // Vai phải xuôi tự nhiên -> bắp tay xuôi xuống -> khuỷu -> eo -> hông
+      ctx.bezierCurveTo(362, 186, 378, 198, 382, 218); // Đường vai & cơ delta phải
+      ctx.bezierCurveTo(384, 240, 374, 266, 366, 286); // Sườn phải (ngực -> eo)
+      ctx.bezierCurveTo(358, 304, 354, 316, 358, 334); // Thắt eo phải
+      ctx.bezierCurveTo(368, 362, 382, 392, 388, 480); // Hông & tà váy xuống đáy
+      ctx.lineTo(246, 480);
+      // Hông trái -> thắt eo trái -> lồng ngực trái -> vai trái -> gáy & tóc
+      ctx.bezierCurveTo(254, 392, 268, 360, 276, 334); // Hông trái lên eo
+      ctx.bezierCurveTo(280, 314, 276, 300, 268, 280); // Eo lên sườn trái
+      ctx.bezierCurveTo(260, 254, 252, 226, 256, 206); // Lưng/vai trái
+      ctx.bezierCurveTo(260, 190, 276, 182, 294, 180); // Cầu vai trái lên gáy
+      ctx.bezierCurveTo(298, 166, 296, 152, 290, 144); // Gáy
+      ctx.bezierCurveTo(276, 128, 278, 76, 304, 70 + breath * 0.5); // Sọ sau lên đỉnh đầu
+      ctx.closePath();
     }
 
-    return { shoulderPivot, elbowPivot, handGroup };
-  }
+    // Lớp tóc ướt rũ nhẹ sau gáy (tách sắc độ tối hơn thân)
+    ctx.save();
+    ctx.fillStyle = "#320207";
+    ctx.beginPath();
+    ctx.moveTo(294, 76);
+    ctx.bezierCurveTo(266, 94, 256, 142, 248, 188);
+    ctx.bezierCurveTo(262, 184, 282, 178, 298, 176);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
 
-  function createFemaleSilhouette(bodyMat) {
-    const group = new THREE.Group();
+    // Tô thân & đầu bằng hệ ánh sáng 3 sắc độ Chiaroscuro
+    ctx.save();
+    traceTorsoAndHead();
+    ctx.shadowColor = "rgba(255, 24, 48, 0.55)";
+    ctx.shadowBlur = 18;
+    ctx.fillStyle = "#160104"; // Bóng tối lõi (Core Shadow)
+    ctx.fill();
+    ctx.clip();
 
-    // Đường cong giải phẫu thân trên nữ (từ thắt lưng/hông lên vai cổ)
-    const torsoPoints = [
-      new THREE.Vector2(0.001, 0.0),
-      new THREE.Vector2(0.32, 0.02),
-      new THREE.Vector2(0.30, 0.22),
-      new THREE.Vector2(0.24, 0.50),
-      new THREE.Vector2(0.165, 0.78), // Eo thắt rõ
-      new THREE.Vector2(0.225, 1.05), // Ngực
-      new THREE.Vector2(0.255, 1.24),
-      new THREE.Vector2(0.23, 1.40),  // Vai
-      new THREE.Vector2(0.085, 1.48), // Chân cổ
-      new THREE.Vector2(0.068, 1.62), // Cổ
-      new THREE.Vector2(0.001, 1.64),
-    ];
-    const torsoGeo = new THREE.LatheGeometry(torsoPoints, 24);
-    const torso = new THREE.Mesh(torsoGeo, bodyMat);
-    torso.scale.set(1.06, 1, 0.68);
-    group.add(torso);
+    // Mảng sáng khối (Lighting Plane) hướng từ lightX, lightY
+    const bodyLight = ctx.createRadialGradient(lightX, lightY + 40, 14, 338, 235, 250);
+    bodyLight.addColorStop(0, "#ff2a3f");
+    bodyLight.addColorStop(0.28, "#b00818");
+    bodyLight.addColorStop(0.65, "#420309");
+    bodyLight.addColorStop(1, "rgba(18, 1, 4, 0)");
+    ctx.fillStyle = bodyLight;
+    ctx.fillRect(220, 60, 200, 430);
 
-    // Tạo đường nét ngực để bóng nghiêng/chính diện rõ cơ thể nữ
-    [-1, 1].forEach((side) => {
-      const chestCurve = new THREE.Mesh(new THREE.SphereGeometry(0.115, 16, 12), bodyMat);
-      chestCurve.position.set(side * 0.11, 1.15, 0.12);
-      chestCurve.scale.set(0.95, 0.9, 0.85);
-      group.add(chestCurve);
-    });
+    // Đường sáng mảnh bắt trên xương quai xanh, gò má & ngực (Artist Light Planes)
+    ctx.strokeStyle = "rgba(255, 110, 125, 0.55)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    // Xương quai xanh
+    ctx.moveTo(312, 198);
+    ctx.quadraticCurveTo(338, 200, 366, 196);
+    // Khối xương ức / ngực
+    ctx.moveTo(344, 224);
+    ctx.quadraticCurveTo(364, 248, 354, 272);
+    ctx.stroke();
 
-    // Đầu & Tóc dài
-    const headGroup = new THREE.Group();
-    headGroup.position.set(0, 1.77, 0.02);
-    const head = new THREE.Mesh(new THREE.SphereGeometry(0.145, 20, 16), bodyMat);
-    head.scale.set(0.88, 1.14, 0.96);
-    headGroup.add(head);
+    // Mảng tối hốc cổ & rãnh eo tạo chiều sâu
+    ctx.fillStyle = "rgba(8, 0, 2, 0.65)";
+    ctx.beginPath();
+    ctx.ellipse(314, 176, 14, 20, 0.25, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
 
-    const hairBack = new THREE.Mesh(new THREE.CylinderGeometry(0.145, 0.20, 0.44, 16, 1, false), bodyMat);
-    hairBack.position.set(0, -0.18, -0.06);
-    hairBack.scale.set(1.02, 1, 0.72);
-    headGroup.add(hairBack);
-    group.add(headGroup);
+    // Đường Rim Light viền sáng mặt phải (nơi ánh sáng chạm viền cơ thể)
+    ctx.save();
+    traceTorsoAndHead();
+    ctx.strokeStyle = "rgba(255, 68, 86, 0.72)";
+    ctx.lineWidth = 1.6;
+    ctx.stroke();
+    ctx.restore();
 
-    const leftArm = createHumanArm(bodyMat, -1);
-    const rightArm = createHumanArm(bodyMat, 1);
+    // VẼ 2 CÁNH TAY GẬP TỰ NHIÊN TỪ VAI -> KHUỶU -> CẲNG TAY VƯƠN LÊN ÁP KÍNH
+    const slideY = Math.sin(t * Math.PI) * -10 + Math.max(0, (t - 0.5) * 26);
 
-    // Tư thế 2 tay giơ lên áp sát mặt kính buồng trứng phía trước
-    leftArm.shoulderPivot.rotation.set(-1.35, 0.18, -0.25);
-    leftArm.elbowPivot.rotation.set(-0.75, 0, 0.15);
+    function drawNaturalArm(shX, shY, elbX, elbY, wriX, wriY, flip) {
+      ctx.save();
+      ctx.beginPath();
+      // Khớp vai -> bắp tay ngoài -> khuỷu tay -> cẳng tay ngoài -> cổ tay -> bàn tay
+      ctx.moveTo(shX, shY);
+      ctx.quadraticCurveTo(shX + flip * 10, (shY + elbY) * 0.5, elbX, elbY);
+      ctx.quadraticCurveTo(elbX + flip * 6, (elbY + wriY) * 0.55, wriX, wriY);
+      // Bàn tay & các ngón tay áp vào kính
+      ctx.bezierCurveTo(wriX + flip * 12, wriY - 14, wriX + flip * 10, wriY - 34, wriX + flip * 2, wriY - 38);
+      ctx.bezierCurveTo(wriX - flip * 8, wriY - 34, wriX - flip * 14, wriY - 16, wriX - flip * 11, wriY + 4);
+      // Cẳng tay trong -> nếp gấp khuỷu -> bắp tay trong -> nách
+      ctx.quadraticCurveTo(elbX - flip * 14, (elbY + wriY) * 0.52, elbX - flip * 16, elbY - 8);
+      ctx.quadraticCurveTo(shX - flip * 10, (shY + elbY) * 0.45, shX - flip * 14, shY + 18);
+      ctx.closePath();
 
-    rightArm.shoulderPivot.rotation.set(-1.62, -0.14, 0.2);
-    rightArm.elbowPivot.rotation.set(-0.68, 0, -0.1);
+      const armGrad = ctx.createLinearGradient(wriX, wriY - 36, elbX, elbY);
+      armGrad.addColorStop(0, "#ff2e44");
+      armGrad.addColorStop(0.42, "#9c0614");
+      armGrad.addColorStop(1, "#260205");
 
-    group.add(leftArm.shoulderPivot, rightArm.shoulderPivot);
+      ctx.shadowColor = "rgba(255, 30, 52, 0.5)";
+      ctx.shadowBlur = 12;
+      ctx.fillStyle = armGrad;
+      ctx.fill();
 
-    return { group, headGroup, leftArm, rightArm };
-  }
-
-  function createMaleChairSilhouette(bodyMat) {
-    const group = new THREE.Group();
-
-    const torsoPoints = [
-      new THREE.Vector2(0.001, 0.42),
-      new THREE.Vector2(0.24, 0.46),
-      new THREE.Vector2(0.23, 0.76),
-      new THREE.Vector2(0.27, 1.08),
-      new THREE.Vector2(0.29, 1.28),
-      new THREE.Vector2(0.10, 1.38),
-      new THREE.Vector2(0.075, 1.50),
-      new THREE.Vector2(0.001, 1.52),
-    ];
-    const torso = new THREE.Mesh(new THREE.LatheGeometry(torsoPoints, 20), bodyMat);
-    torso.scale.set(1.08, 1, 0.72);
-    group.add(torso);
-
-    const head = new THREE.Mesh(new THREE.SphereGeometry(0.148, 18, 14), bodyMat);
-    head.position.set(0, 1.63, 0.04);
-    head.scale.set(0.9, 1.12, 0.96);
-    head.rotation.x = 0.25; // Cúi gục
-    group.add(head);
-
-    // Hai đùi & cẳng chân ngồi trên ghế
-    [-1, 1].forEach((side) => {
-      const thigh = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.07, 0.46, 12), bodyMat);
-      thigh.rotation.x = Math.PI / 2;
-      thigh.position.set(side * 0.13, 0.44, 0.24);
-      group.add(thigh);
-
-      const shin = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.048, 0.48, 12), bodyMat);
-      shin.position.set(side * 0.13, 0.20, 0.45);
-      group.add(shin);
-
-      const arm = createHumanArm(bodyMat, side);
-      arm.shoulderPivot.position.set(side * 0.29, 1.24, -0.02);
-      arm.shoulderPivot.rotation.set(0.35, 0, side * -0.18); // Tay bị trói ra sau lưng ghế
-      arm.elbowPivot.rotation.set(0.75, 0, side * -0.35);
-      group.add(arm.shoulderPivot);
-    });
-
-    return group;
-  }
-
-  function createLilyFlower(petalMat, stemMat, centerMat) {
-    const flower = new THREE.Group();
-
-    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.015, 0.55, 8), stemMat);
-    stem.position.y = -0.27;
-    flower.add(stem);
-
-    // 2 lá dài ôm thân
-    [-1, 1].forEach((s) => {
-      const leaf = new THREE.Mesh(new THREE.ConeGeometry(0.035, 0.28, 5), stemMat);
-      leaf.position.set(s * 0.05, -0.32, 0);
-      leaf.rotation.z = s * -0.55;
-      flower.add(leaf);
-    });
-
-    // Bông hoa loa kèn 6 cánh uốn loa rõ ràng
-    const head = new THREE.Group();
-    const petalShape = new THREE.Shape();
-    petalShape.moveTo(0, 0);
-    petalShape.quadraticCurveTo(0.078, 0.12, 0.048, 0.28);
-    petalShape.quadraticCurveTo(0, 0.37, 0, 0.39);
-    petalShape.quadraticCurveTo(0, 0.37, -0.048, 0.28);
-    petalShape.quadraticCurveTo(-0.078, 0.12, 0, 0);
-    const petalGeo = new THREE.ShapeGeometry(petalShape, 8);
-
-    for (let i = 0; i < 6; i++) {
-      const petalWrap = new THREE.Group();
-      petalWrap.rotation.y = (i * Math.PI * 2) / 6;
-
-      const petal = new THREE.Mesh(petalGeo, petalMat);
-      petal.rotation.x = i % 2 === 0 ? 0.62 : 0.78;
-      petalWrap.add(petal);
-      head.add(petalWrap);
+      ctx.strokeStyle = "rgba(255, 95, 110, 0.65)";
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      ctx.restore();
     }
 
-    // Nhụy hoa loa kèn ở giữa
-    for (let k = 0; k < 4; k++) {
-      const stamen = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 0.18, 5), centerMat);
-      stamen.position.y = 0.09;
-      stamen.rotation.set(Math.sin(k * 1.5) * 0.22, 0, Math.cos(k * 1.5) * 0.22);
-      head.add(stamen);
-    }
+    // Tay trái đặt hơi cao (khuỷu hạ xuống ngang ngực, cẳng tay vươn lên kính)
+    drawNaturalArm(266, 198, 224, 272, 248, 178 + slideY * 0.7, -1);
+    // Tay phải ở tiền cảnh áp sát mặt kính
+    drawNaturalArm(374, 200, 412, 282, 384, 186 + slideY, 1);
 
-    flower.add(head);
-    return { flower, head };
+    ctx.restore();
+    drawVhsPostFx(ctx, w, h, t);
   }
 
   /* -------------------------------------------------------
-     1. CẢNH 3D TẬP 2: TRỨNG ẤU TRÙNG (CÔ GÁI TRONG BUỒNG TRỨNG + HOA LOA KÈN)
+     2. TẬP 3A: MODEL NAM NGỒI GHẾ TREO TRÊN MẶT NƯỚC TỐI
      ------------------------------------------------------- */
-  function buildEpisode2Scene(scene, camera) {
-    camera.position.set(0, 1.35, 3.05);
-    camera.lookAt(0, 1.15, 0);
+  function drawMaleChairCroquis(ctx, w, h, t) {
+    const swingAngle = Math.sin(t * Math.PI * 2) * 0.055;
+    const lightX = w * 0.5 + Math.sin(t * Math.PI * 2) * 45;
+    const lightY = 48;
+    drawDarkBackdrop(ctx, w, h, t, lightX, lightY);
 
-    scene.fog = new THREE.FogExp2(0x160709, 0.18);
-
-    // Ánh sáng ngược mạnh để làm nổi rõ đường nét cơ thể & cánh hoa trắng
-    scene.add(new THREE.AmbientLight(0x4a2428, 0.7));
-
-    const backGlow = new THREE.PointLight(0xffdede, 3.4, 8);
-    backGlow.position.set(0, 1.65, -1.65);
-    scene.add(backGlow);
-
-    const rimRed = new THREE.SpotLight(0xd81024, 3.2, 10, Math.PI / 4, 0.5);
-    rimRed.position.set(-1.9, 2.8, 1.4);
-    scene.add(rimRed);
-
-    const lilyLight = new THREE.PointLight(0xfff4ea, 1.6, 5);
-    lilyLight.position.set(0.8, 1.2, 1.6);
-    scene.add(lilyLight);
-
-    // Màn sáng sương mù phía sau để bóng cơ thể nổi bật
-    const backdrop = new THREE.Mesh(
-      new THREE.PlaneGeometry(6.5, 4.5),
-      new THREE.MeshBasicMaterial({ color: 0x3b1218 })
-    );
-    backdrop.position.set(0, 1.3, -2.0);
-    scene.add(backdrop);
-
-    const chamberGroup = new THREE.Group();
-    scene.add(chamberGroup);
-
-    // Lớp đất/cát ngập tới ngang thắt lưng bên trong đáy quả trứng
-    const soilBed = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.76, 0.52, 0.42, 28),
-      new THREE.MeshPhongMaterial({ color: 0x160e0e, shininess: 10 })
-    );
-    soilBed.position.y = 0.38;
-    chamberGroup.add(soilBed);
-
-    // Model 3D cơ thể cô gái (đậm, bóng sắc nét)
-    const bodyMat = new THREE.MeshPhongMaterial({
-      color: 0x12090b,
-      emissive: 0x120305,
-      specular: 0x6b222a,
-      shininess: 35,
-    });
-    const figure = createFemaleSilhouette(bodyMat);
-    figure.group.position.set(0, 0.25, -0.02);
-    figure.group.rotation.y = 0.14; // Xoay nhẹ 3/4 cho rõ đường cong cơ thể & cánh tay vươn
-    chamberGroup.add(figure.group);
-
-    // Đám hoa loa kèn trắng rõ ràng vây quanh thắt lưng trong buồng kính
-    const petalMat = new THREE.MeshPhongMaterial({
-      color: 0xf4ece6,
-      emissive: 0x2e1f21,
-      specular: 0xffffff,
-      shininess: 40,
-      side: THREE.DoubleSide,
-    });
-    const stemMat = new THREE.MeshPhongMaterial({ color: 0x1f2b1c, side: THREE.DoubleSide });
-    const centerMat = new THREE.MeshBasicMaterial({ color: 0x9c202a });
-
-    const lilies = [];
-    const lilyCount = 13;
-    for (let i = 0; i < lilyCount; i++) {
-      const angle = (i / lilyCount) * Math.PI * 2 + (i % 2) * 0.15;
-      const radius = 0.34 + (i % 3) * 0.13;
-      const l = createLilyFlower(petalMat, stemMat, centerMat);
-      l.flower.position.set(Math.cos(angle) * radius, 0.72 + (i % 3) * 0.1, Math.sin(angle) * radius);
-      l.flower.rotation.set(0.28 + (i % 2) * 0.12, -angle + Math.PI / 2, (Math.random() - 0.5) * 0.25);
-      l.flower.scale.setScalar(0.92 + (i % 3) * 0.14);
-      chamberGroup.add(l.flower);
-      lilies.push({ obj: l.flower, head: l.head, baseRotX: l.flower.rotation.x, phase: i * 0.7 });
+    // Mặt nước tối phản chiếu vệt sáng đỏ
+    ctx.fillStyle = "#030102";
+    ctx.fillRect(0, 392, w, 88);
+    ctx.strokeStyle = "rgba(220, 24, 42, 0.34)";
+    ctx.lineWidth = 1.5;
+    for (let r = 0; r < 4; r++) {
+      const ry = 404 + r * 14;
+      const rw = 160 - r * 28 + Math.sin(t * 8 + r) * 12;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.5 - rw, ry);
+      ctx.lineTo(w * 0.5 + rw, ry);
+      ctx.stroke();
     }
 
-    // Buồng kính 3D hình quả trứng bao bọc bên ngoài
-    const eggPoints = [];
-    for (let i = 0; i <= 32; i++) {
-      const t = (i / 32) * Math.PI;
-      const r = Math.sin(t) * (0.94 + 0.18 * Math.cos(t));
-      const y = 1.28 - Math.cos(t) * 1.18;
-      eggPoints.push(new THREE.Vector2(Math.max(0.001, r), y));
+    ctx.save();
+    ctx.translate(w * 0.5, 0);
+    ctx.rotate(swingAngle);
+    ctx.translate(-w * 0.5, 0);
+
+    // Sợi xích treo từ trần
+    ctx.strokeStyle = "rgba(255, 65, 82, 0.52)";
+    ctx.lineWidth = 3;
+    ctx.setLineDash([7, 5]);
+    ctx.beginPath();
+    ctx.moveTo(320, 0);
+    ctx.lineTo(320, 124);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Khung ghế sắt phía sau
+    ctx.strokeStyle = "#4d040b";
+    ctx.lineWidth = 5;
+    ctx.strokeRect(272, 168, 96, 118);
+    ctx.fillStyle = "#360308";
+    ctx.fillRect(266, 282, 108, 12);
+
+    // Hình dáng giải phẫu nam ngồi cúi đầu, vai rộng, chân thõng xuống
+    ctx.save();
+    ctx.beginPath();
+    // Đầu cúi nghiêng 3/4 phải
+    ctx.moveTo(308, 112);
+    ctx.bezierCurveTo(334, 108, 348, 126, 348, 144);
+    ctx.lineTo(353, 156); // Mũi
+    ctx.lineTo(347, 164); // Môi
+    ctx.bezierCurveTo(348, 174, 342, 180, 330, 178); // Cằm gục
+    // Vai phải rộng -> bắp tay kéo ra sau bị trói -> hông ngồi ghế -> đùi -> cẳng chân
+    ctx.bezierCurveTo(366, 180, 378, 198, 376, 224);
+    ctx.lineTo(366, 276);
+    ctx.lineTo(360, 294);
+    ctx.lineTo(364, 376); // Cẳng chân phải
+    ctx.lineTo(346, 384);
+    ctx.lineTo(338, 304);
+    ctx.lineTo(306, 304);
+    ctx.lineTo(298, 384); // Cẳng chân trái
+    ctx.lineTo(280, 376);
+    ctx.lineTo(284, 294);
+    ctx.lineTo(274, 276);
+    ctx.lineTo(264, 224);
+    ctx.bezierCurveTo(262, 198, 274, 180, 304, 178);
+    ctx.bezierCurveTo(292, 168, 286, 126, 308, 112);
+    ctx.closePath();
+
+    const bodyGrad = ctx.createRadialGradient(lightX, 140, 20, 320, 250, 220);
+    bodyGrad.addColorStop(0, "#ff2a3e");
+    bodyGrad.addColorStop(0.35, "#9e0615");
+    bodyGrad.addColorStop(0.75, "#2b0206");
+    bodyGrad.addColorStop(1, "#0d0103");
+
+    ctx.shadowColor = "rgba(255, 22, 42, 0.55)";
+    ctx.shadowBlur = 16;
+    ctx.fillStyle = bodyGrad;
+    ctx.fill();
+
+    ctx.strokeStyle = "rgba(255, 82, 98, 0.68)";
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.restore();
+
+    ctx.restore();
+
+    // Bóng bàn tay đeo găng lướt ngang tiền cảnh
+    if (t > 0.25 && t < 0.85) {
+      const gx = -80 + ((t - 0.25) / 0.6) * (w + 180);
+      ctx.save();
+      ctx.fillStyle = "#040102";
+      ctx.strokeStyle = "rgba(210, 18, 36, 0.65)";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(gx - 34, h);
+      ctx.lineTo(gx + 10, 215);
+      ctx.quadraticCurveTo(gx + 34, 185, gx + 48, 222);
+      ctx.lineTo(gx + 32, h);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
     }
-    const eggGeo = new THREE.LatheGeometry(eggPoints, 36);
-    const eggGlassMat = new THREE.MeshPhongMaterial({
-      color: 0xd9c2c4,
-      emissive: 0x200a0d,
-      specular: 0xffffff,
-      shininess: 110,
-      transparent: true,
-      opacity: 0.24,
-      side: THREE.DoubleSide,
-      depthWrite: false,
-    });
-    const eggDome = new THREE.Mesh(eggGeo, eggGlassMat);
-    chamberGroup.add(eggDome);
 
-    // Khung xương kim loại bao quanh quả trứng + đường ống hơi nước
-    const metalMat = new THREE.MeshPhongMaterial({ color: 0x2d2426, shininess: 65 });
-    [0.58, 1.32, 2.18].forEach((ringY, idx) => {
-      const ringR = idx === 0 ? 0.88 : idx === 1 ? 0.96 : 0.62;
-      const ring = new THREE.Mesh(new THREE.TorusGeometry(ringR, 0.022, 8, 36), metalMat);
-      ring.rotation.x = Math.PI / 2;
-      ring.position.y = ringY;
-      chamberGroup.add(ring);
-    });
-
-    [-0.98, 0.98].forEach((px) => {
-      const pipe = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, 2.5, 10), metalMat);
-      pipe.position.set(px, 1.25, -0.2);
-      chamberGroup.add(pipe);
-    });
-
-    // Hạt hơi nước 3D bốc lên bên trong buồng kính
-    const steamMat = new THREE.MeshBasicMaterial({
-      color: 0xf2e4e4,
-      transparent: true,
-      opacity: 0.22,
-      depthWrite: false,
-    });
-    const steamPuffs = [];
-    for (let s = 0; s < 16; s++) {
-      const puff = new THREE.Mesh(new THREE.SphereGeometry(0.16 + (s % 3) * 0.07, 10, 8), steamMat.clone());
-      const a = (s / 16) * Math.PI * 2;
-      puff.position.set(Math.cos(a) * 0.45, 0.55 + (s % 5) * 0.28, Math.sin(a) * 0.4);
-      chamberGroup.add(puff);
-      steamPuffs.push({ mesh: puff, speed: 0.22 + (s % 4) * 0.08, startY: puff.position.y });
-    }
-
-    return function update(t) {
-      // Đẩy camera vào gần nhẹ & lắc kiểu máy quay cầm tay 1994
-      camera.position.z = 3.05 - t * 0.32;
-      camera.position.x = Math.sin(t * Math.PI) * 0.16;
-      camera.position.y = 1.34 + Math.sin(t * 2.2) * 0.025;
-      camera.lookAt(0, 1.18, 0);
-
-      // Cử động thở gấp & bàn tay cào trượt nhẹ xuống mặt kính
-      figure.group.position.y = 0.25 + Math.sin(t * 9) * 0.012;
-      figure.headGroup.rotation.x = -0.14 + Math.sin(t * 5) * 0.08;
-      figure.rightArm.shoulderPivot.rotation.x = -1.62 + Math.sin(t * 4.5) * 0.18;
-      figure.leftArm.shoulderPivot.rotation.x = -1.35 + Math.cos(t * 5.2) * 0.12;
-
-      // Hoa loa kèn rung nhẹ và rũ xuống ở cuối đoạn khi hơi nóng tăng
-      const droop = Math.max(0, (t - 0.55) * 0.45);
-      lilies.forEach((l) => {
-        l.obj.rotation.x = l.baseRotX + Math.sin(t * 6 + l.phase) * 0.04 + droop;
-      });
-
-      // Hơi nước bốc cuộn lên & làm kính mờ dần
-      steamPuffs.forEach((p, idx) => {
-        p.mesh.position.y = 0.48 + ((p.startY + t * p.speed * 2.4) % 1.85);
-        p.mesh.material.opacity = 0.12 + t * 0.22 + Math.sin(t * 5 + idx) * 0.04;
-      });
-      eggGlassMat.opacity = 0.22 + t * 0.16;
-    };
+    drawVhsPostFx(ctx, w, h, t);
   }
 
   /* -------------------------------------------------------
-     2. CẢNH 3D TẬP 3A: GHẾ SẮT TREO TRÊN MẶT NƯỚC TỐI
+     3. TẬP 1 & TẬP 4 (KÉN TREO / BÓNG KỴ SĨ CROQUIS)
      ------------------------------------------------------- */
-  function buildEpisode3Scene(scene, camera) {
-    camera.position.set(0.3, 1.4, 3.2);
-    camera.lookAt(0, 1.1, 0);
-
-    scene.add(new THREE.AmbientLight(0x281214, 0.6));
-
-    const lampLight = new THREE.SpotLight(0xffe2d6, 3.8, 10, Math.PI / 4, 0.45);
-    lampLight.position.set(0, 2.75, 0.25);
-    scene.add(lampLight);
-
-    const redFill = new THREE.PointLight(0xb80f1e, 1.6, 6);
-    redFill.position.set(-1.5, 1.2, -1.0);
-    scene.add(redFill);
-
-    // Bóng đèn treo đung đưa
-    const lampGroup = new THREE.Group();
-    lampGroup.position.set(0, 2.8, 0.2);
-    const cord = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.01, 0.01, 0.6, 6),
-      new THREE.MeshBasicMaterial({ color: 0x444444 })
-    );
-    cord.position.y = -0.3;
-    const bulb = new THREE.Mesh(
-      new THREE.SphereGeometry(0.07, 10, 8),
-      new THREE.MeshBasicMaterial({ color: 0xfff0e6 })
-    );
-    bulb.position.y = -0.6;
-    lampGroup.add(cord, bulb);
-    scene.add(lampGroup);
-
-    // Ghế sắt & Model 3D người bị trói treo lơ lửng
-    const rigGroup = new THREE.Group();
-    rigGroup.position.y = 0.55;
-    scene.add(rigGroup);
-
-    const chain = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.018, 0.018, 1.8, 8),
-      new THREE.MeshPhongMaterial({ color: 0x332c2d })
-    );
-    chain.position.y = 2.05;
-    rigGroup.add(chain);
-
-    const chairMat = new THREE.MeshPhongMaterial({ color: 0x241d1e, shininess: 40 });
-    const seat = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.05, 0.52), chairMat);
-    seat.position.set(0, 0.38, 0.14);
-    const back = new THREE.Mesh(new THREE.BoxGeometry(0.54, 0.78, 0.04), chairMat);
-    back.position.set(0, 0.78, -0.11);
-    rigGroup.add(seat, back);
-
-    const bodyMat = new THREE.MeshPhongMaterial({ color: 0x0f0809, specular: 0x55181e, shininess: 30 });
-    const prisoner = createMaleChairSilhouette(bodyMat);
-    rigGroup.add(prisoner);
-
-    // Mặt nước tối gợn sóng bên dưới
-    const waterGeo = new THREE.PlaneGeometry(7, 5, 24, 24);
-    waterGeo.rotateX(-Math.PI / 2);
-    const waterMat = new THREE.MeshPhongMaterial({
-      color: 0x0b0708,
-      specular: 0xb81020,
-      shininess: 90,
-    });
-    const water = new THREE.Mesh(waterGeo, waterMat);
-    water.position.y = 0.12;
-    scene.add(water);
-
-    // Bóng bàn tay đeo găng đen lướt qua trước ống kính
-    const glove = new THREE.Mesh(
-      new THREE.BoxGeometry(0.28, 0.95, 0.08),
-      new THREE.MeshBasicMaterial({ color: 0x040303 })
-    );
-    glove.position.set(-2.2, 0.85, 2.25);
-    glove.rotation.z = -0.22;
-    scene.add(glove);
-
-    return function update(t) {
-      lampGroup.rotation.z = Math.sin(t * Math.PI * 2) * 0.12;
-      lampLight.position.x = Math.sin(t * Math.PI * 2) * 0.35;
-
-      rigGroup.rotation.y = Math.sin(t * 2.5) * 0.14;
-      rigGroup.position.y = 0.55 + Math.sin(t * 4) * 0.03;
-
-      // Lướt bóng găng tay qua màn hình ở khoảng giữa đoạn
-      glove.position.x = -2.2 + t * 4.4;
-      glove.position.y = 0.78 + Math.sin(t * Math.PI) * 0.25;
-
-      camera.position.z = 3.2 - t * 0.25;
-      camera.lookAt(0, 1.15, 0);
-    };
-  }
-
-  /* -------------------------------------------------------
-     3. CẢNH 3D TẬP 1 & TẬP 4 (RÒNG RỌC SƯƠNG MÙ / BÓNG KỴ SĨ)
-     ------------------------------------------------------- */
-  function buildFallback3DScene(scene, camera, tapeId) {
-    camera.position.set(0, 1.2, 3.0);
-    camera.lookAt(0, 1.1, 0);
-
-    const redLight = new THREE.PointLight(0xd81024, 3.2, 8);
-    redLight.position.set(0, 2.2, -1.2);
-    scene.add(redLight);
-    scene.add(new THREE.AmbientLight(0x281214, 0.5));
-
-    const bodyMat = new THREE.MeshPhongMaterial({ color: 0x0c0708, specular: 0x6e1820 });
+  function drawEpisode1And4(ctx, w, h, t, tapeId) {
+    drawDarkBackdrop(ctx, w, h, t, w * 0.5, h * 0.38);
 
     if (tapeId === "tape-1") {
-      const cocoon = new THREE.Mesh(new THREE.CapsuleGeometry ? new THREE.SphereGeometry(0.32, 16, 14) : new THREE.SphereGeometry(0.32, 16, 14), bodyMat);
-      cocoon.scale.set(0.75, 2.1, 0.75);
-      cocoon.position.y = 1.25;
-      scene.add(cocoon);
+      const dropY = -30 + t * 55;
+      ctx.save();
+      ctx.strokeStyle = "rgba(255, 65, 80, 0.5)";
+      ctx.lineWidth = 3;
+      ctx.setLineDash([8, 4]);
+      ctx.beginPath();
+      ctx.moveTo(320, 0);
+      ctx.lineTo(320, 120 + dropY);
+      ctx.stroke();
+      ctx.setLineDash([]);
 
-      const chain = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.025, 0.025, 1.5, 8),
-        new THREE.MeshPhongMaterial({ color: 0x443536 })
-      );
-      chain.position.y = 2.3;
-      scene.add(chain);
+      // Hình người quấn chặt lộ rõ vai, đầu & đầu gối
+      ctx.beginPath();
+      ctx.moveTo(320, 108 + dropY);
+      ctx.bezierCurveTo(346, 110 + dropY, 354, 146 + dropY, 358, 178 + dropY);
+      ctx.bezierCurveTo(364, 220 + dropY, 350, 290 + dropY, 336, 356 + dropY);
+      ctx.bezierCurveTo(330, 382 + dropY, 310, 382 + dropY, 304, 356 + dropY);
+      ctx.bezierCurveTo(290, 290 + dropY, 276, 220 + dropY, 282, 178 + dropY);
+      ctx.bezierCurveTo(286, 146 + dropY, 294, 110 + dropY, 320, 108 + dropY);
+      ctx.closePath();
 
-      return function update(t) {
-        cocoon.position.y = 1.35 - t * 0.45;
-        cocoon.rotation.y = t * 1.1;
-      };
+      const g = ctx.createLinearGradient(280, 110 + dropY, 360, 360 + dropY);
+      g.addColorStop(0, "#ff263b");
+      g.addColorStop(0.5, "#8f0512");
+      g.addColorStop(1, "#1e0204");
+      ctx.shadowColor = "rgba(255, 20, 40, 0.55)";
+      ctx.shadowBlur = 16;
+      ctx.fillStyle = g;
+      ctx.fill();
+      ctx.restore();
+    } else {
+      // Tập 4: Bóng đứng của Kỵ Sĩ áo choàng chớp tắt trong nhiễu tối
+      const visible = (t > 0.34 && t < 0.44) || (t > 0.68 && t < 0.84);
+      if (visible) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(320, 102);
+        ctx.bezierCurveTo(344, 102, 352, 126, 348, 152);
+        ctx.lineTo(356, 176);
+        ctx.bezierCurveTo(396, 186, 408, 228, 422, 480);
+        ctx.lineTo(218, 480);
+        ctx.bezierCurveTo(232, 228, 244, 186, 284, 176);
+        ctx.lineTo(292, 152);
+        ctx.bezierCurveTo(288, 126, 296, 102, 320, 102);
+        ctx.closePath();
+
+        const rg = ctx.createRadialGradient(345, 155, 16, 320, 260, 230);
+        rg.addColorStop(0, "#ff283c");
+        rg.addColorStop(0.45, "#8a0511");
+        rg.addColorStop(1, "#140103");
+        ctx.shadowColor = "rgba(255, 25, 45, 0.7)";
+        ctx.shadowBlur = 22;
+        ctx.fillStyle = rg;
+        ctx.fill();
+        ctx.restore();
+      }
     }
 
-    // Tập 4: Bóng Kỵ Sĩ mờ chớp tắt
-    const rider = new THREE.Group();
-    const cloak = new THREE.Mesh(new THREE.ConeGeometry(0.52, 1.6, 18), bodyMat);
-    cloak.position.y = 0.85;
-    const head = new THREE.Mesh(new THREE.SphereGeometry(0.16, 16, 12), bodyMat);
-    head.position.y = 1.72;
-    rider.add(cloak, head);
-    rider.visible = false;
-    scene.add(rider);
-
-    return function update(t) {
-      rider.visible = t > 0.62 && t < 0.74;
-      redLight.intensity = rider.visible ? 5.5 : 1.4 + Math.random() * 0.8;
-    };
+    drawVhsPostFx(ctx, w, h, t);
   }
 
   /* -------------------------------------------------------
@@ -541,81 +396,45 @@
      ------------------------------------------------------- */
   window.Tape3DSim = {
     isSupported() {
-      return typeof window.THREE !== "undefined";
+      return true;
     },
     destroy,
     mount(container, tapeId, onProgress, onComplete) {
       destroy();
-      if (!container || typeof window.THREE === "undefined") return false;
+      if (!container) return false;
 
-      const width = container.clientWidth || 460;
-      const height = container.clientHeight || 345;
+      const canvas = document.createElement("canvas");
+      canvas.width = 640;
+      canvas.height = 480;
+      canvas.className = "tape-croquis-canvas";
 
-      let renderer;
-      try {
-        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      } catch (e) {
-        return false;
-      }
-
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-      renderer.setSize(width, height);
-      renderer.setClearColor(0x090506, 1);
-
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(44, width / height, 0.1, 25);
-
-      let updater;
-      if (tapeId === "tape-2") updater = buildEpisode2Scene(scene, camera);
-      else if (tapeId === "tape-3a") updater = buildEpisode3Scene(scene, camera);
-      else updater = buildFallback3DScene(scene, camera, tapeId);
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return false;
 
       container.innerHTML = "";
-      container.appendChild(renderer.domElement);
-
-      const overlayHud = document.createElement("div");
-      overlayHud.className = "sim-webgl-hud";
-      overlayHud.innerHTML = `
-        <div class="sim-noise-grain"></div>
-        <div class="sim-tracking-band"></div>
-        <div class="sim-flash-glitch"></div>
-      `;
-      container.appendChild(overlayHud);
-
-      const onResize = () => {
-        const w = container.clientWidth || 460;
-        const h = container.clientHeight || 345;
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
-        renderer.setSize(w, h);
-      };
-      window.addEventListener("resize", onResize);
-
-      activeRenderer = renderer;
-      activeScene = scene;
-      activeCleanup = () => window.removeEventListener("resize", onResize);
+      container.appendChild(canvas);
 
       const durationMs = 3800;
       const startAt = performance.now();
 
-      function animate(now) {
-        const elapsed = now - startAt;
-        const ratio = Math.min(1, elapsed / durationMs);
+      function frame(now) {
+        const ratio = Math.min(1, (now - startAt) / durationMs);
 
-        if (typeof updater === "function") updater(ratio);
-        renderer.render(scene, camera);
+        if (tapeId === "tape-2") drawFemaleCroquis(ctx, 640, 480, ratio);
+        else if (tapeId === "tape-3a") drawMaleChairCroquis(ctx, 640, 480, ratio);
+        else drawEpisode1And4(ctx, 640, 480, ratio, tapeId);
 
         if (typeof onProgress === "function") onProgress(ratio);
 
         if (ratio < 1) {
-          activeRaf = requestAnimationFrame(animate);
+          activeRaf = requestAnimationFrame(frame);
         } else {
           activeRaf = null;
           if (typeof onComplete === "function") onComplete();
         }
       }
 
-      activeRaf = requestAnimationFrame(animate);
+      activeRaf = requestAnimationFrame(frame);
       return true;
     },
   };

@@ -61,7 +61,7 @@ body.is-main-active .main-fx-backdrop {
 }
 
 .main-bg-layer.has-bw-filter {
-  filter: grayscale(100%) contrast(1.16) brightness(0.90);
+  filter: contrast(1.16) brightness(0.90);
 }
 
 .main-wood-vignette {
@@ -800,11 +800,11 @@ body[data-theme="relic"] .economy-strip strong { color: #ffffff; }
   height: 100%;
   object-fit: cover;
   display: block;
-  filter: grayscale(70%) contrast(1.15);
+  filter: (70%) contrast(1.15);
   transition: transform 0.35s ease, filter 0.35s ease;
 }
 
-.location-card:hover .location-photo-img { transform: scale(1.04); filter: grayscale(20%) contrast(1.1); }
+.location-card:hover .location-photo-img { transform: scale(1.04); filter: (20%) contrast(1.1); }
 
 .location-photo-empty {
   width: 100%;
@@ -1251,7 +1251,7 @@ body[data-theme="relic"] .end-rule-box strong { color: var(--faded-silver); }
   height: 100%;
   overflow: hidden;
   background: radial-gradient(circle at 50% 42%, #2a0a0e 0%, #100708 62%, #050404 100%);
-  filter: grayscale(85%) contrast(1.35);
+  filter: (85%) contrast(1.35);
 }
 
 .tape-sim-stage.is-playing {
@@ -1259,7 +1259,7 @@ body[data-theme="relic"] .end-rule-box strong { color: var(--faded-silver); }
 }
 
 .tape-sim-stage.is-ended {
-  filter: grayscale(100%) contrast(1.45) brightness(0.72);
+  filter: (100%) contrast(1.45) brightness(0.72);
 }
 
 /* Hạt nhiễu & vệt tracking chạy ngang trong lúc phát */
@@ -1367,12 +1367,12 @@ body[data-theme="relic"] .end-rule-box strong { color: var(--faded-silver); }
 }
 
 @keyframes vhsTapeShake {
-  0%   { transform: translate(0, 0) scale(1.02); filter: grayscale(100%) contrast(1.8) brightness(1.25); }
-  12%  { transform: translate(-2px, 1px) scale(1); filter: grayscale(85%) contrast(1.35); }
+  0%   { transform: translate(0, 0) scale(1.02); filter: (100%) contrast(1.8) brightness(1.25); }
+  12%  { transform: translate(-2px, 1px) scale(1); filter: (85%) contrast(1.35); }
   54%  { transform: translate(0, 0); }
-  56%  { transform: translate(4px, -2px) skewX(-3deg); filter: grayscale(95%) contrast(1.7); }
+  56%  { transform: translate(4px, -2px) skewX(-3deg); filter: (95%) contrast(1.7); }
   59%  { transform: translate(-3px, 1px) skewX(2deg); }
-  62%  { transform: translate(0, 0) skewX(0); filter: grayscale(85%) contrast(1.35); }
+  62%  { transform: translate(0, 0) skewX(0); filter: (85%) contrast(1.35); }
   94%  { transform: translate(-1px, 0); }
   100% { transform: translate(0, 0); }
 }
@@ -1509,7 +1509,7 @@ body[data-theme="relic"] .end-rule-box strong { color: var(--faded-silver); }
   height: 100%;
   object-fit: cover;
   display: block;
-  filter: grayscale(35%) contrast(1.12);
+  filter: (35%) contrast(1.12);
 }
 
 .backstory-photo-empty {
@@ -1826,7 +1826,7 @@ body[data-theme="relic"] .form-section-label {
 
 /* Chế độ màu phủ lên ảnh cắt nền */
 .sim-tint-noir {
-  filter: grayscale(76%) contrast(1.22) brightness(0.86) drop-shadow(0 10px 22px rgba(0, 0, 0, 0.92));
+  filter: (76%) contrast(1.22) brightness(0.86) drop-shadow(0 10px 22px rgba(0, 0, 0, 0.92));
 }
 
 .sim-tint-shadow {
@@ -2157,7 +2157,7 @@ body[data-theme="relic"] .location-sensory strong {
 }
 
 .swezan-map-bg.has-bw {
-  filter: grayscale(85%) contrast(1.18) brightness(0.76);
+  filter: (85%) contrast(1.18) brightness(0.76);
 }
 
 .swezan-map-svg {
@@ -2329,4 +2329,30 @@ body[data-theme="relic"] .location-sensory strong {
   46%, 68%  { opacity: 0.12; }
   70%, 84%  { opacity: 1; }
   86%, 100% { opacity: 0.25; }
+}
+/* =========================================================
+   ÉP VIDEO GIỮ NGUYÊN MÀU ĐỎ ĐEN (GỠ BỎ  BỊ ÁM XÁM)
+   ========================================================= */
+
+.tape-sim-stage,
+.tape-sim-stage.is-playing,
+.tape-sim-stage.is-ended {
+  filter: none !important;
+  animation: none !important;
+  background: #040102 !important;
+}
+
+.tape-croquis-canvas {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.sim-red-shadow-stage .sim-layer-flower {
+  z-index: 5;
+  opacity: 0.78;
+  filter: brightness(0.65) contrast(1.25) sepia(0.35) hue-rotate(-18deg) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.95));
 }

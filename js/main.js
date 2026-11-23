@@ -21,12 +21,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function normalizeImageUrl(raw) {
     const url = String(raw || "").trim();
     if (!url) return "";
-    // Tự chuyển link GitHub blob sang link ảnh raw
     const ghMatch = url.match(/^https?:\/\/github\.com\/([^/]+)\/([^/]+)\/blob\/([^/]+)\/(.+)$/i);
     if (ghMatch) {
       return `https://raw.githubusercontent.com/${ghMatch[1]}/${ghMatch[2]}/${ghMatch[3]}/${ghMatch[4]}`;
     }
-    // Tự chuyển link Google Drive /file/d/ID/view sang link ảnh trực tiếp
     const gdMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
     if (gdMatch) {
       return `https://lh3.googleusercontent.com/d/${gdMatch[1]}`;
@@ -34,15 +32,54 @@ document.addEventListener("DOMContentLoaded", () => {
     return url;
   }
 
-  // Nếu bất kỳ ảnh nào bị hỏng link -> tự ẩn icon rách và hiện khung tối dự phòng
+  function getCandidateUrls(raw) {
+    const url = normalizeImageUrl(raw);
+    if (!url) return [];
+    if (/^(https?:|data:|blob:|\/|\.\.)/i.test(url)) return [url];
+    // Tự động thử nếu thư mục assets nằm cùng cấp hoặc lùi 1-2 cấp / gốc server
+    return [url, `../${url}`, `../../${url}`, `/${url}`];
+  }
+
+  function applySmartBackground(el, rawUrl) {
+    if (!el || !rawUrl) return;
+    const candidates = getCandidateUrls(rawUrl);
+    let idx = 0;
+
+    function tryNext() {
+      if (idx >= candidates.length) return;
+      const probe = new Image();
+      const testUrl = candidates[idx++];
+      probe.onload = () => {
+        el.style.backgroundImage = `url("${testUrl.replace(/"/g, '\\"')}")`;
+      };
+      probe.onerror = tryNext;
+      probe.src = testUrl;
+    }
+
+    tryNext();
+  }
+
+  // Tự động thử các đường dẫn lùi cấp khi <img> báo lỗi trước khi hiện khung dự phòng
   document.addEventListener(
     "error",
     (e) => {
       const img = e.target;
       if (!img || img.tagName !== "IMG") return;
+
+      const rawSrc = img.dataset.rawSrc || img.getAttribute("src") || "";
+      if (!img.dataset.rawSrc) img.dataset.rawSrc = rawSrc;
+
+      const candidates = getCandidateUrls(rawSrc);
+      const nextRetry = Number(img.dataset.retry || "0") + 1;
+
+      if (nextRetry < candidates.length) {
+        img.dataset.retry = String(nextRetry);
+        img.src = candidates[nextRetry];
+        return;
+      }
+
       img.style.display = "none";
 
-      // Nếu là lớp ảnh trong video mô phỏng thì chỉ ẩn êm, không hiện chữ báo lỗi đè lên video
       if (
         img.classList.contains("sim-layer-flower") ||
         img.classList.contains("sim-layer-bg") ||
@@ -55,10 +92,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const box = img.parentElement;
       if (!box) return;
       if (!box.querySelector(".img-fallback-box")) {
-        const failedSrc = img.getAttribute("src") || "";
         const fb = document.createElement("div");
         fb.className = "location-photo-empty img-fallback-box";
-        fb.innerHTML = `<span>KHÔNG TÌM THẤY FILE: ${escapeHtml(failedSrc)}</span><strong>${escapeHtml(img.alt || "SWEZAN 1994")}</strong>`;
+        fb.innerHTML = `<span>KHÔNG TÌM THẤY FILE: ${escapeHtml(rawSrc)}</span><strong>${escapeHtml(img.alt || "SWEZAN 1994")}</strong>`;
         box.prepend(fb);
       }
     },
@@ -74,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (bgLayer) {
     if (bgCfg.imageUrl) {
-      bgLayer.style.backgroundImage = `url("${String(bgCfg.imageUrl).replace(/"/g, '\\"')}")`;
+      applySmartBackground(bgLayer, bgCfg.imageUrl);
     }
     const useBw = bgCfg.bwAndWireframe !== false;
     bgLayer.classList.toggle("has-bw-filter", useBw);
@@ -320,9 +356,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const mapCfg = cfg.map || {};
 
   if (mapBgEl) {
-    const cleanMapUrl = normalizeImageUrl(mapCfg.imageUrl);
-    if (cleanMapUrl) {
-      mapBgEl.style.backgroundImage = `url("${cleanMapUrl.replace(/"/g, '\\"')}")`;
+    if (mapCfg.imageUrl) {
+      applySmartBackground(mapBgEl, mapCfg.imageUrl);
     }
     mapBgEl.classList.toggle("has-bw", mapCfg.bwFilter !== false);
   }
@@ -582,7 +617,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const sim = tape.sim || {};
     const motionClass = `motion-${tape.id}`;
 
-    // Nếu người tạo có gắn personUrl riêng -> dùng ảnh đó (hỗ trợ biến thành bóng đỏ hoặc đen trắng)
     const personTint =
       sim.tintMode === "shadow"
         ? "sim-tint-shadow"
@@ -590,40 +624,28 @@ document.addEventListener("DOMContentLoaded", () => {
         ? "sim-tint-original"
         : "sim-tint-red-shadow";
 
+    // Nếu người tạo có gắn personUrl riêng -> dùng ảnh PNG đó, ngược lại bật Canvas Croquis 2D bóng đỏ
     const personLayerHtml = sim.personUrl
       ? `<img class="sim-layer-person ${personTint} ${motionClass}" src="${escapeHtml(normalizeImageUrl(sim.personUrl))}" alt="" />`
-      : buildRedSilhouetteSvg(tape.id);
-
-    const bgHtml = sim.bgUrl
-      ? `<img class="sim-layer-bg sim-tint-noir" src="${escapeHtml(normalizeImageUrl(sim.bgUrl))}" alt="" />`
-      : "";
+      : `<div id="tape-croquis-mount" style="position:absolute;inset:0;z-index:2;"></div>`;
 
     let flowerHtml = "";
     if (sim.flowerUrl && sim.flowerRightUrl) {
       flowerHtml = `
-        <img class="sim-layer-flower is-left sim-tint-noir" src="${escapeHtml(normalizeImageUrl(sim.flowerUrl))}" alt="" />
-        <img class="sim-layer-flower is-right sim-tint-noir" src="${escapeHtml(normalizeImageUrl(sim.flowerRightUrl))}" alt="" />
+        <img class="sim-layer-flower is-left" src="${escapeHtml(normalizeImageUrl(sim.flowerUrl))}" alt="" />
+        <img class="sim-layer-flower is-right" src="${escapeHtml(normalizeImageUrl(sim.flowerRightUrl))}" alt="" />
       `;
     } else if (sim.flowerUrl) {
-      flowerHtml = `<img class="sim-layer-flower is-center sim-tint-noir" src="${escapeHtml(normalizeImageUrl(sim.flowerUrl))}" alt="" />`;
+      flowerHtml = `<img class="sim-layer-flower is-center" src="${escapeHtml(normalizeImageUrl(sim.flowerUrl))}" alt="" />`;
     } else if (sim.flowerRightUrl) {
-      flowerHtml = `<img class="sim-layer-flower is-right sim-tint-noir" src="${escapeHtml(normalizeImageUrl(sim.flowerRightUrl))}" alt="" />`;
+      flowerHtml = `<img class="sim-layer-flower is-right" src="${escapeHtml(normalizeImageUrl(sim.flowerRightUrl))}" alt="" />`;
     }
-
-    const overlayHtml = sim.overlayUrl
-      ? `<img class="sim-layer-overlay ${motionClass}" src="${escapeHtml(normalizeImageUrl(sim.overlayUrl))}" alt="" />`
-      : tape.id === "tape-2"
-      ? `<div class="sim-egg-glass-rim"></div>`
-      : "";
 
     return `
       <div class="sim-red-shadow-stage">
-        ${bgHtml}
-        <div class="sim-fog-band sim-fog-back"></div>
         ${personLayerHtml}
         <div class="sim-fog-band sim-fog-front"></div>
         ${flowerHtml}
-        ${overlayHtml}
         <div class="sim-noise-grain"></div>
         <div class="sim-tracking-band"></div>
         <div class="sim-flash-glitch"></div>
@@ -640,7 +662,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.Tape3DSim) window.Tape3DSim.destroy();
 
     if (tape.videoUrl) {
-      tapeCrtMedia.innerHTML = `<video src="${escapeHtml(tape.videoUrl)}" ${tape.thumbnailUrl ? `poster="${escapeHtml(tape.thumbnailUrl)}"` : ""} controls autoplay playsinline></video>`;
+      tapeCrtMedia.innerHTML = `<video src="${escapeHtml(normalizeImageUrl(tape.videoUrl))}" ${tape.thumbnailUrl ? `poster="${escapeHtml(normalizeImageUrl(tape.thumbnailUrl))}"` : ""} controls autoplay playsinline></video>`;
       if (tapeCrtTimer) tapeCrtTimer.textContent = "▶ VIDEO";
       if (tapeSimProgress) tapeSimProgress.style.width = "100%";
       return;
@@ -657,18 +679,35 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
+    const croquisMount = document.getElementById("tape-croquis-mount");
+    if (croquisMount && window.Tape3DSim) {
+      window.Tape3DSim.mount(
+        croquisMount,
+        tape.id,
+        (ratio) => {
+          const sec = Math.min(4, Math.floor(ratio * 4));
+          if (tapeSimProgress) tapeSimProgress.style.width = `${(ratio * 100).toFixed(1)}%`;
+          if (tapeCrtTimer) tapeCrtTimer.textContent = ratio < 1 ? `▶ PLAY 00:0${sec}` : "■ STOP 00:04";
+        },
+        () => {
+          const stage = document.getElementById("tape-sim-stage");
+          if (stage) {
+            stage.classList.remove("is-playing");
+            stage.classList.add("is-ended");
+          }
+        }
+      );
+      return;
+    }
+
+    // Trường hợp dùng ảnh personUrl cắt nền riêng -> chạy thanh tiến trình 3.8s
     const durationMs = 3800;
     const startAt = performance.now();
-
     function step(now) {
       const ratio = Math.min(1, (now - startAt) / durationMs);
       const sec = Math.min(4, Math.floor(ratio * 4));
-
       if (tapeSimProgress) tapeSimProgress.style.width = `${(ratio * 100).toFixed(1)}%`;
-      if (tapeCrtTimer) {
-        tapeCrtTimer.textContent = ratio < 1 ? `▶ PLAY 00:0${sec}` : "■ STOP 00:04";
-      }
-
+      if (tapeCrtTimer) tapeCrtTimer.textContent = ratio < 1 ? `▶ PLAY 00:0${sec}` : "■ STOP 00:04";
       if (ratio < 1) {
         simRafId = requestAnimationFrame(step);
       } else {
@@ -680,7 +719,6 @@ document.addEventListener("DOMContentLoaded", () => {
         simRafId = null;
       }
     }
-
     simRafId = requestAnimationFrame(step);
   }
 

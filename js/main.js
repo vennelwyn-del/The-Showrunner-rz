@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const url = normalizeImageUrl(raw);
     if (!url) return [];
     if (/^(https?:|data:|blob:|\/|\.\.)/i.test(url)) return [url];
+    const clean = url.replace(/^\.\//, "");
     // Tự động thử nếu thư mục assets nằm cùng cấp hoặc lùi 1-2 cấp / gốc server
     return [url, `assets/${url}`, `../${url}`, `../../${url}`, `/${url}`];
   }
@@ -107,7 +108,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const bgLayer = document.getElementById("main-bg-layer");
   const wireframeSvg = document.getElementById("forensic-wireframe");
   const bgCfg = cfg.background || {};
-
+  const bgImg = bgCfg.imageUrl || bgCfg.img;
+  if (bgImg) applySmartBackground(bgLayer, bgImg);
   if (bgLayer) {
     if (bgCfg.imageUrl) {
       applySmartBackground(bgLayer, bgCfg.imageUrl);
@@ -160,8 +162,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const bs = cfg.backstory || {};
 
   if (backstoryEl) {
-    const bsPhoto = bs.imageUrl
-      ? `<img src="${escapeHtml(bs.imageUrl)}" alt="${escapeHtml(bs.title || "Swezan Backstory")}" />`
+    const bsPhoto = bs.imageUrl || bs.img;
+    const bsPhotoMarkup = bsPhoto
+  ? `<img src="${escapeHtml(normalizeImageUrl(bsPhoto))}" alt="${escapeHtml(bs.title || "Swezan Backstory")}" />`
       : `<div class="backstory-photo-empty">
            <span>ARCHIVE PHOTO // SWEZAN 1994</span>
            <strong>[CHÈN 1 ẢNH BACKSTORY TRONG config.js]</strong>
@@ -174,7 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
     backstoryEl.innerHTML = `
       <figure class="backstory-photo-card">
         <span class="pushpin" aria-hidden="true"></span>
-        <div class="backstory-photo-frame">${bsPhoto}</div>
+        <div class="backstory-photo-frame">${bsPhotoMarkup}</div>
         <figcaption class="backstory-photo-caption">
           <span>${escapeHtml(bs.imageCaption || "SWEZAN VALLEY · 1994")}</span>
           <span>FILE // 00</span>
@@ -354,6 +357,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const mapInspectorEl = document.getElementById("swezan-map-inspector");
   const locFilterBtns = document.querySelectorAll("[data-loc-filter]");
   const mapCfg = cfg.map || {};
+  const mapImg = mapCfg.imageUrl || mapCfg.img;
+  if (mapImg) applySmartBackground(mapBgEl, mapImg);
 
   if (mapBgEl) {
     if (mapCfg.imageUrl) {
@@ -777,6 +782,7 @@ document.addEventListener("DOMContentLoaded", () => {
      5. TAB 04: NHÂN VẬT & BẢNG GHI CHÚ THÔNG TIN CÔNG KHAI
      ------------------------------------------------------- */
   const characters = Array.isArray(window.SHOWRUNNER_CHARACTERS) ? window.SHOWRUNNER_CHARACTERS : [];
+  const charImg = normalizeImageUrl(c.imageUrl || c.img);
   let castFilter = "all";
   let currentFilteredList = characters;
   let activeCharIndex = -1;

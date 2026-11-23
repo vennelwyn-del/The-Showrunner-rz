@@ -2830,3 +2830,146 @@ body[data-theme="relic"] .wf-coord { fill: rgba(232, 230, 228, 0.72); }
 .victim-photo-box:not(:has(img)) {
   aspect-ratio: 3 / 4;
 }
+/* =========================================================
+   TAB 04: HỒ SƠ NẠN NHÂN CÔNG KHAI & TIN ĐỒN (1994)
+   ========================================================= */
+
+.victims-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+  gap: 20px;
+}
+
+.victim-dossier-card {
+  position: relative;
+  padding: 16px 18px;
+  background: #d8ccb8;
+  color: #181310;
+  border: 1px solid #96856d;
+  border-top: 5px solid #52463d;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.58), inset 0 0 32px rgba(80, 50, 22, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.victim-dossier-card.is-deceased { border-top-color: #6b0811; }
+.victim-dossier-card.is-active-case {
+  border-top-color: #c81020;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.65), 0 0 22px rgba(200, 16, 32, 0.35);
+}
+.victim-dossier-card.is-teaser { border-top-style: dashed; opacity: 0.94; }
+
+.victim-card-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed rgba(24, 19, 16, 0.3);
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.victim-case-code { font-weight: 700; color: #54463d; letter-spacing: 0.08em; }
+
+.victim-status-stamp {
+  padding: 2px 7px;
+  border: 1.5px solid #9c0412;
+  color: #9c0412;
+  font-weight: 700;
+  font-size: 9.5px;
+  transform: rotate(-2deg);
+}
+
+.victim-card-body {
+  display: grid;
+  grid-template-columns: 185px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.victim-photo-col { display: flex; flex-direction: column; gap: 8px; }
+
+.victim-photo-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #1a0709;
+  border: 2px solid #4a3c34;
+  overflow: hidden;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+
+.victim-photo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.victim-time-note {
+  padding: 6px 8px;
+  background: rgba(24, 19, 16, 0.08);
+  border-left: 2px solid #8c0612;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.45;
+  color: #3a2e28;
+}
+
+.victim-info-col { display: flex; flex-direction: column; gap: 8px; }
+.victim-name { font-family: var(--font-serif); font-size: 23px; font-weight: 700; color: #140f0d; line-height: 1.1; }
+.victim-role { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; color: #8c0612; }
+
+.victim-section-box,
+.victim-rumors-box {
+  padding: 8px 10px;
+  background: rgba(255, 250, 240, 0.48);
+  border: 1px solid rgba(24, 19, 16, 0.16);
+}
+
+.victim-section-box h4,
+.victim-rumors-box h4 {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: #7d0611;
+  margin-bottom: 4px;
+}
+
+.victim-section-box p { font-size: 12.5px; line-height: 1.55; color: #211a17; }
+
+.victim-rumor-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 12px;
+  line-height: 1.48;
+  color: #29211d;
+}
+
+.rumor-src {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: #8c0612;
+  margin-right: 4px;
+}
+
+.victim-card-foot {
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(24, 19, 16, 0.25);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+@media (max-width: 720px) {
+  .victims-grid,
+  .victim-card-body { grid-template-columns: 1fr; }
+}

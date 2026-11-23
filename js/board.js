@@ -226,7 +226,13 @@ document.addEventListener("DOMContentLoaded", () => {
       setSyncState(true, "ONLINE // FIREBASE RTDB 1994");
     } catch (err) {
       remotePosts = getJsonLS(LS_POSTS, []);
-      setSyncState(false, "OFFLINE CACHE // LỖI MẠNG");
+      const reason = String((err && err.message) || "LỖI MẠNG");
+      const label = reason.includes("401")
+        ? "LỖI 401 // BỊ CHẶN RULES FIREBASE"
+        : reason.includes("404")
+        ? "LỖI 404 // SAI LINK FIREBASE"
+        : `OFFLINE CACHE // ${reason}`;
+      setSyncState(false, label);
     }
 
     renderPosts();

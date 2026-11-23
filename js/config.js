@@ -390,9 +390,9 @@ window.SHOWRUNNER_CONFIG = {
     },
   ],
   victimsImages: {
-    "vic-1": "./assets/assets/OPW/Theshowrunner/System/ottomar.png",
-    "vic-2": "./assets/assets/OPW/Theshowrunner/System/malia.png",
-    "vic-3": "./assets/assets/OPW/Theshowrunner/System/august.png",
+    "vic-1": "./assets/assets/OPW/Theshowrunner/NPC/ottomar.png",
+    "vic-2": "./assets/assets/OPW/Theshowrunner/NPC/malia.png",
+    "vic-3": "./assets/assets/OPW/Theshowrunner/NPC/august.png",
   },
   /* -------------------------------------------------------
      5. KẾT NỐI FIREBASE CHO TAB THẢO LUẬN THỊ TRẤN

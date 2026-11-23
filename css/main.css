@@ -812,3 +812,90 @@ body[data-theme="relic"] .wf-label, body[data-theme="relic"] .wf-coord { fill: r
   .cctv-rec-tag { bottom: calc(24px + env(safe-area-inset-bottom)); font-size: 9px; }
   .char-note-modal { padding: 12px; align-items: start; }
 }
+/* =========================================================
+   FIX TAB 01 (POLAROID + DON'T TOUCH + BÁO) KHÔNG BỊ CẮT CHỮ
+   ========================================================= */
+
+.polaroid-frame {
+  aspect-ratio: auto;
+  height: auto;
+  min-height: 148px;
+}
+
+.polaroid-art {
+  min-height: 148px;
+  height: auto;
+  gap: 24px;
+  padding: 14px;
+}
+
+.watch-note {
+  padding: 2px 7px;
+  background: rgba(18, 12, 12, 0.84);
+  color: #f4eaea;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+@media (max-width: 768px) {
+  .evidence-desk-grid {
+    padding: 0;
+    gap: 18px;
+  }
+
+  .polaroid-cluster {
+    padding: 4px 0;
+    gap: 14px;
+    width: 100%;
+  }
+
+  .lenormand-peek {
+    display: none;
+  }
+
+  .polaroid-card,
+  .polaroid-card.tilt-left,
+  .polaroid-card.tilt-right,
+  .polaroid-card.tilt-slight {
+    max-width: 100%;
+    width: 100%;
+    margin-left: 0 !important;
+    transform: none !important;
+  }
+
+  .desk-props-row {
+    width: 100%;
+    margin-left: 0;
+    gap: 12px;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+
+  .torn-clipping {
+    flex: 1;
+    min-width: 0;
+    max-width: none;
+    transform: none;
+  }
+
+  .clipping-head {
+    font-size: 15px;
+    letter-spacing: 0.04em;
+  }
+
+  .news-top-meta {
+    flex-wrap: wrap;
+    gap: 4px 8px;
+  }
+
+  .news-masthead {
+    font-size: clamp(1.5rem, 7vw, 2.4rem);
+  }
+
+  .news-big-headline {
+    font-size: clamp(1.35rem, 6vw, 2.1rem);
+  }
+
+  .news-red-oval {
+    inset: -4px -8px;
+  }
+}
